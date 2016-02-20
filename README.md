@@ -5,6 +5,13 @@ This is the repo for Sean Grove's personal site, http://bushi.do/.
 
 It also serves as a (currently very messy) example of a site built in OCaml, using the the Mirage libraries, and deployed as a unikernel.
 
+Instructions
+====
+
+Make sure you have [opam](https://opam.ocaml.org/doc/Install.html#Usingyourdistribution39spackagesystem) installed, and that you're using at least OCaml `4.02.3` (simple as `opam switch 4.02.3`).
+
+
+
 TODO
 ====
 
@@ -14,6 +21,7 @@ TODO
     1. Edit to add your credentials
     1. Run the (simple) deploy script
  1. Add instructions and examples section
+
 Credit
 ======
 
