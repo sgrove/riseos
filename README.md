@@ -13,7 +13,7 @@ TODO
     1. git clone the repo
     1. Edit to add your credentials
     1. Run the (simple) deploy script
-
+ 1. Add instructions and examples section
 Credit
 ======
 
