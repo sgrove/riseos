@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]> ><! <![endif]-->
+<html class=" js no-touch svg inlinesvg svgclippaths no-ie8compat" lang="en" style=""><!-- <![endif] -->
+  <!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+  <!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+  <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <title>Goma on Ice</title>
+    <meta name="author" content="Sean Grove">
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta content="width=device-width" name="viewport">
+    <link href="/stylesheets/normalize.css" rel="stylesheet">
+    <link href="/stylesheets/foundation.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,700,300italic,700italic" rel="stylesheet" type="text/css">
+
+    <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-with-addons.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-dom.js" type="text/javascript"></script>
+    <script src="/js/client.js" type="text/javascript"></script>
+    <link rel="apple-touch-icon" sizes="57x57" href="/images/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/images/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/images/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/images/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/images/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/images/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/images/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="/images/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/images/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/images/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+  </head>
+
+  <body class="collapse-sidebar sidebar-footer">
+    <div class="contain-to-grid sticky">
+      <div class="row">
+        <div class="large-12 columns">
+          <nav class="top-bar">
+
+            <ul class="title-area">
+              <!-- Title Area -->
+              <li class="name">
+                <h1><a href="/" style="padding-left:0px;">Trap'm</a></h1>
+              </li>
+              <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+              <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+            </ul>
+
+
+
+
+            <section class="top-bar-section">
+              <!-- Left Nav Section -->
+              <ul class="left">
+                <li class="divider"></li>
+              </ul>
+
+              <!-- Right Nav Section -->
+              <ul class="right">
+                <li class="divider hide-for-small"></li>
+                <li class=""><a href="/blog">Blog</a>
+                </li><li class="divider"></li>
+                <li class="divider show-for-small"></li>
+                <li class="has-form" style="padding-right:0px;">
+                  <a class="button success" href="/contact">Contact</a>
+                </li>
+              </ul>
+          </section></nav>
+        </div>
+      </div>
+    </div>
+
+    <header class="row">
+      <div class="large-12 columns">
+        <h1 class="test-title">
+          {{title}}
+        </h1>
+      </div>
+    </header>
+    <section class="blog">
+      <div class="row">
+        <div class="large-9 columns">
+          <div class="content">
+            <div class="blog-index">
+              <article class="post-body">
+                {{post.body}}
+              </article>
+                <hr />
+                <div id="main-area"></div>
+              <!---
+              <div class="pagination">
+                <a class="prev" href="__paginator.next_page__">&larr; Older</a>
+                <a href="/blog/archives">Blog Archives</a>
+                <a class="next" href="__paginator.previous_page__">Newer &rarr;</a>
+              </div>
+              --->
+            </div>
+            <aside class="sidebar">
+              <!---
+              __% if site.blog_index_asides.size %__
+              __% include_array blog_index_asides %__
+              __% else %__
+              __% include_array default_asides %__
+              __% endif %__
+              --->
+            </aside>
+
+          </div>
+        </div>
+        <div class="large-3 columns sidebar">
+          <div class="intro">
+            <div class="staff">
+              <div class="team-floating-head large-3 column">
+                <img class="photo" src="/images/sean.jpg" style="max-width:124px;border-radius:62px;"/>
+              </div>
+              <div style="clear:left;"></div>
+              Digital wayfarer with a penchant for language, product, and wine.
+            </div>
+
+          <div class="popular widget">
+            <h4>Recent Posts</h4>
+            <ul>
+              <li>
+                <a href="/{{recent_posts.first.permalink}}">{{recent_posts.first.title}}</a>
+              </li>
+              <li>
+                <a href="/{{recent_posts.first.permalink}}">{{recent_posts.second.title}}</a>
+              </li>
+            </ul>
+
+          </div>
+        </div>
+      </div>
+    </section>
+    <footer class="row">
+      <div class="large-12 columns">
+        <p>COPYRIGHT © 2016 Sean Grove | <a href="/contact">CONTACT</a>
+        </p>
+      </div>
+    </footer>
+</body>
+</html>
+
+

@@ -1,0 +1,97 @@
+/*----------------------------------------------------------------
+		
+	File Name:          style.css 	
+	Description:        Invokr - Premium Landing Page Template 	
+	Skin Color: 		Green 
+
+---------------------------------------------------------------- */
+
+
+a:link, 
+a:active, 
+a:visited {
+	color:#c22800;
+}
+
+body,
+#footer,
+#contact-form-container {
+	border-color:#9FC58B;
+}
+
+#contact-form-container,
+ul#nav > li > a:hover, 
+ul#nav > li > a.current-menu-item, 
+ul#nav li.sfHover > a,
+#footer {
+	background-color:#70a059;
+}
+#contact,
+#contact-form input[type="submit"] {
+	background-color:#9FC58B;
+	color:#4E7739;
+}
+#contact-form input, 
+#contact-form textarea {
+	border-color: #4E7739;
+}
+#contact-form-container hr {
+	border-top: 1px solid #4E7739;
+	border-bottom: 1px solid #9FC58B;
+}
+#logo {
+	background-position:0 -175px;
+}
+#feature-list ul li, 
+.post ul li {
+	background-position:0 -92px;
+}
+
+
+/* =Sprites
+----------------------------------------------- */
+
+#sponsors li a#sponsor-1 {background-position: -235px -198px;}
+#sponsors li a#sponsor-2 {background-position: -235px -246px;}
+#sponsors li a#sponsor-3 {background-position:-235px -301px;}
+#sponsors li a#sponsor-4 {background-position:-235px -336px;}
+
+#footer-logo {background-position:-156px -192px;}
+#footer #top-arrow {background-position:-70px -319px;}
+
+#close {background-position: -106px -180px;}
+
+/* =Main
+----------------------------------------------- */
+
+a.button {
+	background-position:0 -217px;
+    border-left: 1px solid #70A058;
+    border-right: 1px solid #70A058;
+    color: #FFFFFF;
+}
+a.button,
+#contact-form h2 {
+	text-shadow:1px 1px 0 #018a9a;
+}
+h2.post-title,
+h2.post-title a {
+	color:#4E7739;
+}
+h2.post-title a:hover {
+	color:#325c1d;
+}
+.post-meta {
+    background:rgba(78, 119, 57, 0.1);
+}
+
+/* =Footer
+----------------------------------------------- */
+
+#footer #copyright {border-color:#9fc58b;}
+
+#footer h2, 
+#footer #copyright p, 
+#footer #copyright a {
+	color:#9fc58b;
+}

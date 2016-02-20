@@ -1,0 +1,104 @@
+/*----------------------------------------------------------------
+		
+	File Name:          style.css 	
+	Description:        Invokr - Premium HTML Page Template 	
+	Skin Color: 		Red
+
+---------------------------------------------------------------- */
+
+a:link, 
+a:active, 
+a:visited,
+#options li a.selected,
+#sidebar li p a, 
+#sidebar li p a:hover {
+	color:#009CCF;
+}
+
+body,
+#footer,
+#contact-form-container {
+	border-color:#f3866b;
+}
+
+#contact-form-container,
+ul#nav > li > a:hover, 
+ul#nav > li > a.current-menu-item, 
+ul#nav li.sfHover > a,
+#footer {
+	background-color:#bd2500;
+}
+#contact,
+#contact-form input[type="submit"] {
+	background-color:#f3866b;
+	color:#bd2500;
+}
+#contact-form input[type="submit"]:hover {
+	background-color: #b9E7ee;
+	color: #019CB3;
+}
+#contact-form input, 
+#contact-form textarea {
+	border-color: #8a1b00;
+}
+#contact-form-container hr {
+	border-top: 1px solid #8a1b00;
+	border-bottom: 1px solid #d04827;
+}
+#logo {
+	background-position:0 -58px;
+}
+a.btn-cta,
+#contact-form h2 {
+	text-shadow:1px 1px 0 #891600;
+}
+h2.post-title,
+h2.post-title a {
+	color:#bd2500;
+}
+h2.post-title a:hover {
+	color:#932c13;
+}
+.post-meta {
+    background:rgba(189, 37, 0, 0.1);
+}
+
+
+
+/* =Footer
+----------------------------------------------- */
+
+#footer h2 {color:#f3866b;}
+#footer #copyright {border-color:#f3866b;}
+
+#footer #copyright p, 
+#footer #copyright a {
+	color:#f3866b;
+}
+
+
+/* =Sprites
+----------------------------------------------- */
+
+#feature-list ul li, 
+.post ul li {
+	background-position:0 -112px;
+}
+
+#sponsors li a#sponsor-1 {background-position: -235px 0;}
+#sponsors li a#sponsor-2 {background-position: -235px -48px;}
+#sponsors li a#sponsor-3 {background-position:-235px -103px;}
+#sponsors li a#sponsor-4 {background-position: -235px -138px;}
+
+#footer-logo {background-position:-156px -75px;}
+#footer #top-arrow {background-position:-70px -256px;}
+
+#close {background-position: -71px -180px;}
+
+a.button {
+	background-position:0 -145px;
+    border-left: 1px solid #f1552f;
+    border-right: 1px solid #f1552f;
+    color: #FFFFFF;
+	text-shadow: 1px 1px 0 #891600;
+}

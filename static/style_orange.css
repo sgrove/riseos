@@ -1,0 +1,94 @@
+/*----------------------------------------------------------------
+		
+	File Name:          style.css 	
+	Description:        Invokr - Premium Landing Page Template 	
+	Skin Color: 		Orange
+
+---------------------------------------------------------------- */
+
+a:link, 
+a:active, 
+a:visited,
+#options li a.selected,
+#sidebar li p a, 
+#sidebar li p a:hover {
+	color:#009ccf;
+}
+
+body,
+#footer,
+#contact-form-container {
+	border-color:#ffd16e;
+}
+
+#contact-form-container,
+ul#nav > li > a:hover, 
+ul#nav > li > a.current-menu-item, 
+ul#nav li.sfHover > a,
+#footer {
+	background-color:#ffae00;
+}
+ul#nav > li > a:hover, 
+ul#nav > li > a.current-menu-item, 
+ul#nav li.sfHover > a {
+	text-shadow:0 -1px 0  #ff6600;	
+}
+#contact,
+#contact-form input[type="submit"] {
+	background-color:#FFD16E;
+	color:#d57e02;
+}
+#contact-form input, 
+#contact-form textarea {
+	border-color: #E5A206;
+}
+#contact-form h2,
+a.btn-cta {
+	text-shadow:1px 1px 0 #cc9100;
+}
+#contact-form-container hr {
+	border-top: 1px solid #d57e02;
+	border-bottom: 1px solid #ffd166;
+}
+#logo {
+	background-position:0 -117px;
+}
+#feature-list ul li, 
+.post ul li {
+	background-position:0 -133px;
+}
+
+
+
+
+/* =Sprites
+----------------------------------------------- */
+
+#sponsors li a#sponsor-1 {background-position:0 -198px;}
+#sponsors li a#sponsor-2 {background-position:0 -246px;}
+#sponsors li a#sponsor-3 {background-position:0 -301px;}
+#sponsors li a#sponsor-4 {background-position:0 -336px;}
+
+#footer-logo {background-position:-156px -134px;}
+#footer #top-arrow {background-position:-1px -319px;}
+
+a.button {
+	background-position:0 -72px;
+    border-left: 1px solid #D8A317;
+    border-right: 1px solid #D8A317;
+    color: #FFFFFF;
+	text-shadow: 1px 1px 0 #CC9100;
+}
+#close {background-position: -36px -180px;}
+
+
+/* =Footer
+----------------------------------------------- */
+
+#footer h2 {color:#b27900;}
+
+#footer #copyright {border-color:#ffc240;}
+#footer #copyright p, 
+#footer #copyright a {
+	color:#b27900;
+}

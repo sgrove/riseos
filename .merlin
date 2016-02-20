@@ -1,0 +1,10 @@
+B _build
+
+PKG sequence containers tyxml
+PKG mirage cohttp cstruct tls mirage-http
+PKG lwt omd lambdasoup js_of_ocaml eliom pa_js.syntax js_of_ocaml.ppx
+PKG menhir
+PKG core
+PKG magic_mime
+PKG magic-mime
+SRC liquid/
