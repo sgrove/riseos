@@ -36,9 +36,9 @@ let my_https =
   http_server @@ conduit_direct ~tls:true stack
 
 let () =
-  let libraries = [ "sequence" ; "containers" ; "tyxml" ; "omd" ; "lambdasoup" ; "js_of_ocaml" (* ; "menhir" *)] in
+  let libraries = [ "sequence" ; "containers" ; "tyxml" ; "omd" ; "lambdasoup" ; "js_of_ocaml" (* ; "menhir" *) ; "magic-mime"] in
   let packages = [ "sequence" ; "containers" ; "tyxml" ; "omd" ; "lambdasoup" ; "js_of_ocaml" ; "menhir" ; "core" ; "magic-mime"] in
-  register "No"
+  register "bushido"
     ~libraries
     ~packages
     ~keys:[
