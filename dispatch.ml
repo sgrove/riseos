@@ -97,19 +97,22 @@ module Dispatch (C: CONSOLE) (FS: KV_RO) (S: HTTP) = struct
 
   let get_content c fs request uri = match Uri.path uri with
     | "" | "/" | "index.html" ->
+                  log c "Looking for index %s\n" "...";
+                  (* TODO: Figure out why this crashes the unikernel
+                  with: "Unsupported function strtod called in Mini-OS kernel". Pretty important to be able to work with query params at some point.
+
                   let lang =
                     CCOpt.get [] (Uri.get_query_param' uri "lang") @
                       accept_lang (Cohttp.Request.headers request) @
                         [Key_gen.lang ()]
-                  in
+                  in *)
+                  log c "Reading fs %s\n" "...";
                   (read_fs fs "index.html", "text/html;charset=utf-8")
     | "test" ->
        (Lwt.return "Testing", "text/html;charset=utf-8")
     | s ->
-       print_endline "What?";
        let permalink = (String.sub s 1 ((String.length s) - 1)) in
        log c "Looking for %s\n" permalink;
-       print_endline "What2?";
        try
          let post = List.find (fun post ->
                                log c "\t%s = %s ? %b" post.permalink s (post.permalink = permalink);
