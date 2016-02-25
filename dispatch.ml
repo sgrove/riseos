@@ -14,7 +14,11 @@ let posts =
   [{title = "First post";
     file = "posts/2016_02_06_first_post.md";
     author = "Sean Grove";
-    permalink = "2016_02_06_first_post";}]
+    permalink = "2016_02_06_first_post";}
+  ;{title = "Mirage questions";
+    file = "posts/2016_02_20_mirage_questions.md";
+    author = "Sean Grove";
+    permalink = "2016_02_20_mirage_questions";}]
 
 (** Common signature for http and https. *)
 module type HTTP = Cohttp_lwt.Server
