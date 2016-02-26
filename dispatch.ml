@@ -93,7 +93,10 @@ module Dispatch (C: CONSOLE) (FS: KV_RO) (S: HTTP) = struct
       let parsed = parse template in
       log c "f5";
       let post_body_el = parsed $ ".post-body" in
+      let post_title_el = parsed $ ".post-title" in
+      (clear post_title_el);
       (clear post_body_el);
+      append_child post_title_el (Soup.create_text post.title);
       append_child post_body_el parsed_body;
       (* Soup.replace title_el new_title_el; *)
       parsed |> to_string |> return
