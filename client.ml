@@ -33,6 +33,11 @@ let page_params =
                   | key::value -> List.append run [(key, (String.concat "" value))]
                   | _ -> run)
                  [] kv_pairs
+let get_query_param params ?default:(default="") key =
+  (try
+      List.assoc key page_params
+    with
+    | Not_found -> default)
 module type REACT = sig
     type component
 
