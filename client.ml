@@ -23,6 +23,16 @@ let console =
 let log msg = 
   Js.Unsafe.meth_call console "log" [| inj @@ msg |]
 
+(* TODO: Handle decodeURIComponent, etc. - see https://ocsigen.org/js_of_ocaml/api/Js#2_StandardJavascriptfunctions *)
+let page_params =
+  let url = (Js.to_string Html.window##.location##.href) in
+  let query_string = (String.concat "?" (List.tl (Regexp.split (Regexp.regexp "\\?") url))) in
+  let kv_pairs = (Regexp.split (Regexp.regexp "&") query_string) in
+  List.fold_left (fun run next ->
+                  match (Regexp.split (Regexp.regexp "=") next) with
+                  | key::value -> List.append run [(key, (String.concat "" value))]
+                  | _ -> run)
+                 [] kv_pairs
 module type REACT = sig
     type component
 
