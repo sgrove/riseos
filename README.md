@@ -10,7 +10,15 @@ Instructions
 
 Make sure you have [opam](https://opam.ocaml.org/doc/Install.html#Usingyourdistribution39spackagesystem) installed, and that you're using at least OCaml `4.02.3` (simple as `opam switch 4.02.3`).
 
+To auto-rebuild the javascript on osx, install [fswatch](https://github.com/emcrisostomo/fswatch) and run `fswatch -o client.ml | xargs -n1 -I{} ./rebuild_js.sh` in a terminal. It works pretty well, though there can be random delays in the rebuild for some reason.
 
+Relevant Mirage Issues
+========
+These mirage issues affect this repo, the sooner they're closed the better (keeping track for myself so I can unpin packages):
+
+ * [Functoria: need a way to disable Bootvar](https://github.com/mirage/mirage/issues/493)
+ * [Missing `strtod`](https://github.com/mirage/mirage-platform/issues/118)
+ * [No way to specify package versions/pins in config.ml](https://github.com/mirage/mirage/issues/499)
 
 TODO
 ====
