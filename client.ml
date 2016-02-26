@@ -114,49 +114,55 @@ let start _:(bool Js.t) =
   Printf.printf "Start\n";
   let react = Js.Unsafe.variable "React" in
   let div = Dom_html.getElementById "main-area" in
-  Printf.printf "Rendering component:\n";
-  let spec = object%js (self)
-               val displayName = jss "testClass"
-               method componentDidMount =
-                 let props = Js.Unsafe.get self "state" in
-                 let author = Js.Unsafe.get props "author" in
-                 print_endline ("Component mounted with author: " ^ author.name)
-               method componentWillMount =
-                 let props = Js.Unsafe.get self "props" in
-                 let author = Js.Unsafe.get props "author" in
-                 Js.Unsafe.meth_call self "setState" [| (to_obj ["author", inj author]) |]
-               method componentDidUpdate =
-                 let props = Js.Unsafe.get self "state" in
-                 let author = Js.Unsafe.get props "author" in
-                 print_endline ("Component updated with author: " ^ author.name ^ ": " ^ (string_of_int author.age))
-               method render =
-                 let props = Js.Unsafe.get self "state" in
-                 let author = Js.Unsafe.get props "author" in
-                 let button = Js.Unsafe.meth_call react "createElement" [| inj @@ jss "div" ; inj @@ to_obj [("onClick", inj @@ (fun event -> 
+  match get_query_param page_params "react" with
+  | "true" ->
+     Printf.printf "Rendering component:\n";
+     let spec = object%js (self)
+                  val displayName = jss "testClass"
+                  method componentDidMount =
+                    let props = Js.Unsafe.get self "state" in
+                    let author = Js.Unsafe.get props "author" in
+                    print_endline ("Component mounted with author: " ^ author.name)
+                  method componentWillMount =
+                    let props = Js.Unsafe.get self "props" in
+                    let author = Js.Unsafe.get props "author" in
+                    Js.Unsafe.meth_call self "setState" [| (to_obj ["author", inj author]) |]
+                  method componentDidUpdate =
+                    let props = Js.Unsafe.get self "state" in
+                    let author = Js.Unsafe.get props "author" in
+                    print_endline ("Component updated with author: " ^ author.name ^ ": " ^ (string_of_int author.age))
+                  method render =
+                    let props = Js.Unsafe.get self "state" in
+                    let author = Js.Unsafe.get props "author" in
+                    let button = Js.Unsafe.meth_call react "createElement" [| inj @@ jss "div" ; inj @@ to_obj [("onClick", inj @@ (fun event -> 
                                                                                                                                     print_endline ("Clicked me at " ^ (string_of_int author.age));
                                                                                                                                     Js.Unsafe.meth_call self "setState" [| (to_obj ["author", inj {author with age = author.age + 1}]) |]));
-                                                                                                               ("style", inj @@ to_obj [("backgroundColor", inj @@ jss (rand_color ()))])] ; inj @@ jss (string_of_int author.age) |] in
-                 Js.Unsafe.meth_call react "createElement" [| inj @@ jss "h3"; inj @@ []; inj @@ jss ("You, " ^ author.name ^ ", are " ^ string_of_int(author.age) ^ " years of age") ; button|]
-             end
-  in
-  let sean = {age = 31; name = "Sean"} in
-  let cc = {age = 24; name = "Chengcheng"} in
-  let sean_2 = {age = 32; name = "Sean Grove"} in
-  let dw = {age = 29; name = "Daniel"} in
-  Js.Unsafe.set Html.window "my_spec" spec;
-  let rclass = Js.Unsafe.meth_call react "createClass" [|inj @@ spec|] in
-  let make_greeter person = Js.Unsafe.meth_call react "createElement" [| inj @@ rclass; inj @@ to_obj ["author", inj person] |] in
-  let s_inst = make_greeter sean in
-  let cc_inst = make_greeter cc in
-  let s_inst_2 = make_greeter sean_2 in
-  let dw_inst = make_greeter dw in
-  let container = Js.Unsafe.meth_call react "createElement" [| inj @@ jss "div" ; inj @@ to_obj [] ; inj s_inst ; inj cc_inst ; |] in
-  React.render container div;
-  let container = Js.Unsafe.meth_call react "createElement" [| inj @@ jss "div" ; inj @@ to_obj [] ; inj cc_inst ; inj s_inst_2 ; dw_inst |] in
-  Js.Unsafe.set Html.window "myinst" s_inst;
-  React.render container div;
-  Printf.printf "Finished initial rendering\n";
-  Js._false
+                                                                                                                ("style", inj @@ to_obj [("backgroundColor", inj @@ jss (rand_color ()))])] ; inj @@ jss (string_of_int author.age) |] in
+                    Js.Unsafe.meth_call react "createElement" [| inj @@ jss "h3"; inj @@ []; inj @@ jss ("You, " ^ author.name ^ ", are " ^ string_of_int(author.age) ^ " years of age") ; button|]
+                end
+     in
+     let sean = {age = 31; name = "Sean"} in
+     let cc = {age = 24; name = "Chengcheng"} in
+     let sean_2 = {age = 32; name = "Sean Grove"} in
+     let dw = {age = 29; name = "Daniel"} in
+     Js.Unsafe.set Html.window "my_spec" spec;
+     let rclass = Js.Unsafe.meth_call react "createClass" [|inj @@ spec|] in
+     let make_greeter person = Js.Unsafe.meth_call react "createElement" [| inj @@ rclass; inj @@ to_obj ["author", inj person] |] in
+     let s_inst = make_greeter sean in
+     let cc_inst = make_greeter cc in
+     let s_inst_2 = make_greeter sean_2 in
+     let dw_inst = make_greeter dw in
+     let container = Js.Unsafe.meth_call react "createElement" [| inj @@ jss "div" ; inj @@ to_obj [] ; inj s_inst ; inj cc_inst ; |] in
+     React.render container div;
+     let container = Js.Unsafe.meth_call react "createElement" [| inj @@ jss "div" ; inj @@ to_obj [] ; inj cc_inst ; inj s_inst_2 ; dw_inst |] in
+     Js.Unsafe.set Html.window "myinst" s_inst;
+     React.render container div;
+     Printf.printf "Finished initial rendering\n";
+     Js._false
+  | _ -> print_endline "Not rendering react components. To turn it on, add query param react=true";
+         Js._false
+
+
 
 let () =
   let my_obj = object%js (self)
@@ -168,4 +174,3 @@ let () =
   Js.Unsafe.set Html.window "my_obj" my_obj;
   Printf.printf "value: %s\n" my_obj##.name;
   Js.Unsafe.set Html.window "onload" (Dom.handler start)
-
