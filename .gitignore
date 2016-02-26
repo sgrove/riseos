@@ -15,3 +15,6 @@ static1.mli
 static2.ml
 static2.mli
 key_gen.ml
+static/js/client.js
+static/js/client.map
+mir-bushido
