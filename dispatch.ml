@@ -8,17 +8,51 @@ type post = {
   file: string;
   author: string;
   permalink: string;
+  page_title: string;
 }
 
+let site_title =
+  "RiseOS"
+
 let posts =
-  [{title = "First post";
-    file = "posts/2016_02_06_first_post.md";
-    author = "Sean Grove";
-    permalink = "2016_02_06_first_post";}
-  ;{title = "Mirage questions";
-    file = "posts/2016_02_20_mirage_questions.md";
-    author = "Sean Grove";
-    permalink = "2016_02_20_mirage_questions";}]
+  [{ title = "First post"
+   ; file = "posts/2016_02_06_first_post.md"
+   ; author = "Sean Grove"
+   ; permalink = "/posts/2016_02_06_first_post"
+   ; page_title = "First post"}
+  ; { title = "Mirage questions"
+    ; file = "posts/2016_02_20_mirage_questions.md"
+    ; author = "Sean Grove"
+    ; permalink = "/posts/2016_02_20_mirage_questions"
+    ; page_title = "Mirage Questions"}
+  ; { title = "RiseOS TODOs"
+    ; file = "posts/2016_02_27_riseos_todos.md"
+    ; author = "Sean Grove"
+    ; permalink = "/posts/2016_02_27_riseos_todos.md"
+    ; page_title = "RiseOS TODOs"}
+  ]
+
+let recent_post_count =
+  5
+
+let recent_posts =
+  let len = List.length posts in
+  let rec helper counter list =
+    match counter with
+    | 0 -> list
+    | n -> try
+           helper (counter - 1) ((List.nth posts (len - counter)) :: list)
+           with
+           | Failure _ -> list
+           | Invalid_argument _ -> list
+  in
+  helper recent_post_count (List.rev posts)
+
+let post_to_recent_post_html post =
+  let li = Soup.create_element "li" in
+  let a = Soup.create_element "a" ~attributes:["href", post.permalink] ~inner_text:post.title in
+  Soup.append_child li a;
+  li
 
 (** Common signature for http and https. *)
 module type HTTP = Cohttp_lwt.Server
@@ -94,10 +128,17 @@ module Dispatch (C: CONSOLE) (FS: KV_RO) (S: HTTP) = struct
       log c "f5";
       let post_body_el = parsed $ ".post-body" in
       let post_title_el = parsed $ ".post-title" in
+      let page_title_el = parsed $ "title" in
+      let recent_posts_el = parsed $ ".recent-posts" in
       (clear post_title_el);
       (clear post_body_el);
+      (clear page_title_el);
+      (clear recent_posts_el);
+      append_child page_title_el (Soup.create_text (post.page_title ^ " - " ^ site_title));
       append_child post_title_el (Soup.create_text post.title);
       append_child post_body_el parsed_body;
+      List.iter (fun post ->
+                 Soup.append_child recent_posts_el (post_to_recent_post_html post)) recent_posts;
       (* Soup.replace title_el new_title_el; *)
       parsed |> to_string |> return
 
@@ -115,11 +156,10 @@ module Dispatch (C: CONSOLE) (FS: KV_RO) (S: HTTP) = struct
                   in *)
                   log c "Reading fs %s\n" "...";
                   (read_fs fs "index.html", "text/html;charset=utf-8")
-    | "test" ->
+    | "/test" ->
        (Lwt.return "Testing", "text/html;charset=utf-8")
     | s ->
-       let permalink = (String.sub s 1 ((String.length s) - 1)) in
-       log c "Looking for %s\n" permalink;
+       let permalink = s in (* (String.sub s 0 ((String.length s) - 1)) in *)
        try
          let post = List.find (fun post ->
                                log c "\t%s = %s ? %b" post.permalink s (post.permalink = permalink);
