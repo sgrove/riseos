@@ -1,6 +1,3 @@
-{{post.title}}
-===
-
 The goal is to get a good portion of this down to a static site generator, along the lines of jekyll. I have a super hacky implementation of [Liquid Templating](http://liquidmarkup.org/) working - it mangles input html, but it works enough to write this post!
 
 In fact, this post is powered by:

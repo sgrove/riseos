@@ -1,6 +1,3 @@
-{{post.title}}
-===
-
 Mirage is going to have a ton of growing pains as it's used for real-world applications. I suspect that *most* of that will be spent on polish and glue (which is desperately missing right now), because the core is relatively solid (especially compared to e.g. one year ago).
 
 Still, I have tons of Mirage questions, and would like answers/guides to them, or even better - code to completely obsolete them. I'll keep a list here, and update it with links as answers come in.
