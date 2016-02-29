@@ -28,7 +28,7 @@ let posts =
   ; { title = "RiseOS TODOs"
     ; file = "posts/2016_02_27_riseos_todos.md"
     ; author = "Sean Grove"
-    ; permalink = "/posts/2016_02_27_riseos_todos.md"
+    ; permalink = "/posts/2016_02_27_riseos_todos"
     ; page_title = "RiseOS TODOs"}
   ]
 
@@ -53,6 +53,22 @@ let post_to_recent_post_html post =
   let a = Soup.create_element "a" ~attributes:["href", post.permalink] ~inner_text:post.title in
   Soup.append_child li a;
   li
+
+let rec sublist b e l =
+  match l with
+    [] -> failwith "sublist"
+  | h :: t ->
+     let tail = if e = 0 then [] else sublist (b - 1) (e - 1) t in
+     if b > 0 then tail else h :: tail
+
+let empty_string s =
+  not (List.mem s ["\\n"; " "])
+
+let head_post string =
+  let words = List.filter empty_string (Str.split (Str.regexp " ") string) in
+  let head_words = sublist 0 (min (List.length words) 50) words in
+  let ellipsis = if 50 < (List.length words) then "..." else "" in
+  (String.concat " " head_words) ^ ellipsis
 
 (** Common signature for http and https. *)
 module type HTTP = Cohttp_lwt.Server
@@ -142,20 +158,62 @@ module Dispatch (C: CONSOLE) (FS: KV_RO) (S: HTTP) = struct
       (* Soup.replace title_el new_title_el; *)
       parsed |> to_string |> return
 
+  let gen_index c fs liquid_template (posts : post list) =
+    let open Lwt in
+    let open Soup in
+    let post = { title = "South Park"
+               ; file = "posts/dummy"
+               ; author = "Sean Grove"
+               ; permalink = "/posts/2016_02_06_first_post"
+               ; page_title = "South park"} in
+    let render_context_1 =
+      (let open Liquid in
+       [ ("person.name", String "Tyler")
+       ; ("post.title"), String post.title
+       ; ("post.author"), String post.author
+       ; ("site.title"), String "RiseOS"]) in
+    let file = String.concat " -> " (List.map (fun post -> post.title) posts) in
+    let lwt_bodies = List.map (fun post -> post, (read_fs fs post.file)) posts in
+    let all_bodies = Lwt_list.fold_left_s (fun acc (post, next) ->
+                                           next >|=
+                                             (fun s ->
+                                              let body = Omd.to_html(Omd.of_string s) in
+                                              let post_body_rendered = (Bytes.to_string (Test.render body render_context_1)) in
+                                              let link = Soup.create_element "a" ~attributes:["href", post.permalink] in
+                                              let title = Soup.create_element "strong" ~inner_text:post.title in
+                                              Soup.append_child link title;
+                                              let full = Soup.to_string link in
+                                              (acc ^ full ^ "<br />" ^ (head_post post_body_rendered) ^ "<hr />"))) "" lwt_bodies in
+    all_bodies >>=
+      fun body ->
+      let post_body_rendered = body in
+      let template = liquid_template in
+      let parsed_body = parse post_body_rendered in
+      let parsed = parse template in
+      let post_body_el = parsed $ ".post-body" in
+      let post_title_el = parsed $ ".post-title" in
+      let page_title_el = parsed $ "title" in
+      let recent_posts_el = parsed $ ".recent-posts" in
+      (clear post_title_el);
+      (clear post_body_el);
+      (clear page_title_el);
+      (clear recent_posts_el);
+      append_child page_title_el (Soup.create_text ("Home" ^ " - " ^ site_title));
+      append_child post_title_el (Soup.create_text "RiseOS");
+      append_child post_body_el parsed_body;
+      List.iter (fun post ->
+                 Soup.append_child recent_posts_el (post_to_recent_post_html post)) recent_posts;
+      (* Soup.replace title_el new_title_el; *)
+      parsed |> to_string |> return
 
   let get_content c fs request uri = match Uri.path uri with
-    | "" | "/" | "index.html" ->
-                  log c "Looking for index %s\n" "...";
-                  (* TODO: Figure out why this crashes the unikernel
-                  with: "Unsupported function strtod called in Mini-OS kernel". Pretty important to be able to work with query params at some point.
-
-                  let lang =
-                    CCOpt.get [] (Uri.get_query_param' uri "lang") @
-                      accept_lang (Cohttp.Request.headers request) @
-                        [Key_gen.lang ()]
-                  in *)
-                  log c "Reading fs %s\n" "...";
-                  (read_fs fs "index.html", "text/html;charset=utf-8")
+    | "" | "/"
+    | "index.html" ->
+       log c "Looking for index %s\n" "...";
+       (read_fs fs "index.html"
+        >>= (fun template ->
+             log c "\tRendering index!\n";
+             gen_index c fs template (List.rev posts)), "text/html;charset=utf-8")
     | "/test" ->
        (Lwt.return "Testing", "text/html;charset=utf-8")
     | s ->
