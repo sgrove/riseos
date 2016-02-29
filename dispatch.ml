@@ -125,6 +125,7 @@ module Dispatch (C: CONSOLE) (FS: KV_RO) (S: HTTP) = struct
          [ ("person.name", String "Tyler")
          ; ("post.title"), String post.title
          ; ("post.author"), String post.author]) in
+      (* TODO: Test.render converts ' -> #llr, fix Test.render *)
       let post_body_rendered = (Bytes.to_string (Test.render body_html render_context_1)) in
       log c "f3";
       let first_post = List.nth posts 0 in
@@ -144,7 +145,6 @@ module Dispatch (C: CONSOLE) (FS: KV_RO) (S: HTTP) = struct
       (* let template = Bytes.to_string interm in *)
       let template = liquid_template in
       log c "f4.5";
-      let parsed_body = parse post_body_rendered in
       let parsed = parse template in
       log c "f5";
       let post_body_el = parsed $ ".post-body" in
@@ -157,7 +157,7 @@ module Dispatch (C: CONSOLE) (FS: KV_RO) (S: HTTP) = struct
       (clear recent_posts_el);
       append_child page_title_el (Soup.create_text (post.page_title ^ " - " ^ site_title));
       append_child post_title_el (Soup.create_text post.title);
-      append_child post_body_el parsed_body;
+      append_child post_body_el (Soup.create_text body_html);
       List.iter (fun post ->
                  Soup.append_child recent_posts_el (post_to_recent_post_html post)) recent_posts;
       (* Soup.replace title_el new_title_el; *)
@@ -183,7 +183,8 @@ module Dispatch (C: CONSOLE) (FS: KV_RO) (S: HTTP) = struct
                                            next >|=
                                              (fun s ->
                                               let body = Omd.to_html(Omd.of_string s) in
-                                              let post_body_rendered = (Bytes.to_string (Test.render body render_context_1)) in
+                                              (* TODO: Test.render converts ' -> #llr, fix Test.render *)
+                                              let post_body_rendered = body in(* (Bytes.to_string (Test.render body render_context_1)) in *)
                                               let link = Soup.create_element "a" ~attributes:["href", post.permalink] in
                                               let title = Soup.create_element "strong" ~inner_text:post.title in
                                               Soup.append_child link title;
