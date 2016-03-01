@@ -1,8 +1,4 @@
 module Mime = Magic_mime
-open V1
-open V1_LWT
-
-open Lwt.Infix
 
 type post = {
   title: string;
@@ -79,11 +75,12 @@ let head_post string =
 (** Common signature for http and https. *)
 module type HTTP = Cohttp_lwt.Server
 
-module Dispatch (C: CONSOLE) (FS: KV_RO) (S: HTTP) = struct
+module Dispatch (C: V1_LWT.CONSOLE) (FS: V1_LWT.KV_RO) (S: HTTP) = struct
 
   let log c fmt = Printf.ksprintf (C.log c) fmt
 
   let read_fs fs name =
+    let open Lwt.Infix in
     FS.size fs name >>=
       fun x ->
       match x with
@@ -164,7 +161,9 @@ module Dispatch (C: CONSOLE) (FS: KV_RO) (S: HTTP) = struct
       let render_context = [] in
       return (gen_page c (Bytes.of_string body) render_context liquid_template "Home")
 
-  let get_content c fs request uri = match Uri.path uri with
+  let get_content c fs request uri =
+    let open Lwt.Infix in
+    match Uri.path uri with
     | "" | "/"
     | "index.html" ->
        (read_fs fs "index.html"
@@ -185,6 +184,7 @@ module Dispatch (C: CONSOLE) (FS: KV_RO) (S: HTTP) = struct
   (** Dispatching/redirecting boilerplate. *)
 
   let dispatcher fs c request uri =
+    let open Lwt.Infix in
     Lwt.catch
       (fun () ->
        let (lwt_body, content_type) = get_content c fs request uri in
@@ -219,8 +219,8 @@ end
 
 (** Server boilerplate *)
 module Make
-    (C : CONSOLE) (Clock : CLOCK)
-    (DATA : KV_RO) (KEYS: KV_RO)
+    (C : V1_LWT.CONSOLE) (Clock : V1.CLOCK)
+    (DATA : V1_LWT.KV_RO) (KEYS: V1_LWT.KV_RO)
     (Http: HTTP) =
 struct
 
@@ -229,11 +229,13 @@ struct
   module D  = Dispatch(C)(DATA)(Http)
 
   let tls_init kv =
+    let open Lwt.Infix in
     X509.certificate kv `Default >>= fun cert ->
     let conf = Tls.Config.server ~certificates:(`Single cert) () in
     Lwt.return conf
 
   let start c () data keys http =
+    let open Lwt.Infix in
     tls_init keys >>= fun cfg ->
     let tcp = `TCP (Key_gen.https_port ()) in
     let tls = `TLS (cfg, tcp) in
