@@ -1,3 +1,4 @@
+module Mime = Magic_mime
 open V1
 open V1_LWT
 
@@ -108,36 +109,39 @@ module Dispatch (C: CONSOLE) (FS: KV_RO) (S: HTTP) = struct
         | _ -> None
       )
 
+  let gen_page c body render_context liquid_template post =
+    let open Soup in
+    let body_html = Omd.to_html ~nl2br:true (Omd.of_string (Bytes.to_string (Test.render body render_context))) in
+    print_endline ("HTML: " ^ body_html);
+    (* TODO: Test.render converts ' -> #llr, fix Test.render *)
+    let template = liquid_template in
+    let parsed = parse template in
+    let post_body_el = parsed $ ".post-body" in
+    let post_title_el = parsed $ ".post-title" in
+    let page_title_el = parsed $ "title" in
+    let recent_posts_el = parsed $ ".recent-posts" in
+    (clear post_title_el);
+    (clear post_body_el);
+    (clear page_title_el);
+    (clear recent_posts_el);
+    append_child page_title_el (Soup.create_text (post.page_title ^ " - " ^ site_title));
+    append_child post_title_el (Soup.create_text post.title);
+    append_child post_body_el (Soup.create_text body_html);
+    List.iter (fun post -> Soup.append_child recent_posts_el (post_to_recent_post_html post)) recent_posts;
+    parsed |> to_string
+
   let gen_post c fs liquid_template post =
     let open Lwt in
-    let open Soup in
     let raw_file = read_fs fs post.file in
     raw_file >>=
-      fun file ->
-      let render_context_1 =
+      fun body ->
+      let render_context =
         (let open Liquid in
-         [ ("person.name", String "Tyler")
-         ; ("post.title"), String post.title
-         ; ("post.author"), String post.author]) in
-      let body_html = Omd.to_html ~nl2br:true (Omd.of_string (Bytes.to_string (Test.render file render_context_1))) in
-      print_endline ("HTML: " ^ body_html);
-      (* TODO: Test.render converts ' -> #llr, fix Test.render *)
-      let template = liquid_template in
-      let parsed = parse template in
-      let post_body_el = parsed $ ".post-body" in
-      let post_title_el = parsed $ ".post-title" in
-      let page_title_el = parsed $ "title" in
-      let recent_posts_el = parsed $ ".recent-posts" in
-      (clear post_title_el);
-      (clear post_body_el);
-      (clear page_title_el);
-      (clear recent_posts_el);
-      append_child page_title_el (Soup.create_text (post.page_title ^ " - " ^ site_title));
-      append_child post_title_el (Soup.create_text post.title);
-      append_child post_body_el (Soup.create_text body_html);
-      List.iter (fun post ->
-                 Soup.append_child recent_posts_el (post_to_recent_post_html post)) recent_posts;
-      parsed |> to_string |> return
+         [ ("post.title"), String post.title
+         ; ("post.author"), String post.author
+         ; ("post.body"), String body
+         ]) in
+      return (gen_page c body render_context liquid_template post)
 
   let gen_index c fs liquid_template (posts : post list) =
     let open Lwt in
@@ -183,28 +187,26 @@ module Dispatch (C: CONSOLE) (FS: KV_RO) (S: HTTP) = struct
              gen_index c fs template (List.rev posts)), "text/html;charset=utf-8")
     | "/test" ->
        (Lwt.return "Testing", "text/html;charset=utf-8")
-    | s ->
-       let permalink = s in (* (String.sub s 0 ((String.length s) - 1)) in *)
+    | url ->
        try
          let post = List.find (fun post ->
-                               post.permalink = permalink) posts in
-         (read_fs fs "index.html"
-          >>= (fun template ->
-               gen_post c fs template post), "text/html;charset=utf-8")
+                               post.permalink = url) posts in
+         read_fs fs "index.html"
+         >>= (fun template ->
+              gen_post c fs template post), "text/html;charset=utf-8"
        with
-       | Not_found -> (read_fs fs s, Magic_mime.lookup s)
+       | Not_found -> (read_fs fs url, Mime.lookup url)
 
   (** Dispatching/redirecting boilerplate. *)
 
   let dispatcher fs c request uri =
-    (* Lwt.catch *)
-    (*   (fun () -> *)
-    let (lwt_body, content_type) = get_content c fs request uri in
-    lwt_body >>= fun body ->
-    S.respond_string ~status:`OK ~headers: (Cohttp.Header.of_list [("Content-Type", content_type)]) ~body ()
-  (* ) *)
-      (* (fun _exn -> *)
-      (*    S.respond_not_found ()) *)
+    Lwt.catch
+      (fun () ->
+       let (lwt_body, content_type) = get_content c fs request uri in
+       lwt_body >>= fun body ->
+       S.respond_string ~status:`OK ~headers: (Cohttp.Header.of_list [("Content-Type", content_type)]) ~body ())
+      (fun _exn ->
+       S.respond_not_found ())
 
 
   let redirect _c _request uri =
