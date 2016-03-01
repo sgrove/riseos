@@ -83,18 +83,16 @@ module Dispatch (C: CONSOLE) (FS: KV_RO) (S: HTTP) = struct
   let log c fmt = Printf.ksprintf (C.log c) fmt
 
   let read_fs fs name =
-    print_endline ("read_fs 1: " ^ name);
     FS.size fs name >>=
       fun x ->
       match x with
       | `Error (FS.Unknown_key _) -> 
-         (print_endline "read_fs 2";);
          Lwt.fail (Failure ("read " ^ name))
       | `Ok size ->
-         (print_endline "read_fs 3";);
-         FS.read fs name 0 (Int64.to_int size) >>= function
-                                                 | `Error (FS.Unknown_key _) -> Lwt.fail (Failure ("read " ^ name))
-                                                 | `Ok bufs -> Lwt.return (Cstruct.copyv bufs)
+         FS.read fs name 0 (Int64.to_int size)
+         >>= function
+           | `Error (FS.Unknown_key _) -> Lwt.fail (Failure ("read " ^ name))
+           | `Ok bufs -> Lwt.return (Cstruct.copyv bufs)
 
   (** This is the part that is not boilerplate. *)
 
@@ -180,10 +178,8 @@ module Dispatch (C: CONSOLE) (FS: KV_RO) (S: HTTP) = struct
   let get_content c fs request uri = match Uri.path uri with
     | "" | "/"
     | "index.html" ->
-       log c "Looking for index %s\n" "...";
        (read_fs fs "index.html"
         >>= (fun template ->
-             log c "\tRendering index!\n";
              gen_index c fs template (List.rev posts)), "text/html;charset=utf-8")
     | "/test" ->
        (Lwt.return "Testing", "text/html;charset=utf-8")
@@ -191,11 +187,9 @@ module Dispatch (C: CONSOLE) (FS: KV_RO) (S: HTTP) = struct
        let permalink = s in (* (String.sub s 0 ((String.length s) - 1)) in *)
        try
          let post = List.find (fun post ->
-                               log c "\t%s = %s ? %b" post.permalink s (post.permalink = permalink);
                                post.permalink = permalink) posts in
          (read_fs fs "index.html"
           >>= (fun template ->
-               log c "\tRendering template!\n";
                gen_post c fs template post), "text/html;charset=utf-8")
        with
        | Not_found -> (read_fs fs s, Magic_mime.lookup s)
