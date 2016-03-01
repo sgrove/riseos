@@ -94,18 +94,6 @@ module Dispatch (C: V1_LWT.CONSOLE) (FS: V1_LWT.KV_RO) (S: HTTP) = struct
 
   (** This is the part that is not boilerplate. *)
 
-  let accept_lang headers =
-    if not @@ Key_gen.use_headers () then []
-    else
-      let open Cohttp in
-      headers
-      |> Header.get_acceptable_languages
-      |> Accept.qsort
-      |> CCList.filter_map (function
-          | _, Accept.Language (tag :: _) -> Some tag
-          | _ -> None
-        )
-
   let gen_page c body render_context liquid_template title =
     let open Soup in
     (* TODO: Test.render converts ' -> #llr, fix Test.render *)
