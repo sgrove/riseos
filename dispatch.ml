@@ -42,7 +42,7 @@ let recent_posts =
   let rec helper counter list =
     match counter with
     | 0 -> list
-    | n -> try
+    | _ -> try
         helper (counter - 1) ((List.nth posts (len - counter)) :: list)
       with
       | Failure _ -> list
@@ -94,7 +94,7 @@ module Dispatch (C: V1_LWT.CONSOLE) (FS: V1_LWT.KV_RO) (S: HTTP) = struct
 
   (** This is the part that is not boilerplate. *)
 
-  let gen_page c body render_context liquid_template title =
+  let gen_page _c body _render_context liquid_template title =
     let open Soup in
     (* TODO: Test.render converts ' -> #llr, fix Test.render *)
     (* (Test.render body render_context) *)
@@ -131,7 +131,6 @@ module Dispatch (C: V1_LWT.CONSOLE) (FS: V1_LWT.KV_RO) (S: HTTP) = struct
 
   let gen_index c fs liquid_template (posts : post list) =
     let open Lwt in
-    let open Soup in
     let lwt_bodies = List.map (fun post -> post, (read_fs fs post.file)) posts in
     let all_bodies = Lwt_list.fold_left_s (fun acc (post, next) ->
         next >|=
@@ -149,7 +148,7 @@ module Dispatch (C: V1_LWT.CONSOLE) (FS: V1_LWT.KV_RO) (S: HTTP) = struct
     let render_context = [] in
     return (gen_page c (Bytes.of_string body) render_context liquid_template "Home")
 
-  let get_content c fs request uri =
+  let get_content c fs _request uri =
     let open Lwt.Infix in
     match Uri.path uri with
     | "" | "/"
@@ -181,7 +180,7 @@ module Dispatch (C: V1_LWT.CONSOLE) (FS: V1_LWT.KV_RO) (S: HTTP) = struct
       (fun _exn ->
          S.respond_not_found ())
 
-  let redirect _c _request uri =
+  let _redirect _c _request uri =
     let new_uri = Uri.with_scheme uri (Some "https") in
     let headers =
       Cohttp.Header.init_with "location" (Uri.to_string new_uri)
