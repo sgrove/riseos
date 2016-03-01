@@ -43,10 +43,10 @@ let recent_posts =
     match counter with
     | 0 -> list
     | n -> try
-           helper (counter - 1) ((List.nth posts (len - counter)) :: list)
-           with
-           | Failure _ -> list
-           | Invalid_argument _ -> list
+        helper (counter - 1) ((List.nth posts (len - counter)) :: list)
+      with
+      | Failure _ -> list
+      | Invalid_argument _ -> list
   in
   helper recent_post_count (List.rev posts)
 
@@ -60,8 +60,8 @@ let rec sublist b e l =
   match l with
     [] -> failwith "sublist"
   | h :: t ->
-     let tail = if e = 0 then [] else sublist (b - 1) (e - 1) t in
-     if b > 0 then tail else h :: tail
+    let tail = if e = 0 then [] else sublist (b - 1) (e - 1) t in
+    if b > 0 then tail else h :: tail
 
 let empty_string s =
   not (List.mem s ["\\n"; " "])
@@ -82,15 +82,15 @@ module Dispatch (C: V1_LWT.CONSOLE) (FS: V1_LWT.KV_RO) (S: HTTP) = struct
   let read_fs fs name =
     let open Lwt.Infix in
     FS.size fs name >>=
-      fun x ->
-      match x with
-      | `Error (FS.Unknown_key _) -> 
-         Lwt.fail (Failure ("read " ^ name))
-      | `Ok size ->
-         FS.read fs name 0 (Int64.to_int size)
-         >>= function
-           | `Error (FS.Unknown_key _) -> Lwt.fail (Failure ("read " ^ name))
-           | `Ok bufs -> Lwt.return (Cstruct.copyv bufs)
+    fun x ->
+    match x with
+    | `Error (FS.Unknown_key _) ->
+      Lwt.fail (Failure ("read " ^ name))
+    | `Ok size ->
+      FS.read fs name 0 (Int64.to_int size)
+      >>= function
+      | `Error (FS.Unknown_key _) -> Lwt.fail (Failure ("read " ^ name))
+      | `Ok bufs -> Lwt.return (Cstruct.copyv bufs)
 
   (** This is the part that is not boilerplate. *)
 
@@ -102,9 +102,9 @@ module Dispatch (C: V1_LWT.CONSOLE) (FS: V1_LWT.KV_RO) (S: HTTP) = struct
       |> Header.get_acceptable_languages
       |> Accept.qsort
       |> CCList.filter_map (function
-        | _, Accept.Language (tag :: _) -> Some tag
-        | _ -> None
-      )
+          | _, Accept.Language (tag :: _) -> Some tag
+          | _ -> None
+        )
 
   let gen_page c body render_context liquid_template title =
     let open Soup in
@@ -132,54 +132,54 @@ module Dispatch (C: V1_LWT.CONSOLE) (FS: V1_LWT.KV_RO) (S: HTTP) = struct
     let open Lwt in
     let raw_file = read_fs fs post.file in
     raw_file >>=
-      fun body ->
-      let render_context =
-        (let open Liquid in
-         [ ("post.title"), String post.title
-         ; ("post.author"), String post.author
-         ; ("post.body"), String body
-         ]) in
-      return (gen_page c (Bytes.of_string body) render_context liquid_template post.title)
+    fun body ->
+    let render_context =
+      (let open Liquid in
+       [ ("post.title"), String post.title
+       ; ("post.author"), String post.author
+       ; ("post.body"), String body
+       ]) in
+    return (gen_page c (Bytes.of_string body) render_context liquid_template post.title)
 
   let gen_index c fs liquid_template (posts : post list) =
     let open Lwt in
     let open Soup in
     let lwt_bodies = List.map (fun post -> post, (read_fs fs post.file)) posts in
     let all_bodies = Lwt_list.fold_left_s (fun acc (post, next) ->
-                                           next >|=
-                                             (fun s ->
-                                              let body = Omd.to_html (Omd.of_string s) in
-                                              (* TODO: Test.render converts ' -> #llr, fix Test.render *)
-                                              (* (Bytes.to_string (Test.render body render_context_1)) in *)
-                                              let link = Soup.create_element "a" ~attributes:["href", post.permalink] in
-                                              let title = Soup.create_element "strong" ~inner_text:post.title in
-                                              Soup.append_child link title;
-                                              let full = Soup.to_string link in
-                                              (acc ^ full ^ "<br />" ^ (head_post body) ^ "<hr />"))) "" lwt_bodies in
+        next >|=
+        (fun s ->
+           let body = Omd.to_html (Omd.of_string s) in
+           (* TODO: Test.render converts ' -> #llr, fix Test.render *)
+           (* (Bytes.to_string (Test.render body render_context_1)) in *)
+           let link = Soup.create_element "a" ~attributes:["href", post.permalink] in
+           let title = Soup.create_element "strong" ~inner_text:post.title in
+           Soup.append_child link title;
+           let full = Soup.to_string link in
+           (acc ^ full ^ "<br />" ^ (head_post body) ^ "<hr />"))) "" lwt_bodies in
     all_bodies >>=
-      fun body ->
-      let render_context = [] in
-      return (gen_page c (Bytes.of_string body) render_context liquid_template "Home")
+    fun body ->
+    let render_context = [] in
+    return (gen_page c (Bytes.of_string body) render_context liquid_template "Home")
 
   let get_content c fs request uri =
     let open Lwt.Infix in
     match Uri.path uri with
     | "" | "/"
     | "index.html" ->
-       (read_fs fs "index.html"
-        >>= (fun template ->
-             gen_index c fs template (List.rev posts)), "text/html;charset=utf-8")
+      (read_fs fs "index.html"
+       >>= (fun template ->
+           gen_index c fs template (List.rev posts)), "text/html;charset=utf-8")
     | "/test" ->
-       (Lwt.return "Testing", "text/html;charset=utf-8")
+      (Lwt.return "Testing", "text/html;charset=utf-8")
     | url ->
-       try
-         let post = List.find (fun post ->
-                               post.permalink = url) posts in
-         read_fs fs "index.html"
-         >>= (fun template ->
-              gen_post c fs template post), "text/html;charset=utf-8"
-       with
-       | Not_found -> (read_fs fs url, Mime.lookup url)
+      try
+        let post = List.find (fun post ->
+            post.permalink = url) posts in
+        read_fs fs "index.html"
+        >>= (fun template ->
+            gen_post c fs template post), "text/html;charset=utf-8"
+      with
+      | Not_found -> (read_fs fs url, Mime.lookup url)
 
   (** Dispatching/redirecting boilerplate. *)
 
@@ -187,12 +187,11 @@ module Dispatch (C: V1_LWT.CONSOLE) (FS: V1_LWT.KV_RO) (S: HTTP) = struct
     let open Lwt.Infix in
     Lwt.catch
       (fun () ->
-       let (lwt_body, content_type) = get_content c fs request uri in
-       lwt_body >>= fun body ->
-       S.respond_string ~status:`OK ~headers: (Cohttp.Header.of_list [("Content-Type", content_type)]) ~body ())
+         let (lwt_body, content_type) = get_content c fs request uri in
+         lwt_body >>= fun body ->
+         S.respond_string ~status:`OK ~headers: (Cohttp.Header.of_list [("Content-Type", content_type)]) ~body ())
       (fun _exn ->
-       S.respond_not_found ())
-
+         S.respond_not_found ())
 
   let redirect _c _request uri =
     let new_uri = Uri.with_scheme uri (Some "https") in
