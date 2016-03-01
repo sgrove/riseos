@@ -235,11 +235,11 @@ struct
 
   let start c () data keys http =
     tls_init keys >>= fun cfg ->
-    let tcp = `TCP 443 in
+    let tcp = `TCP (Key_gen.https_port ()) in
     let tls = `TLS (cfg, tcp) in
     Lwt.join [
       http tls @@ D.serve c (D.dispatcher data) ;
-      http (`TCP 80) @@ D.serve c (D.dispatcher data)
+      http (`TCP (Key_gen.http_port ())) @@ D.serve c (D.dispatcher data)
     ]
 
 end

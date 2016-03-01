@@ -2,12 +2,19 @@ open Mirage
 
 (** Custom bootvars *)
 
-(** Default language *)
-let bootvar_lang =
+(** Default ports *)
+let http_port =
   let i = Key.Arg.info
-      ~doc:"Default language for the page served by the unikernel." ["lang"]
+            ~doc:"Http port." ["http_port"]
   in
-  Key.create "lang" Key.Arg.(opt string "en" i)
+  Key.create "http_port" Key.Arg.(opt int 80 i)
+
+let https_port =
+  let i = Key.Arg.info
+            ~doc:"Https port." ["https_port"]
+  in
+  Key.create "https_port" Key.Arg.(opt int 443 i)
+
 
 (** Consider headers *)
 let bootvar_use_headers =
@@ -42,7 +49,8 @@ let () =
     ~libraries
     ~packages
     ~keys:[
-      Key.abstract bootvar_lang ;
+      Key.abstract http_port ;
+      Key.abstract https_port ;
       Key.abstract bootvar_use_headers ;
     ]
     [ server $ default_console $ default_clock $ data $ keys $ my_https ]
