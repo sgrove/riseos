@@ -1,7 +1,7 @@
-Bushi.do
+[RiseOS](https://www.riseos.com)
 ===
 
-This is the repo for Sean Grove's personal site, http://bushi.do/.
+This is the repo for Sean Grove's personal site, [https://www.riseos.com/](https://www.riseos.com/).
 
 It also serves as a (currently very messy) example of a site built in OCaml, using the the Mirage libraries, and deployed as a unikernel.
 
