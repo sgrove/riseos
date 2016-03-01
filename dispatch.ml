@@ -113,40 +113,19 @@ module Dispatch (C: CONSOLE) (FS: KV_RO) (S: HTTP) = struct
   let gen_post c fs liquid_template post =
     let open Lwt in
     let open Soup in
-    log c "f1";
     let raw_file = read_fs fs post.file in
-    log c "f1.5";
     raw_file >>=
       fun file ->
-      log c "f2";
-      let body_html = Omd.to_html(Omd.of_string file) in
       let render_context_1 =
         (let open Liquid in
          [ ("person.name", String "Tyler")
          ; ("post.title"), String post.title
          ; ("post.author"), String post.author]) in
+      let body_html = Omd.to_html ~nl2br:true (Omd.of_string (Bytes.to_string (Test.render file render_context_1))) in
+      print_endline ("HTML: " ^ body_html);
       (* TODO: Test.render converts ' -> #llr, fix Test.render *)
-      let post_body_rendered = (Bytes.to_string (Test.render body_html render_context_1)) in
-      log c "f3";
-      let first_post = List.nth posts 0 in
-      let second_post = List.nth posts 0 in
-      let render_context =
-        (let open Liquid in
-         [ ("person.name", String "Tyler")
-         ; ("post.title"), String post.title
-         ; ("post.author"), String post.author
-         ; ("post.body"), String post_body_rendered
-         ; ("recent_posts.first.title"), String (first_post.title)
-         ]) in
-      log c "f4";
-      log c "f4.3";
-      (* let interm = (Test.render liquid_template render_context) in  *)
-      (* log c "f4.4"; *)
-      (* let template = Bytes.to_string interm in *)
       let template = liquid_template in
-      log c "f4.5";
       let parsed = parse template in
-      log c "f5";
       let post_body_el = parsed $ ".post-body" in
       let post_title_el = parsed $ ".post-title" in
       let page_title_el = parsed $ "title" in
@@ -160,24 +139,11 @@ module Dispatch (C: CONSOLE) (FS: KV_RO) (S: HTTP) = struct
       append_child post_body_el (Soup.create_text body_html);
       List.iter (fun post ->
                  Soup.append_child recent_posts_el (post_to_recent_post_html post)) recent_posts;
-      (* Soup.replace title_el new_title_el; *)
       parsed |> to_string |> return
 
   let gen_index c fs liquid_template (posts : post list) =
     let open Lwt in
     let open Soup in
-    let post = { title = "South Park"
-               ; file = "posts/dummy"
-               ; author = "Sean Grove"
-               ; permalink = "/posts/2016_02_06_first_post"
-               ; page_title = "South park"} in
-    let render_context_1 =
-      (let open Liquid in
-       [ ("person.name", String "Tyler")
-       ; ("post.title"), String post.title
-       ; ("post.author"), String post.author
-       ; ("site.title"), String "RiseOS"]) in
-    let file = String.concat " -> " (List.map (fun post -> post.title) posts) in
     let lwt_bodies = List.map (fun post -> post, (read_fs fs post.file)) posts in
     let all_bodies = Lwt_list.fold_left_s (fun acc (post, next) ->
                                            next >|=
@@ -209,7 +175,6 @@ module Dispatch (C: CONSOLE) (FS: KV_RO) (S: HTTP) = struct
       append_child post_body_el parsed_body;
       List.iter (fun post ->
                  Soup.append_child recent_posts_el (post_to_recent_post_html post)) recent_posts;
-      (* Soup.replace title_el new_title_el; *)
       parsed |> to_string |> return
 
   let get_content c fs request uri = match Uri.path uri with
