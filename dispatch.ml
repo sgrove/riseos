@@ -109,11 +109,12 @@ module Dispatch (C: CONSOLE) (FS: KV_RO) (S: HTTP) = struct
         | _ -> None
       )
 
-  let gen_page c body render_context liquid_template post =
+  let gen_page c body render_context liquid_template title =
     let open Soup in
-    let body_html = Omd.to_html ~nl2br:true (Omd.of_string (Bytes.to_string (Test.render body render_context))) in
-    print_endline ("HTML: " ^ body_html);
     (* TODO: Test.render converts ' -> #llr, fix Test.render *)
+    (* (Test.render body render_context) *)
+    let body_html = Omd.to_html ~nl2br:true (Omd.of_string (Bytes.to_string body)) in
+    print_endline ("HTML: " ^ body_html);
     let template = liquid_template in
     let parsed = parse template in
     let post_body_el = parsed $ ".post-body" in
@@ -124,8 +125,8 @@ module Dispatch (C: CONSOLE) (FS: KV_RO) (S: HTTP) = struct
     (clear post_body_el);
     (clear page_title_el);
     (clear recent_posts_el);
-    append_child page_title_el (Soup.create_text (post.page_title ^ " - " ^ site_title));
-    append_child post_title_el (Soup.create_text post.title);
+    append_child page_title_el (Soup.create_text (title ^ " - " ^ site_title));
+    append_child post_title_el (Soup.create_text title);
     append_child post_body_el (Soup.create_text body_html);
     List.iter (fun post -> Soup.append_child recent_posts_el (post_to_recent_post_html post)) recent_posts;
     parsed |> to_string
@@ -141,7 +142,7 @@ module Dispatch (C: CONSOLE) (FS: KV_RO) (S: HTTP) = struct
          ; ("post.author"), String post.author
          ; ("post.body"), String body
          ]) in
-      return (gen_page c body render_context liquid_template post)
+      return (gen_page c (Bytes.of_string body) render_context liquid_template post.title)
 
   let gen_index c fs liquid_template (posts : post list) =
     let open Lwt in
@@ -150,34 +151,18 @@ module Dispatch (C: CONSOLE) (FS: KV_RO) (S: HTTP) = struct
     let all_bodies = Lwt_list.fold_left_s (fun acc (post, next) ->
                                            next >|=
                                              (fun s ->
-                                              let body = Omd.to_html(Omd.of_string s) in
+                                              let body = Omd.to_html (Omd.of_string s) in
                                               (* TODO: Test.render converts ' -> #llr, fix Test.render *)
-                                              let post_body_rendered = body in(* (Bytes.to_string (Test.render body render_context_1)) in *)
+                                              (* (Bytes.to_string (Test.render body render_context_1)) in *)
                                               let link = Soup.create_element "a" ~attributes:["href", post.permalink] in
                                               let title = Soup.create_element "strong" ~inner_text:post.title in
                                               Soup.append_child link title;
                                               let full = Soup.to_string link in
-                                              (acc ^ full ^ "<br />" ^ (head_post post_body_rendered) ^ "<hr />"))) "" lwt_bodies in
+                                              (acc ^ full ^ "<br />" ^ (head_post body) ^ "<hr />"))) "" lwt_bodies in
     all_bodies >>=
       fun body ->
-      let post_body_rendered = body in
-      let template = liquid_template in
-      let parsed_body = parse post_body_rendered in
-      let parsed = parse template in
-      let post_body_el = parsed $ ".post-body" in
-      let post_title_el = parsed $ ".post-title" in
-      let page_title_el = parsed $ "title" in
-      let recent_posts_el = parsed $ ".recent-posts" in
-      (clear post_title_el);
-      (clear post_body_el);
-      (clear page_title_el);
-      (clear recent_posts_el);
-      append_child page_title_el (Soup.create_text ("Home" ^ " - " ^ site_title));
-      append_child post_title_el (Soup.create_text "RiseOS");
-      append_child post_body_el parsed_body;
-      List.iter (fun post ->
-                 Soup.append_child recent_posts_el (post_to_recent_post_html post)) recent_posts;
-      parsed |> to_string |> return
+      let render_context = [] in
+      return (gen_page c (Bytes.of_string body) render_context liquid_template "Home")
 
   let get_content c fs request uri = match Uri.path uri with
     | "" | "/"
