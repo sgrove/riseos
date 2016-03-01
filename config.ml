@@ -45,7 +45,7 @@ let my_https =
 let () =
   let libraries = [ "sequence" ; "containers" ; "tyxml" ; "omd" ; "lambdasoup" ; "js_of_ocaml" (* ; "menhir" *) ; "magic-mime"] in
   let packages = [ "sequence" ; "containers" ; "tyxml" ; "omd" ; "lambdasoup" ; "js_of_ocaml" ; "menhir" ; "core" ; "magic-mime"] in
-  register "bushido"
+  register "riseos"
     ~libraries
     ~packages
     ~keys:[

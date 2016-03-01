@@ -1,15 +1,11 @@
 .DS_Store
 Makefile
-bushido.xe
-bushido.xl*
-bushido_libvirt.xml
 _build/
 log
 *.cm*
 *.byte
 main.ml
 main.native
-mir-bushido.xen
 static1.ml
 static1.mli
 static2.ml
@@ -17,4 +13,8 @@ static2.mli
 key_gen.ml
 static/js/client.js
 static/js/client.map
-mir-bushido
+mir-riseos
+riseos.xe
+riseos.xl
+riseos.xl.in
+riseos_libvirt.xml
