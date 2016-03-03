@@ -153,16 +153,17 @@ module Dispatch (C: V1_LWT.CONSOLE) (FS: V1_LWT.KV_RO) (S: HTTP) = struct
     let render_context = [] in
     return (gen_page c (Bytes.of_string body) render_context liquid_template "Home")
 
+  let render_blog_index c fs =
+    let open Lwt.Infix in
+    (read_fs fs "index.html"
+     >>= (fun template ->
+         gen_index c fs template (List.rev posts)), "text/html;charset=utf-8")
+
   let get_content c fs _request uri =
     let open Lwt.Infix in
     match Uri.path uri with
-    | "" | "/"
-    | "index.html" ->
-      (read_fs fs "index.html"
-       >>= (fun template ->
-           gen_index c fs template (List.rev posts)), "text/html;charset=utf-8")
-    | "/test" ->
-      (Lwt.return "Testing", "text/html;charset=utf-8")
+    | "" | "/" | "index.html" | "/blog" -> render_blog_index c fs
+    | "/test" -> (Lwt.return "Testing", "text/html;charset=utf-8")
     | url ->
       try
         let post = List.find (fun post ->
