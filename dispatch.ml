@@ -32,6 +32,11 @@ let posts =
    ; author = "Sean Grove"
    ; permalink = "/posts/2016_02_29_lets_encrypt_ssl"
    ; page_title = "Let's Encrypt SSL"}
+  ;{ title = "Install OCaml AWS and dbm on OSX"
+   ; file = "posts/2016_03_03_install_ocaml_aws_and_dbm_on_osx.md"
+   ; author = "Sean Grove"
+   ; permalink = "/posts/2016_03_03_install_ocaml_aws_and_dbm_on_osx"
+   ; page_title = "Install OCaml AWS and dbm on OSX"}
   ]
 
 let recent_post_count =
