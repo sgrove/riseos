@@ -40,7 +40,7 @@ let posts =
   ]
 
 let recent_post_count =
-  5
+  min 5 (List.length posts)
 
 let recent_posts =
   let len = List.length posts in
@@ -53,7 +53,7 @@ let recent_posts =
       | Failure _ -> list
       | Invalid_argument _ -> list
   in
-  helper recent_post_count (List.rev posts)
+  helper recent_post_count []
 
 let post_to_recent_post_html post =
   let li = Soup.create_element "li" in
