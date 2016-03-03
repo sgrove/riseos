@@ -2,7 +2,7 @@ I'm toying with the idea of rewriting the [deploy script](https://github.com/sgr
 
 `NDBM not found, the "camldbm" library cannot be built.`
 
-After a bit of googling around, it was fairly simple: Simple install the `Command Line Tools`, and you should have the right header-files/etc. so that `opam install aws` or `opam install dbm` should work. Hope that helps someone who runs into a similar problem!
+After a bit of googling around, it was fairly simple: Simple install the [Command Line Tools](https://developer.apple.com/downloads/?name=for%20Xcode), and you should have the right header-files/etc. so that `opam install aws` or `opam install dbm` should work. Hope that helps someone who runs into a similar problem!
 
 Happy hacking!
 
