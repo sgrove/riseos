@@ -37,6 +37,11 @@ let posts =
    ; author = "Sean Grove"
    ; permalink = "/posts/2016_03_03_install_ocaml_aws_and_dbm_on_osx"
    ; page_title = "Install OCaml AWS and dbm on OSX"}
+  ;{ title = "OCaml on iOS, babysteps"
+   ; file = "posts/2016_03_04_ocaml_on_ios_babysteps.md"
+   ; author = "Sean Grove"
+   ; permalink = "/posts/2016_03_04_ocaml_on_ios_babysteps"
+   ; page_title = "OCaml on iOS, babysteps"}
   ]
 
 let recent_post_count =
