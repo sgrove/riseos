@@ -77,6 +77,14 @@ let ty_page =
   Html5.P.print ~output:(Buffer.add_string b) html;
   Buffer.contents b
 
+let rec sublist b e l =
+  if e = 0 then [] else
+  match l with
+    [] -> failwith "sublist"
+  | h :: t ->
+    let tail = if e = 0 then [] else sublist (b - 1) (e - 1) t in
+    if b > 0 then tail else h :: tail
+
 let site_title =
   "RiseOS"
 
@@ -134,13 +142,6 @@ let post_to_recent_post_html post =
   let a = Soup.create_element "a" ~attributes:["href", post.permalink] ~inner_text:post.title in
   Soup.append_child li a;
   li
-
-let rec sublist b e l =
-  match l with
-    [] -> failwith "sublist"
-  | h :: t ->
-    let tail = if e = 0 then [] else sublist (b - 1) (e - 1) t in
-    if b > 0 then tail else h :: tail
 
 let empty_string s =
   not (List.mem s ["\\n"; " "])
