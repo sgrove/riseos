@@ -85,6 +85,35 @@ let rec sublist b e l =
     let tail = if e = 0 then [] else sublist (b - 1) (e - 1) t in
     if b > 0 then tail else h :: tail
 
+let rec sub_omd(src_list : Omd.t) dest_list (count_remaining : int ref) =
+  let open Omd in
+  Printf.printf "sub_omd cr: %d\n" !count_remaining;
+  match !count_remaining with
+  | 0 -> dest_list
+  | n when n < 0 -> dest_list
+  | _ ->
+    match src_list with
+    | [] -> dest_list
+    | next_element :: next_src ->
+      match next_element with
+      | Omd.Paragraph x -> let next_dest = (List.append dest_list [Omd.Paragraph (sub_omd x [] count_remaining)]) in
+        sub_omd next_src next_dest count_remaining
+      (* Don't count blank strings as tokens *)
+      | Omd.Text x when x = "" -> let next_dest = List.append dest_list [Omd.Text x] in
+        sub_omd next_src next_dest count_remaining
+      | Omd.Text x ->
+        let all_words = Str.split (Str.regexp " ") x in
+        let allowed_words = if (List.length all_words) > 0 then
+            (sublist 0 (max 0 (min (List.length all_words) !count_remaining)) all_words)
+          else
+            []
+        in
+        let words = String.concat " " allowed_words in
+        let next_dest = List.append dest_list [Omd.Text (" " ^ words ^ " ")] in
+        count_remaining := !count_remaining - (List.length allowed_words);
+        sub_omd next_src next_dest count_remaining
+      | _ -> decr count_remaining; sub_omd next_src (List.append dest_list [next_element]) count_remaining
+
 let site_title =
   "RiseOS"
 
