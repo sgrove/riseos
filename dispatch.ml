@@ -1,4 +1,5 @@
 module Mime = Magic_mime
+module H = Html5.M
 
 type post = {
   title: string;
@@ -7,6 +8,74 @@ type post = {
   permalink: string;
   page_title: string;
 }
+
+let ty_head title_str =
+  H.(head
+       (title (pcdata title_str))
+       [
+         meta ~a:[ a_charset "utf-8" ] () ;
+         meta ~a:[ a_name "author"; a_content "Sean Grove"] () ;
+         meta ~a:[ a_http_equiv "Content-Type"; a_content "text/html; charset=utf-8"] () ;
+         meta ~a:[ a_name "viewport"; a_content "width=device=width";] () ;
+         meta ~a:[ a_name "HandheldFriendly"; a_content "true";] () ;
+         meta ~a:[ a_name "MobileOptimized"; a_content "320";] () ;
+         meta ~a:[ a_name "viewport"; a_content "width=device-width, initial-scale=1";] () ;
+         link ~rel:[`Stylesheet] ~href:"stylesheets/normalize.css" ();
+         link ~rel:[`Stylesheet] ~href:"stylesheets/foundation.css"();
+         link ~rel:[`Stylesheet] ~href:"https://fonts.googleapis.com/css?family=Lato:300,700,300italic,700italic" ();
+         link ~rel:[`Icon] ~href:"/images/favicon.ico" ();
+         link ~rel:[`Other "apple-touch-icon"] ~href:"/images/apple-icon-57x57.png" ~a:[ a_sizes (`Sizes [(57, 57)])] ();
+         link ~rel:[`Other "apple-touch-icon"] ~href:"/images/apple-icon-57x57.png" ~a:[ a_sizes (`Sizes [(57, 57)])] ();
+         link ~rel:[`Other "apple-touch-icon"] ~href:"/images/apple-icon-57x57.png" ~a:[ a_sizes (`Sizes [(57, 57)])] ();
+         link ~rel:[`Other "apple-touch-icon"] ~href:"/images/apple-icon-60x60.png" ~a:[ a_sizes (`Sizes [(60, 60)])] ();
+         link ~rel:[`Other "apple-touch-icon"] ~href:"/images/apple-icon-72x72.png" ~a:[ a_sizes (`Sizes [(72, 72)])] ();
+         link ~rel:[`Other "apple-touch-icon"] ~href:"/images/apple-icon-76x76.png" ~a:[ a_sizes (`Sizes [(76, 76)])] ();
+         link ~rel:[`Other "apple-touch-icon"] ~href:"/images/apple-icon-114x114.png" ~a:[ a_sizes (`Sizes [(114, 114)])] ();
+         link ~rel:[`Other "apple-touch-icon"] ~href:"/images/apple-icon-120x120.png" ~a:[ a_sizes (`Sizes [(120, 120)])] ();
+         link ~rel:[`Other "apple-touch-icon"] ~href:"/images/apple-icon-144x144.png" ~a:[ a_sizes (`Sizes [(144, 144)])] ();
+         link ~rel:[`Other "apple-touch-icon"] ~href:"/images/apple-icon-152x152.png" ~a:[ a_sizes (`Sizes [(152, 152)])] ();
+         link ~rel:[`Other "apple-touch-icon"] ~href:"/images/apple-icon-180x180.png" ~a:[ a_sizes (`Sizes [(180, 180)])] ();
+         link ~rel:[`Icon] ~href:"/images/android-icon-192x192.png" ~a:[a_sizes (`Sizes [(192, 192)])] ();
+         link ~rel: [`Icon] ~a:[a_sizes (`Sizes [(192, 192)])] ~href:"/images/android-icon-192x192.png" ();
+         link ~rel: [`Icon] ~a:[a_sizes (`Sizes [(32, 32)])]   ~href:"/images/favicon-32x32.png" ();
+         link ~rel: [`Icon] ~a:[a_sizes (`Sizes [(96, 96)])]   ~href:"/images/favicon-96x96.png" ();
+         link ~rel: [`Icon] ~a:[a_sizes (`Sizes [(16, 16)])]   ~href:"/images/favicon-16x16.png" ();
+         script ~a:[a_src "https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-with-addons.js"] (pcdata "") ;
+         script ~a:[a_src "https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-dom.js"] (pcdata "") ;
+         script ~a:[a_src "/js/client.js"] (pcdata "") ;
+       ])
+
+
+let ty_body_src =
+  H.(
+    body ~a:[ a_class ["collapse-sidebar"; "sidebar-footer"]] [
+      div ~a:[ a_class ["contain-to-grid"; "sticky"]] [
+        div ~a:[ a_class ["row"]] [
+          div ~a:[ a_class ["large-12"; "columns"]] [
+            nav ~a:[ a_class ["top-bar"]] [
+              ul ~a:[ a_class ["title-area"]] [
+                li ~a:[ a_class ["name"] ] [
+                  h1 ~a:[] [
+                    a ~a:[a_href "/"; a_style "padding-left:0px;"] [ 
+                      img ~src:"/images/sofuji_black_30.png" ~alt:"RiseOS" ~a:[a_style "transform:translateY(10px);margin-right:5px;"] ();
+                      (pcdata "RiseOS")]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      ]
+    ]
+  )
+
+let html =
+  H.html (ty_head "RiseOS") @@ ty_body_src
+
+let ty_page =
+  let b = Buffer.create 17 in
+  Html5.P.print ~output:(Buffer.add_string b) html;
+  Buffer.contents b
 
 let site_title =
   "RiseOS"
@@ -169,6 +238,7 @@ module Dispatch (C: V1_LWT.CONSOLE) (FS: V1_LWT.KV_RO) (S: HTTP) = struct
     match Uri.path uri with
     | "" | "/" | "index.html" | "/blog" -> render_blog_index c fs
     | "/test" -> (Lwt.return "Testing", "text/html;charset=utf-8")
+    | "/tyxml" -> (Lwt.return ty_page, "text/html;charset=utf-8")
     | url ->
       try
         let post = List.find (fun post ->
