@@ -175,11 +175,11 @@ let post_to_recent_post_html post =
 let empty_string s =
   not (List.mem s ["\\n"; " "])
 
-let head_post string =
-  let words = List.filter empty_string (Str.split (Str.regexp " ") string) in
-  let head_words = sublist 0 (min (List.length words) 50) words in
-  let ellipsis = if 50 < (List.length words) then "..." else "" in
-  (String.concat " " head_words) ^ ellipsis
+let head_post src limit =
+  let md = Omd.of_string src in
+  let sub = sub_omd md [] (ref limit) in
+  let sub_md = Omd.to_markdown sub in
+  Omd.to_html (Omd.of_string ((String.trim sub_md) ^ "..."))
 
 (** Common signature for http and https. *)
 module type HTTP = Cohttp_lwt.Server
@@ -244,14 +244,14 @@ module Dispatch (C: V1_LWT.CONSOLE) (FS: V1_LWT.KV_RO) (S: HTTP) = struct
     let all_bodies = Lwt_list.fold_left_s (fun acc (post, next) ->
         next >|=
         (fun s ->
-           let body = Omd.to_html (Omd.of_string s) in
+           let body = s in
            (* TODO: Test.render converts ' -> #llr, fix Test.render *)
            (* (Bytes.to_string (Test.render body render_context_1)) in *)
            let link = Soup.create_element "a" ~attributes:["href", post.permalink] in
            let title = Soup.create_element "strong" ~inner_text:post.title in
            Soup.append_child link title;
            let full = Soup.to_string link in
-           (acc ^ full ^ "<br />" ^ (head_post body) ^ "<hr />"))) "" lwt_bodies in
+           (acc ^ full ^ "<br />" ^ (head_post body 50) ^ "<hr />"))) "" lwt_bodies in
     all_bodies >>=
     fun body ->
     let render_context = [] in
