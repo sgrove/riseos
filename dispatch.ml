@@ -114,8 +114,14 @@ let rec sub_omd(src_list : Omd.t) dest_list (count_remaining : int ref) =
         sub_omd next_src next_dest count_remaining
       | _ -> decr count_remaining; sub_omd next_src (List.append dest_list [next_element]) count_remaining
 
+let site_url =
+  "https://www.riseos.com"
+
 let site_title =
   "RiseOS"
+
+let site_description =
+  "Personal blog of Sean Grove, going over tech, travel, and various personal musings."
 
 let posts =
   [{ title = "First post"
@@ -263,11 +269,26 @@ module Dispatch (C: V1_LWT.CONSOLE) (FS: V1_LWT.KV_RO) (S: HTTP) = struct
      >>= (fun template ->
          gen_index c fs template (List.rev posts)), "text/html;charset=utf-8")
 
+  let gen_rss_feed () =
+    let items = List.map (fun post -> Rss.item
+                             ~title:post.title
+                             ~link:(Neturl.parse_url (site_url ^ post.permalink))
+                             ~author:post.author ()) posts in
+    let rss_channel = Rss.channel ~link:(Neturl.parse_url site_url) ~title:site_title ~desc:site_description items in
+    let printer xmls = xmls in
+    let buffer = Buffer.create 17 in
+    Rss.print_channel ~channel_data_printer:printer
+      ~item_data_printer:printer
+      ~indent: 2 (Format.formatter_of_buffer buffer)
+      rss_channel;
+    Buffer.contents buffer
+
   let get_content c fs _request uri =
     let open Lwt.Infix in
     match Uri.path uri with
     | "" | "/" | "index.html" | "/blog" -> render_blog_index c fs
     | "/test" -> (Lwt.return "Testing", "text/html;charset=utf-8")
+    | "/rss.xml" -> (Lwt.return (gen_rss_feed ()), "text/xml;charset=utf-8")
     | "/tyxml" -> (Lwt.return ty_page, "text/html;charset=utf-8")
     | url ->
       try
