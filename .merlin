@@ -7,4 +7,5 @@ PKG menhir
 PKG core
 PKG magic_mime
 PKG magic-mime
+PKG rss
 SRC liquid/
