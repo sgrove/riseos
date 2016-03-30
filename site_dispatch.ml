@@ -241,7 +241,7 @@ module RiseDispatch (C: V1_LWT.CONSOLE) (FS: V1_LWT.KV_RO) (S: HTTP) = struct
     (clear recent_posts_el);
     append_child page_title_el (Soup.create_text (title ^ " - " ^ site_title));
     append_child post_title_el (Soup.create_text title);
-    append_child post_body_el (Soup.create_text body_html);
+    append_child post_body_el (Soup.parse ("<div>" ^ body_html ^ "</div>"));
     List.iter (fun post -> Soup.append_child recent_posts_el (post_to_recent_post_html post)) recent_posts;
     parsed |> to_string
 
