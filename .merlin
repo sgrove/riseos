@@ -7,5 +7,6 @@ PKG menhir
 PKG core
 PKG magic_mime
 PKG magic-mime
-PKG rss
+PKG syndic ptime
+PKG webmachine
 SRC liquid/

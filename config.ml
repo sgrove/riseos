@@ -43,8 +43,8 @@ let my_https =
   http_server @@ conduit_direct ~tls:true stack
 
 let () =
-  let libraries = [ "sequence" ; "containers" ; "tyxml" ; "omd" ; "lambdasoup" ; "magic-mime" ; "js_of_ocaml" ; "js_of_ocaml.ocamlbuild" ; "js_of_ocaml.ppx" ; "opium" ; "aws" ; "rss"] in
-  let packages = [ "sequence" ; "containers" ; "tyxml" ; "omd" ; "lambdasoup" ; "js_of_ocaml" ; "menhir" ; "core" ; "magic-mime" ; "opium" ; "aws" ; "ocamlrss"] in
+  let libraries = [ "sequence" ; "containers" ; "tyxml" ; "omd" ; "lambdasoup" ; "magic-mime" ; "js_of_ocaml" ; "js_of_ocaml.ocamlbuild" ; "js_of_ocaml.ppx" ; "opium" ; "aws" ; "webmachine" ; "ptime" ; "syndic" ] in
+  let packages = [ "sequence" ; "containers" ; "tyxml" ; "omd" ; "lambdasoup" ; "js_of_ocaml" ; "menhir" ; "core" ; "magic-mime" ; "opium" ; "aws" ; "ocamlrss" ; "webmachine"] in
   register "riseos"
     ~libraries
     ~packages

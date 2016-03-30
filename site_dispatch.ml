@@ -1,10 +1,20 @@
 module Mime = Magic_mime
 module H = Html5.M
 
+module Wm = struct
+  module Rd = Webmachine.Rd
+  include Webmachine.Make(Cohttp_lwt_unix_io)
+end
+
+type author = {
+  name: string;
+  email: string;
+}
+
 type post = {
   title: string;
   file: string;
-  author: string;
+  author: author;
   permalink: string;
   page_title: string;
 }
@@ -87,11 +97,9 @@ let rec sublist b e l =
 
 let rec sub_omd(src_list : Omd.t) dest_list (count_remaining : int ref) =
   let open Omd in
-  Printf.printf "sub_omd cr: %d\n" !count_remaining;
-  match !count_remaining with
-  | 0 -> dest_list
-  | n when n < 0 -> dest_list
-  | _ ->
+  if !count_remaining <= 0 then
+    dest_list
+  else
     match src_list with
     | [] -> dest_list
     | next_element :: next_src ->
@@ -123,35 +131,41 @@ let site_title =
 let site_description =
   "Personal blog of Sean Grove, going over tech, travel, and various personal musings."
 
+let sean_grove =
+  {
+    name = "Sean Grove";
+    email = "sean@bushi.do";
+  }
+
 let posts =
   [{ title = "First post"
    ; file = "posts/2016_02_06_first_post.md"
-   ; author = "Sean Grove"
+   ; author = sean_grove
    ; permalink = "/posts/2016_02_06_first_post"
    ; page_title = "First post"}
   ;{ title = "Mirage questions"
    ; file = "posts/2016_02_20_mirage_questions.md"
-   ; author = "Sean Grove"
+   ; author = sean_grove
    ; permalink = "/posts/2016_02_20_mirage_questions"
    ; page_title = "Mirage Questions"}
   ;{ title = "RiseOS TODOs"
    ; file = "posts/2016_02_27_riseos_todos.md"
-   ; author = "Sean Grove"
+   ; author = sean_grove
    ; permalink = "/posts/2016_02_27_riseos_todos"
    ; page_title = "RiseOS TODOs"}
   ;{ title = "Let's Encrypt SSL"
    ; file = "posts/2016_02_29_letsencrypt_ssl.md"
-   ; author = "Sean Grove"
+   ; author = sean_grove
    ; permalink = "/posts/2016_02_29_lets_encrypt_ssl"
    ; page_title = "Let's Encrypt SSL"}
   ;{ title = "Install OCaml AWS and dbm on OSX"
    ; file = "posts/2016_03_03_install_ocaml_aws_and_dbm_on_osx.md"
-   ; author = "Sean Grove"
+   ; author = sean_grove
    ; permalink = "/posts/2016_03_03_install_ocaml_aws_and_dbm_on_osx"
    ; page_title = "Install OCaml AWS and dbm on OSX"}
   ;{ title = "OCaml on iOS, babysteps"
    ; file = "posts/2016_03_04_ocaml_on_ios_babysteps.md"
-   ; author = "Sean Grove"
+   ; author = sean_grove
    ; permalink = "/posts/2016_03_04_ocaml_on_ios_babysteps"
    ; page_title = "OCaml on iOS, babysteps"}
   ]
@@ -190,7 +204,7 @@ let head_post src limit =
 (** Common signature for http and https. *)
 module type HTTP = Cohttp_lwt.Server
 
-module Dispatch (C: V1_LWT.CONSOLE) (FS: V1_LWT.KV_RO) (S: HTTP) = struct
+module RiseDispatch (C: V1_LWT.CONSOLE) (FS: V1_LWT.KV_RO) (S: HTTP) = struct
 
   let log c fmt = Printf.ksprintf (C.log c) fmt
 
@@ -239,7 +253,7 @@ module Dispatch (C: V1_LWT.CONSOLE) (FS: V1_LWT.KV_RO) (S: HTTP) = struct
     let render_context =
       (let open Liquid in
        [ ("post.title"), String post.title
-       ; ("post.author"), String post.author
+       ; ("post.author"), String post.author.name
        ; ("post.body"), String body
        ]) in
     return (gen_page c (Bytes.of_string body) render_context liquid_template post.title)
@@ -269,26 +283,31 @@ module Dispatch (C: V1_LWT.CONSOLE) (FS: V1_LWT.KV_RO) (S: HTTP) = struct
      >>= (fun template ->
          gen_index c fs template (List.rev posts)), "text/html;charset=utf-8")
 
-  let gen_rss_feed () =
-    let items = List.map (fun post -> Rss.item
-                             ~title:post.title
-                             ~link:(Neturl.parse_url (site_url ^ post.permalink))
-                             ~author:post.author ()) posts in
-    let rss_channel = Rss.channel ~link:(Neturl.parse_url site_url) ~title:site_title ~desc:site_description items in
-    let printer xmls = xmls in
-    let buffer = Buffer.create 17 in
-    Rss.print_channel ~channel_data_printer:printer
-      ~item_data_printer:printer
-      ~indent: 2 (Format.formatter_of_buffer buffer)
-      rss_channel;
-    Buffer.contents buffer
+  let gen_atom_feed () =
+    let module Atom = Syndic_atom in
+    let entries = List.map (fun post ->
+        let link = Atom.link ~title:post.title (Uri.of_string (site_url ^ post.permalink)) in
+        let author = Atom.author ~email:post.author.email post.author.name in
+        Atom.entry
+            ~id:(Uri.of_string "http://www.riseos.com/atom.xml")
+            ~authors:(author, [])
+            ~title:(Atom.Text "Entry Title")
+            ~links:[link]
+            ~updated:Syndic_date.epoch ()) posts in
+    let rss_channel = Atom.feed
+        ~id:(Uri.of_string site_url)
+        ~title:(Atom.Text site_title)
+        ~subtitle:(Atom.Text site_description)
+        ~updated:Syndic_date.epoch
+        entries in
+    Syndic_xml.to_string ~ns_prefix:(fun _ -> Some "") (Atom.to_xml rss_channel)
 
   let get_content c fs _request uri =
     let open Lwt.Infix in
     match Uri.path uri with
     | "" | "/" | "index.html" | "/blog" -> render_blog_index c fs
     | "/test" -> (Lwt.return "Testing", "text/html;charset=utf-8")
-    | "/rss.xml" -> (Lwt.return (gen_rss_feed ()), "text/xml;charset=utf-8")
+    | "/atom.xml" -> (Lwt.return (gen_atom_feed ()), "text/xml;charset=utf-8")
     | "/tyxml" -> (Lwt.return ty_page, "text/html;charset=utf-8")
     | url ->
       try
@@ -319,6 +338,60 @@ module Dispatch (C: V1_LWT.CONSOLE) (FS: V1_LWT.KV_RO) (S: HTTP) = struct
     in
     S.respond ~headers ~status:`Moved_permanently ~body:`Empty ()
 
+  (* let wm_dispatcher () =  *)
+  (*   let routes = [ *)
+  (*     ("/"           , fun () -> new hello); *)
+  (*     ("/hello/:what", fun () -> new hello); *)
+  (*     ("/posts/:id",   fun () -> new blog_post); *)
+  (*   ] in *)
+  (*   let callback (ch,conn) request body = *)
+  (*   let open Cohttp in *)
+  (*   let open Lwt.Infix in *)
+  (*   (\* Perform route dispatch. If [None] is returned, then the URI path did not *)
+  (*    * match any of the route patterns. In this case the server should return a *)
+  (*    * 404 [`Not_found]. *\) *)
+  (*   Wm.dispatch' routes ~body ~request *)
+  (*   >|= begin function *)
+  (*     | None        -> (`Not_found, Header.init (), `String "Not found", []) *)
+  (*     | Some result -> result *)
+  (*   end *)
+  (*   >>= fun (status, headers, body, path) -> *)
+  (*   (\* If you'd like to see the path that the request took through the *)
+  (*    * decision diagram, then run this example with the [DEBUG_PATH] *)
+  (*    * environment variable set. This should suffice: *)
+  (*    * *)
+  (*    *  [$ DEBUG_PATH= ./hello_lwt.native] *)
+  (*    * *)
+  (*   *\) *)
+  (*   let path = *)
+  (*     match Sys.getenv "DEBUG_PATH" with *)
+  (*     | _ -> Printf.sprintf " - %s" (String.concat ", " path) *)
+  (*     | exception Not_found   -> "" *)
+  (*   in *)
+  (*   Printf.eprintf "%d - %s %s%s" *)
+  (*     (Code.code_of_status status) *)
+  (*     (Code.string_of_method (Request.meth request)) *)
+  (*     (Uri.path (Request.uri request)) *)
+  (*     path; *)
+  (*   (\* Finally, send the response to the client *\) *)
+  (*   Cohttp_lwt_unix.Server.respond ~headers ~body ~status () *)
+  (* in *)
+  (* (\* Create the server and handle requests with the function defined above. Try *)
+  (*  * it out with some of these curl commands: *)
+  (*  * *)
+  (*  *   [curl -H"Accept:text/html" "http://localhost:8080"] *)
+  (*  *   [curl -H"Accept:text/plain" "http://localhost:8080"] *)
+  (*  *   [curl -H"Accept:application/json" "http://localhost:8080"] *)
+  (* *\) *)
+  (* let conn_closed (ch,conn) = *)
+  (*   Printf.printf "connection %s closed\n%!" *)
+  (*     (Sexplib.Sexp.to_string_hum (Conduit_lwt_unix.sexp_of_flow ch)) *)
+  (* in *)
+  (* let open Lwt.Infix in *)
+  (* let config = Cohttp_lwt_unix.Server.make ~callback ~conn_closed () in *)
+  (* Cohttp_lwt_unix.Server.create  ~mode:(`TCP(`Port port)) config >|= fun () -> *)
+  (* Printf.eprintf "hello_lwt: listening on 0.0.0.0:%d%!" port *)
+
   let serve c dispatch =
     let callback (_, cid) request _body =
       let uri = Cohttp.Request.uri request in
@@ -331,7 +404,6 @@ module Dispatch (C: V1_LWT.CONSOLE) (FS: V1_LWT.KV_RO) (S: HTTP) = struct
       log c "[%s] closing." cid
     in
     S.make ~conn_closed ~callback ()
-
 end
 
 
@@ -344,7 +416,7 @@ struct
 
   module X509 = Tls_mirage.X509 (KEYS) (Clock)
 
-  module D  = Dispatch(C)(DATA)(Http)
+  module D  = RiseDispatch(C)(DATA)(Http)
 
   let tls_init kv =
     let open Lwt.Infix in
@@ -357,9 +429,10 @@ struct
     tls_init keys >>= fun cfg ->
     let tcp = `TCP (Key_gen.https_port ()) in
     let tls = `TLS (cfg, tcp) in
+    (* let wm = D.wm_main () in *)
     Lwt.join [
       http tls @@ D.serve c (D.dispatcher data) ;
-      http (`TCP (Key_gen.http_port ())) @@ D.serve c (D.dispatcher data)
+      http (`TCP (Key_gen.http_port ())) @@ D.serve c (D.dispatcher data) ;
     ]
 
 end
