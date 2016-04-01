@@ -1,10 +1,10 @@
 module Mime = Magic_mime
 module H = Html5.M
 
-module Wm = struct
-  module Rd = Webmachine.Rd
-  include Webmachine.Make(Cohttp_lwt_unix_io)
-end
+(* module Wm = struct *)
+(*   module Rd = Webmachine.Rd *)
+(*   include Webmachine.Make(Cohttp_lwt_unix_io) *)
+(* end *)
 
 type author = {
   name: string;
@@ -168,6 +168,11 @@ let posts =
    ; author = sean_grove
    ; permalink = "/posts/2016_03_04_ocaml_on_ios_babysteps"
    ; page_title = "OCaml on iOS, babysteps"}
+  ;{ title = "Mirage build via Docker"
+   ; file = "posts/2016_03_31_mirage_build_via_docker.md"
+   ; author = sean_grove
+   ; permalink = "/posts/2016_03_31_mirage_build_via_docker"
+   ; page_title = "Mirage build via Docker"}
   ]
 
 let recent_post_count =

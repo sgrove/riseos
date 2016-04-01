@@ -36,15 +36,15 @@ let keys = direct_kv_ro "./secrets"
 (* Dependencies *)
 
 let server =
-  foreign "Dispatch.Make"
+  foreign "Site_dispatch.Make"
     (console @-> clock @-> kv_ro @-> kv_ro @-> http @-> job)
 
 let my_https =
   http_server @@ conduit_direct ~tls:true stack
 
 let () =
-  let libraries = [ "sequence" ; "containers" ; "tyxml" ; "omd" ; "lambdasoup" ; "magic-mime" ; "js_of_ocaml" ; "js_of_ocaml.ocamlbuild" ; "js_of_ocaml.ppx" ; "opium" ; "aws" ; "webmachine" ; "ptime" ; "syndic" ] in
-  let packages = [ "sequence" ; "containers" ; "tyxml" ; "omd" ; "lambdasoup" ; "js_of_ocaml" ; "menhir" ; "core" ; "magic-mime" ; "opium" ; "aws" ; "ocamlrss" ; "webmachine"] in
+  let libraries = [ "sequence" ; "containers" ; "tyxml" ; "omd" ; "lambdasoup" ; "magic-mime" ; "opium" ; "aws" ; "webmachine" ; "ptime" ; "syndic" ] in
+  let packages = [ "sequence" ; "containers" ; "tyxml" ; "omd" ; "lambdasoup" ; "menhir" ; "core" ; "magic-mime" ; "opium" ; "aws" ;  ] in
   register "riseos"
     ~libraries
     ~packages

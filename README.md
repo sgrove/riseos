@@ -12,6 +12,23 @@ Make sure you have [opam](https://opam.ocaml.org/doc/Install.html#Usingyourdistr
 
 To auto-rebuild the javascript on osx, install [fswatch](https://github.com/emcrisostomo/fswatch) and run `fswatch -o client.ml | xargs -n1 -I{} ./rebuild_js.sh` in a terminal. It works pretty well, though there can be random delays in the rebuild for some reason.
 
+OSX
+---
+    mirage configure --unix --http_port=3000 --https_port=3001 --net=socket
+    make clean
+    make
+    ./mir-riseos
+
+Xen
+---
+    env FS=crunch mirage configure --xen --dhcp=true --no-argv
+    make clean
+    make xen
+
+JS Client
+---
+    make client
+
 Relevant Mirage Issues
 ========
 These mirage issues affect this repo, the sooner they're closed the better (keeping track for myself so I can unpin packages):

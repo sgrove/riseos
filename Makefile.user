@@ -2,11 +2,25 @@
 secrets:
 	@openssl req -x509 -newkey rsa:2048 -nodes -keyout secrets/server.key -out secrets/server.pem -days 365 -batch
 
-FLAGS += -I liquid -use-menhir -plugin-tag "package(js_of_ocaml.ocamlbuild)"
+FLAGS += -I liquid -use-menhir
 
 # We don't want the camlp4 syntax extensions, so we define a
 # CLIENT_BUILD separate from BUILD
-CLIENT_BUILD = ocamlbuild -use-ocamlfind $(LIBS) $(FLAGS)
 
+client:	FLAGS += -plugin-tag "package(js_of_ocaml.ocamlbuild)"
+client:	LIBS += js_of_ocaml
+client:	PKGS += js_of_ocaml
 client::
-	$(CLIENT_BUILD) client.js
+	mkdir -p _client
+	echo "let _ = Ocamlbuild_plugin.dispatch Ocamlbuild_js_of_ocaml.dispatcher" > myocamlbuild.ml;
+	ocamlfind ocamlc -g -package js_of_ocaml -package js_of_ocaml.syntax -package js_of_ocaml.ppx -linkpkg -o _client/client.byte client.ml;
+	js_of_ocaml --source-map --pretty --no-inline --debug-info -o static/js/client.js _client/client.byte
+	rm myocamlbuild.ml
+	rm -f client.cmi
+	rm -f client.cmo
+
+xen:	FLAGS += -lflags -dontlink,num
+xen: build
+
+unix::
+	ocamlbuild -use-ocamlfind $(LIBS) $(SYNTAX) $(FLAGS)

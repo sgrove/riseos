@@ -14,6 +14,7 @@ key_gen.ml
 static/js/client.js
 static/js/client.map
 mir-riseos
+mir-riseos.xen
 riseos.xe
 riseos.xl
 riseos.xl.in
