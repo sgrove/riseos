@@ -17,9 +17,22 @@ let https_port =
 
 let show_errors =
   let i = Key.Arg.info
-            ~doc:"Show error and backtrace on site error." ["show_errors"]
+            ~doc:"Show error and backtrace on site error (useful for dev/staging)." ["show_errors"]
   in
   Key.create "show_errors" Key.Arg.(opt bool true i)
+
+let report_errors =
+  let i = Key.Arg.info
+            ~doc:"Report error and backtrace on site error (useful for prod)." ["report_errors"]
+  in
+  Key.create "report_errors" Key.Arg.(opt bool false i)
+
+let mailgun_api_key =
+  let i = Key.Arg.info
+            ~doc:"Mailgun API key (from https://mailgun.com/app/account/settings)" ["mailgun_api_key"]
+  in
+  Key.create "mailgun_api_key" Key.Arg.(opt string "missing" i)
+
 
 (** Consider headers *)
 let bootvar_use_headers =
@@ -49,7 +62,7 @@ let my_https =
 
 let () =
   let libraries = [ "sequence" ; "containers" ; "tyxml" ; "omd" ; "lambdasoup" ; "magic-mime" ; "opium" ; "aws" ; "webmachine" ; "ptime" ; "syndic" ] in
-  let packages = [ "sequence" ; "containers" ; "tyxml" ; "omd" ; "lambdasoup" ; "menhir" ; "core" ; "magic-mime" ; "opium" ; "aws" ;  ] in
+  let packages = [ "sequence" ; "containers" ; "tyxml" ; "omd" ; "lambdasoup" ; "menhir" ; "core" ; "magic-mime" ; "opium" ; "aws" ;  "base64" ] in
   register "riseos"
     ~libraries
     ~packages
@@ -57,6 +70,8 @@ let () =
       Key.abstract http_port ;
       Key.abstract https_port ;
       Key.abstract bootvar_use_headers ;
+      Key.abstract mailgun_api_key ;
+      Key.abstract report_errors ;
       Key.abstract show_errors ;
     ]
     [ server $ default_console $ default_clock $ data $ keys $ my_https ]

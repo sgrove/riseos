@@ -256,18 +256,29 @@ module RiseDispatch (C: V1_LWT.CONSOLE) (FS: V1_LWT.KV_RO) (S: HTTP) = struct
          S.respond_string ~status:`OK ~headers: (Cohttp.Header.of_list [("Content-Type", content_type)]) ~body ())
       (fun exn ->
          let status = `Internal_server_error in
+         let error = Printexc.to_string exn in
+         let trace = Printexc.get_backtrace () in
+         let body = String.concat "\n" [error; trace] in
+         ignore(match (Key_gen.report_errors ()) with
+             | true -> ignore(
+                 (* TODO: Figure out how to capture context (via
+                    middleware?) and send as context with error email *)
+                 Mailgun.send ~domain:"riseos.com" ~api_key:(Key_gen.mailgun_api_key ())
+                   [
+                     ("from", "RiseOS (OCaml) <ocaml@riseos.com>");
+                     ("to", "sean@bushi.do");
+                     ("subject", "[RiseOS] Exception: " ^ error);
+                     ("text", body)
+                   ]); ()
+             | false -> ());
          match (Key_gen.show_errors ()) with
-         | true ->
-           let error = Printexc.to_string exn in
-           let trace = Printexc.get_backtrace () in
-           let body = String.concat "\n" [error; trace] in
-           S.respond_error ~status ~body ()
+         | true -> S.respond_error ~status ~body ()
          | false -> read_fs fs "error.html" >>=
            fun body ->
-              S.respond_string
-                ~headers:(Cohttp.Header.of_list [("Content-Type", Magic_mime.lookup "error.html")])
-                ~status
-                ~body ())
+           S.respond_string
+             ~headers:(Cohttp.Header.of_list [("Content-Type", Magic_mime.lookup "error.html")])
+             ~status
+             ~body ())
 
   let _redirect _c _request uri =
     let new_uri = Uri.with_scheme uri (Some "https") in
