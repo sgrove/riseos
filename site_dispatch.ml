@@ -252,8 +252,12 @@ module RiseDispatch (C: V1_LWT.CONSOLE) (FS: V1_LWT.KV_RO) (S: HTTP) = struct
          let (lwt_body, content_type) = get_content c fs request uri in
          lwt_body >>= fun body ->
          S.respond_string ~status:`OK ~headers: (Cohttp.Header.of_list [("Content-Type", content_type)]) ~body ())
-      (fun _exn ->
-         S.respond_not_found ())
+      (fun exn ->
+         let status = `Internal_server_error in
+         let error = Printexc.to_string exn in
+         let trace = Printexc.get_backtrace () in
+         let body = String.concat "\n" [error; trace] in
+         S.respond_error ~status ~body ())
 
   let _redirect _c _request uri =
     let new_uri = Uri.with_scheme uri (Some "https") in
