@@ -254,10 +254,18 @@ module RiseDispatch (C: V1_LWT.CONSOLE) (FS: V1_LWT.KV_RO) (S: HTTP) = struct
          S.respond_string ~status:`OK ~headers: (Cohttp.Header.of_list [("Content-Type", content_type)]) ~body ())
       (fun exn ->
          let status = `Internal_server_error in
-         let error = Printexc.to_string exn in
-         let trace = Printexc.get_backtrace () in
-         let body = String.concat "\n" [error; trace] in
-         S.respond_error ~status ~body ())
+         match (Key_gen.show_errors ()) with
+         | true ->
+           let error = Printexc.to_string exn in
+           let trace = Printexc.get_backtrace () in
+           let body = String.concat "\n" [error; trace] in
+           S.respond_error ~status ~body ()
+         | false -> read_fs fs "error.html" >>=
+           fun body ->
+              S.respond_string
+                ~headers:(Cohttp.Header.of_list [("Content-Type", Magic_mime.lookup "error.html")])
+                ~status
+                ~body ())
 
   let _redirect _c _request uri =
     let new_uri = Uri.with_scheme uri (Some "https") in
@@ -299,6 +307,8 @@ struct
     Lwt.return conf
 
   let start c () data keys http =
+    (* Setup dev *)
+    Printexc.record_backtrace (Key_gen.show_errors ());
     let open Lwt.Infix in
     tls_init keys >>= fun cfg ->
     let tcp = `TCP (Key_gen.https_port ()) in

@@ -15,6 +15,11 @@ let https_port =
   in
   Key.create "https_port" Key.Arg.(opt int 443 i)
 
+let show_errors =
+  let i = Key.Arg.info
+            ~doc:"Show error and backtrace on site error." ["show_errors"]
+  in
+  Key.create "show_errors" Key.Arg.(opt bool true i)
 
 (** Consider headers *)
 let bootvar_use_headers =
@@ -52,5 +57,6 @@ let () =
       Key.abstract http_port ;
       Key.abstract https_port ;
       Key.abstract bootvar_use_headers ;
+      Key.abstract show_errors ;
     ]
     [ server $ default_console $ default_clock $ data $ keys $ my_https ]
