@@ -232,6 +232,8 @@ module RiseDispatch (C: V1_LWT.CONSOLE) (FS: V1_LWT.KV_RO) (S: HTTP) = struct
     match Uri.path uri with
     | "" | "/" | "index.html" | "/blog" -> render_blog_index c fs
     | "/test" -> (Lwt.return "Testing", "text/html;charset=utf-8")
+    | "/version" -> ((read_fs fs "VERSION"), "text/plain")
+    | "/test_error" -> raise (Failure "Testing, error raised")
     | "/atom.xml" -> (Lwt.return (gen_atom_feed ()), "text/xml;charset=utf-8")
     | url ->
       try
