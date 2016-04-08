@@ -1,11 +1,3 @@
-module Mime = Magic_mime
-module H = Html5.M
-
-(* module Wm = struct *)
-(*   module Rd = Webmachine.Rd *)
-(*   include Webmachine.Make(Cohttp_lwt_unix_io) *)
-(* end *)
-
 type author = {
   name: string;
   email: string;
@@ -249,7 +241,7 @@ module RiseDispatch (C: V1_LWT.CONSOLE) (FS: V1_LWT.KV_RO) (S: HTTP) = struct
         >>= (fun template ->
             gen_post c fs template post), "text/html;charset=utf-8"
       with
-      | Not_found -> (read_fs fs url, Mime.lookup url)
+      | Not_found -> (read_fs fs url, Magic_mime.lookup url)
 
   (** Dispatching/redirecting boilerplate. *)
 
@@ -269,60 +261,6 @@ module RiseDispatch (C: V1_LWT.CONSOLE) (FS: V1_LWT.KV_RO) (S: HTTP) = struct
       Cohttp.Header.init_with "location" (Uri.to_string new_uri)
     in
     S.respond ~headers ~status:`Moved_permanently ~body:`Empty ()
-
-  (* let wm_dispatcher () =  *)
-  (*   let routes = [ *)
-  (*     ("/"           , fun () -> new hello); *)
-  (*     ("/hello/:what", fun () -> new hello); *)
-  (*     ("/posts/:id",   fun () -> new blog_post); *)
-  (*   ] in *)
-  (*   let callback (ch,conn) request body = *)
-  (*   let open Cohttp in *)
-  (*   let open Lwt.Infix in *)
-  (*   (\* Perform route dispatch. If [None] is returned, then the URI path did not *)
-  (*    * match any of the route patterns. In this case the server should return a *)
-  (*    * 404 [`Not_found]. *\) *)
-  (*   Wm.dispatch' routes ~body ~request *)
-  (*   >|= begin function *)
-  (*     | None        -> (`Not_found, Header.init (), `String "Not found", []) *)
-  (*     | Some result -> result *)
-  (*   end *)
-  (*   >>= fun (status, headers, body, path) -> *)
-  (*   (\* If you'd like to see the path that the request took through the *)
-  (*    * decision diagram, then run this example with the [DEBUG_PATH] *)
-  (*    * environment variable set. This should suffice: *)
-  (*    * *)
-  (*    *  [$ DEBUG_PATH= ./hello_lwt.native] *)
-  (*    * *)
-  (*   *\) *)
-  (*   let path = *)
-  (*     match Sys.getenv "DEBUG_PATH" with *)
-  (*     | _ -> Printf.sprintf " - %s" (String.concat ", " path) *)
-  (*     | exception Not_found   -> "" *)
-  (*   in *)
-  (*   Printf.eprintf "%d - %s %s%s" *)
-  (*     (Code.code_of_status status) *)
-  (*     (Code.string_of_method (Request.meth request)) *)
-  (*     (Uri.path (Request.uri request)) *)
-  (*     path; *)
-  (*   (\* Finally, send the response to the client *\) *)
-  (*   Cohttp_lwt_unix.Server.respond ~headers ~body ~status () *)
-  (* in *)
-  (* (\* Create the server and handle requests with the function defined above. Try *)
-  (*  * it out with some of these curl commands: *)
-  (*  * *)
-  (*  *   [curl -H"Accept:text/html" "http://localhost:8080"] *)
-  (*  *   [curl -H"Accept:text/plain" "http://localhost:8080"] *)
-  (*  *   [curl -H"Accept:application/json" "http://localhost:8080"] *)
-  (* *\) *)
-  (* let conn_closed (ch,conn) = *)
-  (*   Printf.printf "connection %s closed\n%!" *)
-  (*     (Sexplib.Sexp.to_string_hum (Conduit_lwt_unix.sexp_of_flow ch)) *)
-  (* in *)
-  (* let open Lwt.Infix in *)
-  (* let config = Cohttp_lwt_unix.Server.make ~callback ~conn_closed () in *)
-  (* Cohttp_lwt_unix.Server.create  ~mode:(`TCP(`Port port)) config >|= fun () -> *)
-  (* Printf.eprintf "hello_lwt: listening on 0.0.0.0:%d%!" port *)
 
   let serve c dispatch =
     let callback (_, cid) request _body =
