@@ -11,6 +11,7 @@ type post = {
   page_title: string;
 }
 
+exception File_not_found
 let rec sublist b e l =
   if e = 0 then [] else
   match l with
@@ -139,7 +140,7 @@ module RiseDispatch (C: V1_LWT.CONSOLE) (FS: V1_LWT.KV_RO) (S: HTTP) = struct
     fun x ->
     match x with
     | `Error (FS.Unknown_key _) ->
-      Lwt.fail (Failure ("read " ^ name))
+      Lwt.fail File_not_found
     | `Ok size ->
       FS.read fs name 0 (Int64.to_int size)
       >>= function
@@ -227,58 +228,86 @@ module RiseDispatch (C: V1_LWT.CONSOLE) (FS: V1_LWT.KV_RO) (S: HTTP) = struct
         entries in
     Syndic_xml.to_string ~ns_prefix:(fun _ -> Some "") (Atom.to_xml rss_channel)
 
-  let get_content c fs _request uri =
+  let render_error fs status =
     let open Lwt.Infix in
-    match Uri.path uri with
-    | "" | "/" | "index.html" | "/blog" -> render_blog_index c fs
-    | "/test" -> (Lwt.return "Testing", "text/html;charset=utf-8")
-    | "/version" -> ((read_fs fs "VERSION"), "text/plain")
-    | "/test_error" -> raise (Failure "Testing, error raised")
-    | "/atom.xml" -> (Lwt.return (gen_atom_feed ()), "text/xml;charset=utf-8")
-    | url ->
+    read_fs fs "error.html" >>=
+    fun body ->
+    S.respond_string
+      ~headers:(Cohttp.Header.of_list [("Content-Type", Magic_mime.lookup "error.html")])
+      ~status
+      ~body ()
+
+  let render_not_found fs status =
+    let open Lwt.Infix in
+    read_fs fs "not_found.html" >>=
+    fun body ->
+    S.respond_string
+      ~headers:(Cohttp.Header.of_list [("Content-Type", Magic_mime.lookup "not_found.html")])
+      ~status
+      ~body ()
+
+  let route c fs request uri =
+    let open Lwt.Infix in
+    match (Cohttp.Request.meth request), Uri.path uri with
+    | _, "" | _, "/" | _, "index.html" | _, "/blog" -> render_blog_index c fs
+    | `GET, "/test" -> (Lwt.return "Testing", html_mime)
+    | `GET, "/version" -> ((read_fs fs "VERSION"), "text/plain")
+    | `GET, "/test_error" -> raise (Failure "Testing, error raised")
+    | `GET, "/atom.xml" -> (Lwt.return (gen_atom_feed ()), "text/xml;charset=utf-8")
+    | _method, url ->
+      (* Try to find and read a matching post *)
       try
         let post = List.find (fun post ->
             post.permalink = url) posts in
         read_fs fs "index.html"
         >>= (fun template ->
-            gen_post c fs template post), "text/html;charset=utf-8"
+            gen_post c fs template post), html_mime
       with
-      | Not_found -> (read_fs fs url, Magic_mime.lookup url)
-
+      | Not_found ->
+        (* Read the static file *)
+        (read_fs fs url), Magic_mime.lookup url        
   (** Dispatching/redirecting boilerplate. *)
+
+  let report_error exn request =
+    let error = Printexc.to_string exn in
+    let trace = Printexc.get_backtrace () in
+    let body = String.concat "\n" [error; trace] in
+    let req_text = Format.asprintf "%a@." Cohttp.Request.pp_hum request in
+    ignore(
+      let emails = Str.split (Str.regexp ",") (Key_gen.error_report_emails ())
+                   |> List.map (fun email -> ("to", email)) in
+      let params = List.append emails [
+          ("from", "RiseOS (OCaml) <errors@riseos.com>");
+          ("subject", (Printf.sprintf "[%s] Exception: %s" site_title error));
+          ("text", (Printf.sprintf "%s\n\nRequest:\n\n%s" body req_text))
+        ]
+      in
+      (* TODO: Figure out how to capture arbitrary context (via
+         middleware?) and send as context with error email *)
+      ignore(Mailgun.send ~domain:"riseos.com" ~api_key:(Key_gen.mailgun_api_key ()) params))
 
   let dispatcher fs c request uri =
     let open Lwt.Infix in
     Lwt.catch
       (fun () ->
-         let (lwt_body, content_type) = get_content c fs request uri in
+         let (lwt_body, content_type) = route c fs request uri in
          lwt_body >>= fun body ->
          S.respond_string ~status:`OK ~headers: (Cohttp.Header.of_list [("Content-Type", content_type)]) ~body ())
       (fun exn ->
-         let status = `Internal_server_error in
-         let error = Printexc.to_string exn in
-         let trace = Printexc.get_backtrace () in
-         let body = String.concat "\n" [error; trace] in
-         ignore(match (Key_gen.report_errors ()) with
-             | true -> ignore(
-                 (* TODO: Figure out how to capture context (via
-                    middleware?) and send as context with error email *)
-                 Mailgun.send ~domain:"riseos.com" ~api_key:(Key_gen.mailgun_api_key ())
-                   [
-                     ("from", "RiseOS (OCaml) <ocaml@riseos.com>");
-                     ("to", "sean@bushi.do");
-                     ("subject", "[RiseOS] Exception: " ^ error);
-                     ("text", body)
-                   ]); ()
-             | false -> ());
-         match (Key_gen.show_errors ()) with
-         | true -> S.respond_error ~status ~body ()
-         | false -> read_fs fs "error.html" >>=
-           fun body ->
-           S.respond_string
-             ~headers:(Cohttp.Header.of_list [("Content-Type", Magic_mime.lookup "error.html")])
-             ~status
-             ~body ())
+         match exn with
+         | File_not_found -> render_not_found fs `Not_found
+         | _ -> let status = `Internal_server_error in
+           let error = Printexc.to_string exn in
+           let trace = Printexc.get_backtrace () in
+           let body = String.concat "\n" [error; trace] in
+           ignore(match (Key_gen.report_errors ()) with
+               | true -> report_error exn request
+               | false -> ());
+           match (Key_gen.show_errors ()) with
+           | true -> S.respond_error ~status ~body ()
+           (* If we're not showing a stacktrace, then show a nice html
+              page *)
+           | false -> render_error fs `Internal_server_error)
 
   let _redirect _c _request uri =
     let new_uri = Uri.with_scheme uri (Some "https") in
