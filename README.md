@@ -14,14 +14,15 @@ To auto-rebuild the javascript on osx, install [fswatch](https://github.com/emcr
 
 OSX
 ---
-    mirage configure --unix --http_port=3000 --https_port=3001 --net=socket
+    mirage configure --net=socket --http_port=3000 --https_port=3001 --unix --show_errors=true
     make clean
     make
     ./mir-riseos
 
 Xen
 ---
-    env FS=crunch mirage configure --xen --dhcp=true --no-argv
+    docker run -it -v `pwd`:/src/riseos sgrove/riseos /bin/bash
+    yes | env FS=crunch mirage configure --xen --no-argv --dhcp=true --show_errors=false --report_errors=true --mailgun_api_key="<>" --error_report_emails=sean@bushi.do
     make clean
     make xen
 
