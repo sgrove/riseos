@@ -27,6 +27,12 @@ let report_errors =
   in
   Key.create "report_errors" Key.Arg.(opt bool false i)
 
+let error_report_emails =
+  let i = Key.Arg.info
+            ~doc:"Comma-separated list of emails to report to when error occurs (useful for prod)." ["error_report_emails"]
+  in
+  Key.create "error_report_emails" Key.Arg.(opt string "" i)
+
 let mailgun_api_key =
   let i = Key.Arg.info
             ~doc:"Mailgun API key (from https://mailgun.com/app/account/settings)" ["mailgun_api_key"]
@@ -73,5 +79,6 @@ let () =
       Key.abstract mailgun_api_key ;
       Key.abstract report_errors ;
       Key.abstract show_errors ;
+      Key.abstract error_report_emails ;
     ]
     [ server $ default_console $ default_clock $ data $ keys $ my_https ]

@@ -12,6 +12,10 @@ type post = {
 }
 
 exception File_not_found
+
+let html_mime =
+  Magic_mime.lookup "index.html"
+
 let rec sublist b e l =
   if e = 0 then [] else
   match l with
@@ -97,6 +101,11 @@ let posts =
    ; author = sean_grove
    ; permalink = "/posts/2016_03_31_mirage_build_via_docker"
    ; page_title = "Mirage build via Docker"}
+  ;{ title = "Email reports on error in OCaml via Mailgun"
+   ; file = "posts/2016_04_09_email_reports_on_error_in_ocaml_via_mailgun.md"
+   ; author = sean_grove
+   ; permalink = "/posts/2016_04_09_email_reports_on_error_in_ocaml_via_mailgun"
+   ; page_title = "Email reports on error in OCaml via Mailgun"}
   ]
 
 let recent_post_count =
@@ -207,7 +216,7 @@ module RiseDispatch (C: V1_LWT.CONSOLE) (FS: V1_LWT.KV_RO) (S: HTTP) = struct
     let open Lwt.Infix in
     (read_fs fs "index.html"
      >>= (fun template ->
-         gen_index c fs template (List.rev posts)), "text/html;charset=utf-8")
+         gen_index c fs template (List.rev posts)), html_mime)
 
   let gen_atom_feed () =
     let module Atom = Syndic_atom in
@@ -219,7 +228,7 @@ module RiseDispatch (C: V1_LWT.CONSOLE) (FS: V1_LWT.KV_RO) (S: HTTP) = struct
             ~authors:(author, [])
             ~title:(Atom.Text "Entry Title")
             ~links:[link]
-            ~updated:Syndic_date.epoch ()) posts in
+            ~updated:Syndic_date.epoch ()) (List.rev posts) in
     let rss_channel = Atom.feed
         ~id:(Uri.of_string site_url)
         ~title:(Atom.Text site_title)
@@ -265,7 +274,8 @@ module RiseDispatch (C: V1_LWT.CONSOLE) (FS: V1_LWT.KV_RO) (S: HTTP) = struct
       with
       | Not_found ->
         (* Read the static file *)
-        (read_fs fs url), Magic_mime.lookup url        
+        (read_fs fs url), Magic_mime.lookup url
+
   (** Dispatching/redirecting boilerplate. *)
 
   let report_error exn request =
@@ -362,3 +372,4 @@ struct
     ]
 
 end
+

@@ -8,8 +8,6 @@ let gen_boundary length =
     String.concat "" (Array.to_list (Array.init length gen))
 
 let send ~domain ~api_key params =
-  let open Cohttp in
-  let open Cohttp_lwt_unix in
   let authorization = "Basic " ^ (B64.encode ("api:" ^ api_key)) in
   let _boundary = gen_boundary 24 in 
   let header_boundary = "------------------------" ^ _boundary in
@@ -17,10 +15,10 @@ let send ~domain ~api_key params =
   let content_type = "multipart/form-data; boundary=" ^ header_boundary in
   let form_value = List.fold_left (fun run (key, value) ->
       run ^ (Printf.sprintf "%s\r\nContent-Disposition: form-data; name=\"%s\"\r\n\r\n%s\r\n" boundary key value)) "" params in
-  let headers = Header.of_list [
+  let headers = Cohttp.Header.of_list [
       ("Content-Type", content_type);
-      ("Authorization", authorization)] in
+      ("Authorization", authorization)
+    ] in
   let uri = (Printf.sprintf "https://api.mailgun.net/v3/%s/messages" domain) in
   let body = Cohttp_lwt_body.of_string (Printf.sprintf "%s\r\n%s--" form_value boundary) in
-  Client.post ~headers ~body (Uri.of_string uri)
-
+  Cohttp_mirage.Client.post ~headers ~body (Uri.of_string uri)
