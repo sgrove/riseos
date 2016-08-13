@@ -67,7 +67,7 @@ let my_https =
   http_server @@ conduit_direct ~tls:true stack
 
 let () =
-  let libraries = [ "sequence" ; "containers" ; "tyxml" ; "omd" ; "lambdasoup" ; "magic-mime" ; "opium" ; "aws" ; "webmachine" ; "ptime" ; "syndic" ] in
+  let libraries = [ "sequence" ; "containers" ; "tyxml" ; "omd" ; "lambdasoup" ; "magic-mime" ; "opium" ; "aws" ; "ptime" ; "syndic" ] in
   let packages = [ "sequence" ; "containers" ; "tyxml" ; "omd" ; "lambdasoup" ; "menhir" ; "core" ; "magic-mime" ; "opium" ; "aws" ;  "base64" ] in
   register "riseos"
     ~libraries
