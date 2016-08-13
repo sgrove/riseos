@@ -1,4 +1,4 @@
-The OCaml web-situation is baren. Really baren.
+The OCaml web-situation is barren. Really barren.
 
 I'm not sure if it's because the powers-that-be in the OCaml world are simply uninterested in the domain, or if it's looked down upon as "not-real development" by established/current OCaml devs, but it's a pretty dire situation. There's some movement in the right direction between [Opium](https://github.com/rgrinberg/opium) and [Ocaml WebMachine](https://github.com/inhabitedtype/ocaml-webmachine), but both are 1.) extremely raw and 2.) pretty much completely incompatible. There's no middleware standard (Rack, Connect, or the one I'm most familiar with, Ring), so it's not easy to layer in orthogonal-but-important pieces like session-management, authentication, authorization, logging, and - relevant for today's post - error reporting.
 
