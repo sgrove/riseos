@@ -50,7 +50,7 @@ let bootvar_use_headers =
 
 (* Network configuration *)
 
-let stack = generic_stackv4 default_console tap0
+let stack = generic_stackv4 tap0
 
 (* storage configuration *)
 
