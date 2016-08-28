@@ -1,8 +1,7 @@
 ## Customize dependencies
 dependencies:
   pre:
-    - sudo apt-get update
-    - sudo apt-get install nasm
+    - mkdir -p /home/ubuntu/bin/
     - bash ./circle/install-ocaml.sh
     - bash ./circle/install-syslinux.sh
   cache_directories:
