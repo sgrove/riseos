@@ -128,7 +128,6 @@ shared-memory-ring	1.3.0	installed
 solo5-kernel-virtio	dev~mirage	root	git	https://github.com/ricarkol/solo5.git#virtio-max-queue-size-and-recvq-cleanup
 stringext	1.4.2	installed
 syndic	1.5.1	root
-tcpip	dev~mirage	root	git	https://github.com/mirage/mirage-tcpip.git#016c00f279b47c3dd1a53f3eb056c73e063d56e9
 tls	0.7.1	root
 topkg	0.7.8	installed
 tuntap	1.3.0	installed
