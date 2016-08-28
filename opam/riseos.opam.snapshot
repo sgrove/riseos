@@ -23,7 +23,6 @@ conf-perl	1	installed
 conf-pkg-config	1.0	installed
 conf-which	1	installed
 containers	0.18	root
-core	113.33.03	root
 core_kernel	113.33.03	installed
 cppo	1.3.2	installed
 crc	1.0.0	installed
