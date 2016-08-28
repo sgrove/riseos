@@ -10,7 +10,6 @@ base64	2.0.0	root
 bin_prot	113.33.03	installed
 biniou	1.0.12	installed
 calendar	2.03.2	installed
-camlp4	4.02+7	installed
 channel	1.1.0	installed
 cmdliner	0.9.8	installed
 cohttp	0.21.0	installed
