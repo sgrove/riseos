@@ -10,5 +10,5 @@ if [ ! -e /home/ubuntu/bin/opam ]; then
     wget https://raw.github.com/ocaml/opam/master/shell/opam_installer.sh -O - | sh -s /usr/local/bin
 
     opam switch -A 4.02.3 riseos
-    opam switch import /home/ubuntu/riseos/opam/riseos.opam.snapshot
+    opam switch import -y /home/ubuntu/riseos/opam/riseos.opam.snapshot
 fi
