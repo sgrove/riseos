@@ -1,0 +1,22 @@
+## Customize dependencies
+dependencies:
+  pre:
+    - sudo apt-get update
+    - bash ./circle/install-ocaml.sh
+    - bash ./circle/install-syslinux.sh
+  cache_directories:
+    - /home/ubuntu/.opam
+    - /home/ubuntu/syslinux-6.03
+
+## Customize the test machine
+machine:
+  timezone:
+    America/Los_Angeles # Set the timezone
+
+  # Override /etc/hosts
+  hosts:
+    test.riseos.com: 127.0.0.1
+
+  # Add some environment variables
+  environment:
+    CIRCLE_ENV: test

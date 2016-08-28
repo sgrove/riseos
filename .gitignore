@@ -4,6 +4,7 @@ _build/
 log
 *.cm*
 *.byte
+*.virtio
 main.ml
 main.native
 static1.ml
@@ -20,3 +21,6 @@ riseos.xl
 riseos.xl.in
 riseos_libvirt.xml
 static/VERSION
+tmp
+
+skel
