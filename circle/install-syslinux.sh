@@ -1,8 +1,11 @@
 set -x
 set -e
-if [ ! -e syslinux-6.03/syslinux ]; then
+if [ ! -e /home/ubuntu/syslinux/syslinux ]; then
     wget https://www.kernel.org/pub/linux/utils/boot/syslinux/6.xx/syslinux-6.03.tar.gz
     tar -xzvf syslinux-6.03.tar.gz
     cd syslinux-6.03
-    make;
+    make
+    sudo make install
+    mkdir /home/ubuntu/syslinux
+    cp /usr/bin/syslinux /home/ubuntu/syslinux/
 fi

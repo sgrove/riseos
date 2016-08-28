@@ -2,11 +2,12 @@
 dependencies:
   pre:
     - sudo apt-get update
+    - sudo apt-get install nasm
     - bash ./circle/install-ocaml.sh
     - bash ./circle/install-syslinux.sh
   cache_directories:
     - /home/ubuntu/.opam
-    - /home/ubuntu/syslinux-6.03
+    - /home/ubuntu/syslinux
 
 ## Customize the test machine
 machine:
