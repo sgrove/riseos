@@ -260,6 +260,7 @@ module RiseDispatch (C: V1_LWT.CONSOLE) (FS: V1_LWT.KV_RO) (S: HTTP) = struct
     match (Cohttp.Request.meth request), Uri.path uri with
     | _, "" | _, "/" | _, "index.html" | _, "/blog" -> render_blog_index c fs
     | `GET, "/test" -> (Lwt.return "Testing", html_mime)
+    | `GET, "/healthy" -> (Lwt.return "OK!", html_mime)
     | `GET, "/version" -> ((read_fs fs "VERSION"), "text/plain")
     | `GET, "/test_error" -> raise (Failure "Testing, error raised")
     | `GET, "/atom.xml" -> (Lwt.return (gen_atom_feed ()), "text/xml;charset=utf-8")
