@@ -2,9 +2,10 @@ B _build/**
 FLG -w +a-4-40..42-44-45-48
 
 PKG sequence containers tyxml
-PKG mirage cohttp cstruct tls mirage-http
-PKG lwt omd lambdasoup js_of_ocaml eliom pa_js.syntax js_of_ocaml.ppx
+PKG mirage cohttp cstruct tls mirage-http irmin irmin_unix irmin.unix
+PKG lwt lwt.ppx omd lambdasoup js_of_ocaml eliom pa_js.syntax js_of_ocaml.ppx
 PKG menhir
+PKG yojson ppx_deriving_yojson
 PKG core
 PKG magic_mime
 PKG magic-mime
