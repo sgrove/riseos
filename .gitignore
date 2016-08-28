@@ -22,5 +22,5 @@ riseos.xl.in
 riseos_libvirt.xml
 static/VERSION
 tmp
-
+__*
 skel

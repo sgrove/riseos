@@ -21,3 +21,8 @@ machine:
   # Add some environment variables
   environment:
     CIRCLE_ENV: test
+
+test:
+   override:
+     - eval `opam config env` && cd /home/ubuntu/riseos && bin/build_kvm.sh
+     - eval `opam config env` && cd /home/ubuntu/riseos && bin/build_unix.sh

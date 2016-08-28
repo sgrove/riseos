@@ -5,3 +5,5 @@ bin/unikernel-mkimage.sh tmp/disk.raw mir-riseos.virtio
 cd tmp/
 tar -czvf mir-riseos-${RISEOS_BUILD_NUM}.tar.gz disk.raw
 cd ..
+mv mir-riseos-${RISEOS_BUILD_NUM}.tar.gz ${CIRCLE_ARTIFACTS}/
+mv mir-riseos.virtio ${CIRCLE_ARTIFACTS}/

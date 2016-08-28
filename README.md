@@ -1,7 +1,7 @@
 [RiseOS](https://www.riseos.com)
 ===
 
-This is the repo for Sean Grove's personal site, [https://www.riseos.com/](https://www.riseos.com/).
+This is the repo for [Sean Grove](https://twitter.com/sgrove)'s personal site, [https://www.riseos.com/](https://www.riseos.com/).
 
 It also serves as a (currently very messy) example of a site built in OCaml, using the the Mirage libraries, and deployed as a unikernel.
 
@@ -26,6 +26,18 @@ Xen
     make clean
     make xen
 
+KVM (Google Cloud Compute)
+---
+
+    docker run -it -v `pwd`:/src/riseos sgrove/riseos /bin/bash
+    mirage configure -t virtio --dhcp=true --show_errors=true --report_errors=true --mailgun_api_key="<>" --error_report_emails=sean@bushi.do
+    make clean
+    make
+    bin/unikernel-mkimage.sh tmp/disk.raw mir-riseos.virtio
+    cd tmp/
+    tar -czvf mir-riseos-33.tar.gz disk.raw
+    cd ..
+
 JS Client
 ---
     make client
@@ -34,8 +46,6 @@ Relevant Mirage Issues
 ========
 These mirage issues affect this repo, the sooner they're closed the better (keeping track for myself so I can unpin packages):
 
- * [Functoria: need a way to disable Bootvar](https://github.com/mirage/mirage/issues/493)
- * [Missing `strtod`](https://github.com/mirage/mirage-platform/issues/118)
  * [No way to specify package versions/pins in config.ml](https://github.com/mirage/mirage/issues/499)
 
 TODO

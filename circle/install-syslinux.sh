@@ -9,6 +9,6 @@ if [ ! -e /home/ubuntu/bin/syslinux ]; then
     cd syslinux-6.03
     make
     sudo make install
-    mkdir /home/ubuntu/syslinux
+    mkdir -p /home/ubuntu/syslinux
     cp /usr/bin/syslinux /home/ubuntu/bin/
 fi

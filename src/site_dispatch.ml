@@ -106,6 +106,11 @@ let posts =
    ; author = sean_grove
    ; permalink = "/posts/2016_04_09_email_reports_on_error_in_ocaml_via_mailgun"
    ; page_title = "Email reports on error in OCaml via Mailgun"}
+  ;{ title = "Continuously Deployed Mirage Unikernels with Google Compute Engine and CircleCI"
+   ; file = "posts/2016_04_09_email_reports_on_error_in_ocaml_via_mailgun.md"
+   ; author = sean_grove
+   ; permalink = "/posts/2016_04_09_email_reports_on_error_in_ocaml_via_mailgun"
+   ; page_title = "Continuously Deployed Mirage Unikernels with Google Compute Engine and CircleCI"}
   ]
 
 let recent_post_count =
@@ -260,7 +265,7 @@ module RiseDispatch (C: V1_LWT.CONSOLE) (FS: V1_LWT.KV_RO) (S: HTTP) = struct
     match (Cohttp.Request.meth request), Uri.path uri with
     | _, "" | _, "/" | _, "index.html" | _, "/blog" -> render_blog_index c fs
     | `GET, "/test" -> (Lwt.return "Testing", html_mime)
-    | `GET, "/healthy" -> (Lwt.return "OK!", html_mime)
+    | `GET, "/healthy" -> (Lwt.return "OK, new virtio code!", html_mime)
     | `GET, "/version" -> ((read_fs fs "VERSION"), "text/plain")
     | `GET, "/test_error" -> raise (Failure "Testing, error raised")
     | `GET, "/atom.xml" -> (Lwt.return (gen_atom_feed ()), "text/xml;charset=utf-8")
@@ -344,7 +349,7 @@ end
 
 (** Server boilerplate *)
 module Make
-    (C : V1_LWT.CONSOLE) (Clock : V1.CLOCK)
+    (C : V1_LWT.CONSOLE) (Clock : V1.PCLOCK)
     (DATA : V1_LWT.KV_RO) (KEYS: V1_LWT.KV_RO)
     (Http: HTTP) =
 struct
@@ -359,7 +364,7 @@ struct
     let conf = Tls.Config.server ~certificates:(`Single cert) () in
     Lwt.return conf
 
-  let start c () data keys http =
+  let start c _clock data keys http =
     (* Setup dev *)
     Printexc.record_backtrace (Key_gen.show_errors ());
     let open Lwt.Infix in
@@ -371,6 +376,4 @@ struct
       http tls @@ D.serve c (D.dispatcher data) ;
       http (`TCP (Key_gen.http_port ())) @@ D.serve c (D.dispatcher data) ;
     ]
-
 end
-

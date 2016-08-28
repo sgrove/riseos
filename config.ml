@@ -61,14 +61,14 @@ let keys = direct_kv_ro "./secrets"
 
 let server =
   foreign "Site_dispatch.Make"
-    (console @-> clock @-> kv_ro @-> kv_ro @-> http @-> job)
+    (console @-> pclock @-> kv_ro @-> kv_ro @-> http @-> job)
 
 let my_https =
   http_server @@ conduit_direct ~tls:true stack
 
 let () =
-  let libraries = [ "sequence" ; "containers" ; "tyxml" ; "omd" ; "lambdasoup" ; "magic-mime" ; "opium" ; "aws" ; "ptime" ; "syndic" ] in
-  let packages = [ "sequence" ; "containers" ; "tyxml" ; "omd" ; "lambdasoup" ; "menhir" ; "core" ; "magic-mime" ; "opium" ; "aws" ;  "base64" ] in
+  let libraries = [ "sequence" ; "containers" ; "omd" ; "lambdasoup" ; "magic-mime" ; "opium" ; "aws" ; "ptime" ; "syndic" ] in
+  let packages = [ "sequence" ; "containers" ; "omd" ; "lambdasoup" ; "menhir" ; "core" ; "magic-mime" ; "opium" ; "aws" ;  "base64" ] in
   register "riseos"
     ~libraries
     ~packages
@@ -81,4 +81,4 @@ let () =
       Key.abstract show_errors ;
       Key.abstract error_report_emails ;
     ]
-    [ server $ default_console $ default_clock $ data $ keys $ my_https ]
+    [ server $ default_console $ default_posix_clock $ data $ keys $ my_https ]
