@@ -5,8 +5,7 @@ import react from '@astrojs/react';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://sgrove.github.io',
-  base: '/riseos',
+  site: 'https://riseos.com',
   output: 'static',
   vite: {
     plugins: [tailwindcss()]
