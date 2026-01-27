@@ -1,0 +1,869 @@
+Transcript:
+so I'm gonna be talking about reason ml
+and graph QL show of hands who has heard
+of reason ml all right keep those hands
+up who has used it before and of those
+that are still remaining who has shipped
+a production project in it all right so
+I hope I hope that we can change some of
+those keep some of those hands up longer
+at the end of this talk so a quick
+introduction my name is Shawn Grove I'm
+coming out of San Francisco I work at a
+company called one graph I will see a
+little bit that later we just finished
+the Y Combinator summer 18 batch before
+that I was running engineering for a
+payments company and before that I did Y
+Combinator back in summer of 2011 and
+just as a bit of context my background I
+work a lot very heavily with closure and
+closure script for the past
+I know eight nine years well not closure
+stripping it necessarily but a lot of
+reason and rust these days so I kind of
+want to start out going making that
+transition from a dynamic language into
+a statically typed language was pretty
+interesting for me and in many ways very
+frustrating and I think the looking back
+maybe I would have articulated my
+aspirations and the promises that typed
+languages give us I think the promise of
+a statically typed language is supposed
+to be something along the lines of it
+makes it more difficult to represent
+incorrect programs to give an example of
+this here's a bit of JavaScript so
+imagine that this was a function you
+were coming across it's a nice function
+called insert customer it takes five
+different arguments name and sub name
+org rating so on and the challenge here
+is in a dynamic language it's very
+difficult to know what these refer to or
+even know what their types are
+necessarily and this is kind of
+best-case scenario right in this case
+the developer was very kind instead of
+naming the variables X Y and T alright
+we have name and sub name and whatnot
+but there's a lot of context that's
+missing inside of this dynamic
+function right so if I'm looking at
+insert customer I see that there's an
+org there and this so this feels like
+maybe this is gonna do something with a
+database maybe org is an org ID or is
+that like an object of some sorts that
+includes all of the organ formation and
+now if I have several if I'm trying to
+track down a bug and I have several of
+these functions in my call stack I have
+to navigate through each of them and go
+actually into the implementation to
+understand what is it expecting and what
+is it actually doing and so there's a
+lot of ambiguity and it becomes very
+difficult and I think that it I will
+become deeply unhappy fairly quickly by
+debugging this kind of thing so I would
+argue that the type systems the promise
+that I actually care about in type
+systems is that they promise me that I
+will be happier by being more productive
+and so with that intro I'll give a quick
+rundown of reason ml so there were a few
+shows people had heard of reason mo
+raise your hand if you've heard of Oh
+camel before or standard ml okay so
+reason is actually built on top of a
+camel Oh camel is a 25 year old language
+that is heavily steeped in academia it
+has some really really amazing features
+in its type system and what it can do
+for you and because of the 25 years of
+architecture that has gone into this
+compiler and the tool chain the compiler
+is highly modular and actually has
+something like seven different stages
+and the first stage is responsible for
+example of parsing a textual
+representation of your source code into
+a binary AST and that's what all the
+subsequent layers of the compiler work
+off of similarly you can actually peel
+off the last layer which is responsible
+for emitting for example native code or
+byte code and you can replace it with
+one that maybe omits JavaScript so by
+virtue of kind of the modular nature of
+this compiler along with all the
+academic investment that has gone into
+it
+okay Moe has fantastic reach it's able
+to go to JavaScript to desktop native
+mobile not running through some
+JavaScript bridge and even you know
+kernels which are incredibly interesting
+there are a lot of problems with Okamoto
+in particular because it is so steeped
+in academia the tool chain is not
+necessarily up to standard for maybe a
+professional development right so if if
+I'm writing my thesis in Oh camel and
+some part of the type system and it's
+gonna take me 18 to 24 months maybe it
+doesn't matter that takes me six weeks
+to get my development environment set up
+but if I'm a developer trying to ship a
+product that matters a lot right I'm
+gonna be deeply unhappy within two days
+maybe if I can't get anything to run so
+reason comes in and kind of builds on
+top of that very very sturdy and very
+powerful sound base of oh camel and
+provides a new syntax that looks a lot
+like JavaScript and also brings along a
+set of developer tooling to make that
+onboarding as much or as easy as
+possible and it's still early days for
+reason we just had the first reason conf
+in Vienna back in May and the second one
+was just announced for April of next
+year and reason has chosen I mean every
+language typically has a domain in which
+it excels or maybe a few domains reason
+has chosen web UI as its main focus
+right now all right
+Oh camel can do lots and lots of things
+but reason wants to make this part of
+our lives as easy as possible to the
+point where it has incorporated JSX into
+the syntax
+there's no preprocessor step or anything
+like that this is part of the recent
+syntax to be able to express your web
+UIs in trees natively it has things like
+component state and transitions built in
+to the de-facto UI framework which is
+reason react and very importantly it
+focuses heavily on Interop with NPM
+right so oak ml in particular has a kind
+of closed world assumption for good
+reasons that we'll see in a little bit
+but it assumes that everything is going
+to be written in oak ml more or less you
+can interrupt with C and some other
+things but it's not particularly easy
+buckle script and reason want to make it
+as easy as possible to pull in all the
+existing ecosystem of NPM
+in JavaScript so that we can build and
+ship as fast as possible so I soon with
+that everyone's really excited we're
+already sold unreason we want to go
+right now actually probably hack on
+reason but I would say that there are
+still some caveats and this actually
+applies with all statically typed
+languages that within a domain
+it may help you quite a bit but there
+are still challenges right sometimes it
+can be very difficult to know how to
+represent an idea in a way that the
+types checker or the compiler is going
+to understand it and the canonical
+example I like to use here is Reax j/s
+so despite the extension or the suffix
+Reax j/s was actually prototyped in
+standard ml which isn't a cousin of Oh
+camel and reason and there was a lot of
+progress made and it was very good for
+scaffolding the initial version of it
+however when it came time to model the
+state update transition Jordan walk
+couldn't figure out how to represent it
+in such a way that the standard ml type
+checker would allow it so it can be very
+difficult to represent ideas and even
+like worse than that there are some
+valid programs or valid enough that will
+never be type checkable and there's like
+a lot of research to extend the power of
+the type systems things like dependent
+types and whatnot that are trying to
+make it so that the unrepresentable
+programs become fewer and fewer but
+those are many many many years out so
+typed languages have these challenges
+and I think it's important to keep that
+in mind because there is a big trade-off
+whenever you bring in a typed language
+so we need to look at what are the
+positives what are the promises that
+they're actually giving us so reason I
+would say says that within the domain if
+you don't try to do one of these painful
+things I'm gonna make you very very
+productive so things like building web
+UIs and whatnot but as soon as you step
+out it's going to be incredibly painful
+and I would argue that's one of the
+biggest domains that we face as
+developers now is interacting with
+external systems
+right so for the compiler it's able to
+check all of your code to make sure that
+it is internally consistent there are
+whole classes of errors that are
+impossible to express which is fantastic
+but it can only do that for what it can
+see so whenever you do interrupt with
+the outside world whether it's C or
+JavaScript you do run into this problem
+where the compiler is now like a child
+and has no knowledge of what the
+externals ecosystem is like and it will
+trust you inherently if you tell it that
+you're using a JavaScript library and
+the JavaScript library takes a string
+and an integer as a arguments and it
+returns an object it will believe you
+and if you're wrong that will be a
+runtime error and you know libraries are
+well and good right we it's very
+important to have a nice ecosystem for
+language but I would argue the bigger
+challenge here is external API so every
+app we build at some point interacts
+with the outside world via an external
+API very few companies implement
+everything from the ground up and in
+order to interact with the outside world
+this basically requires that we speak
+the lingua franca today which is JSON
+and this is actually a really big
+problem for typed languages right so in
+this case I have a very basic type in
+reason it's beautiful it's a person with
+two fields a name in a city both are
+strings
+neither are knowable neither are
+optional and then our JSON you know it
+seems to match up quite nicely right we
+have name and city and to us that looks
+very very similar but to a compiler
+they're totally different things so
+let's look at what it actually looks
+like inside of reason whenever you're
+trying to extend the compiler to
+interact with the outside world so let's
+say that we have that JSON from before
+and we want to create a record of the
+person where the compiler can give us
+all this nice type-checking guarantees
+so what I'm going to do
+have a function called parse person JSON
+it's gonna take some JSON and repeat and
+return a person the first step is I need
+to parse the name so I'm going to get
+inside of the person JSON the name field
+but it's JSON right it might not
+actually be there so this is an optional
+type so I'm forced to deal with this and
+say alright well if it's not there I'm
+just gonna throw an error right that's
+just bad JSON I can't recover from that
+I can't create a person without a name
+but now what I've gotten out is actually
+a JSON value and a JSON value can be a
+string or an integer an object so we
+actually have to say alright I want to
+decode this value into a string but it's
+possible that someone put in the wrong
+kind of value there and it may not
+actually be a string in which case we'll
+get none back and again I can't do
+anything with malformed JSON so I'm just
+gonna throw an error but if it is a
+string then I'll get the value wrapped
+up here and I'll simply return the value
+and I'll repeat that for the CD and now
+I can create my record so these two
+lines and this one line of JavaScript or
+JSON turns into this but at least we
+were able to write at least we were able
+to write a parsing function and we're
+programmers so we can program our way
+out of this it's not so bad so let's
+clean it up a little bit so in this case
+I'm going to build a little function
+little helper function that's gonna
+pluck a field out and it's gonna decode
+it and now like with a little bit of
+abstraction I'm able to get his sound to
+three lines so pretty good but let me
+show you what it actually looks like in
+a real world example so I ship this in
+early 2017 and the biggest problem I had
+with it so the like building a UI and
+reason reacts was a fantastic experience
+and the way I did this was I took the
+response from the server and I encoded
+it as a native reason type and I built
+the UI and it was great a whole classes
+of errors were just eliminated by
+default
+however when it came time to actually
+hook it up to the real response from the
+server this is what it looked like I had
+to implement tons and tons of decoding
+and encoding logic manually for each of
+these responses and this is so manual so
+tedious and error-prone literally all of
+our errors came from this file and this
+is for like four endpoints on an API it
+was horrific so now we have made a
+little bit of progress in the reason
+world and so like maybe you know again
+as programmers we'll introduce a new
+layer of abstraction and Wilmette a
+program our way out so this is called a
+PPR this is an annotation which the
+compiler will recognize and given this
+annotation it will walk over the type
+definition and it will generate these
+functions for us right so now we get a
+person to JSON and a person from JSON by
+default so that's pretty nice right
+we've made some progress
+we don't have to manually write our
+converters back and forth and there's
+not a ton of boilerplate but there is
+still the possibility that the server
+sends us some malformed JSON and if you
+look at to the reason manual it has this
+section on how to properly decode JSON
+that you are technically you are
+required to recursively parse each field
+and handle invalid data accordingly and
+I have never seen anyone do this actual
+work right it's always just a throw and
+error immediately we can't recover from
+this so I would argue that on the client
+we effectively always have to trust the
+server we're at the mercy of the server
+to send us valid data it's very hard to
+recover from it and so whenever we're
+making those records it can be really
+difficult to know the shape of the data
+right even though we can met a program
+our way out so take a look at a real
+world example this is the github REST
+API if you hit the git repository
+endpoint this is what you get back this
+is one repository this is a lot of data
+in one endpoint
+it is going to take a long time to
+enumerate all these fields
+inside of our code in fact it will take
+so much time I would argue that we
+shouldn't do it we should just write a
+tool again programmer so we program our
+way out of every problem right so maybe
+what we could do is we write a tool that
+you know this is just a son
+so we'll enumerate over all the keys at
+each level and we'll check the type of
+the value of that key and then we'll
+just spit out the record definition so
+now we can just take any JSON and spit
+out some nice recent code all right so
+we can build tools that you know
+accelerate these things which is nice
+but look at this so this is the original
+and this is the new one and this is a
+real-world example of something that
+I've been bitten by a lot the thing that
+changed is that type is now no the
+problem is that the example based
+approach doesn't necessarily cover all
+of the variability all of the novelty
+inside of an API right inside a reason a
+string and a knowable string are
+different things and if we don't cover
+that and the compiler doesn't expect a
+string to be knowable that will be a
+runtime error and we've lost all the
+safety that reason was supposed to give
+us so maybe we extend our tool we can
+fix this so what we do is instead of
+collecting one example maybe we just
+collect 10 100 a million something like
+this and for every time we see a key we
+check the value we see what type it is
+and if it's a string or if it's null
+that's maybe a novel event every time
+there's something new that we haven't
+seen before if it's always been an
+integer and now it's a string or it's
+always been there and now it's knowable
+that's a novel event and so as the the
+examples flow through we track the rate
+of novelty and as it approaches zero
+we're kind of confident we're getting
+more confident we've covered all the
+edge cases and the variability inside of
+an API and then we can use that data to
+actually generate lots of different
+things
+so we can generate type scripts bindings
+we could generate Reason bindings we do
+lots of things with it so I want to show
+you demo of what this would look like so
+this is a tool that is going to take
+some JSON and it's going to walk over
+the example and it's going to generate
+some type definitions here and I'll show
+you another example as well so you can
+see that very quickly it walks over
+everything and in fact if we go to the
+github repo example rather than writing
+this all out manually that is so big and
+then come in here and paste it in and
+you can see that it generates lots and
+lots of type definitions for me
+automatically so that I don't have to
+write it and over here is actually some
+graph QL resolver code so I also don't
+have to write that code which would be
+incredibly manual and credibly tedious
+as well so it's really nice to build
+these tools that actually generate this
+stuff for us and this is actually this
+is really the same thing you would do
+even in a dynamic language you would
+still need to try to cover all of the
+variability of an API if you were able
+to completely cover it and have those
+guarantees you would never have you know
+name is not a field of undefined on the
+front end because you would have a deep
+understanding you would know exactly the
+variability of the fields on the back
+end so we're able to write tools meta
+programmer way outs we're almost there
+right but this is the last vulnerability
+I would say is that I'm gonna save you
+the time this used to be just URL and
+someone on the back end got about of OCD
+and decided really it should be called
+owned just URL so they moved the field
+and this happens I've been bit by this
+and no one told you and well probably
+the person who told you was probably
+pager duty at 3 o'clock in the morning
+whenever your customers are upset but if
+you think about the implications of this
+again we're at the mercy of the server
+to send us valid data
+and so them having moved this means that
+it potentially invalidates all of our
+code right once we've tracked down we
+figured out that this field has moved
+I suspect the next feeling you have is
+you're wondering what else has changed
+right like this is a good way to become
+a paranoiac what you're just wondering
+like is it going to be another like can
+I go back to sleep right now or is there
+going to be another pager duty issue so
+I would argue that in any typed language
+you have three really big problems the
+first is the massive amount of
+boilerplate it takes to convert from
+some JSON representation into a
+representation that the compiler and the
+type checker understand the second is
+the accuracy and the safety of that
+conversion right it's possible to get
+feels wrong and it's possible that
+you're going to throw an error if you
+don't totally understand everything and
+then finally the biggest problem is that
+servers can't break everything out from
+underneath us so I would say that in
+reason we want four things we want
+access to all of the data types in an
+API we want to have automatic conversion
+automatic access and guaranteed safety
+and we want a guaranteed contract from
+the server and the client and we want
+all of that in the automatic and
+programmatic way so that we don't have
+to build those tools one-off that's
+graph QL so graph QL has all of these
+different nuances built in so I'll show
+you a quick example where this is the
+github repository API and I'll show you
+the equivalent and graph QL something
+coming here going to github I'll pull
+out a user I'll pull out the
+repositories and then for each of those
+repositories I'll pull out the name so
+I'll run that and you can see this is
+really really quick at any given time I
+can hover over the field and I can see
+that this is a stream and the bang
+indicates that this is a non knowable
+string
+this is huge right I can use this type
+information inside of my code to make
+sure that I get all the guarantees that
+I was looking for previously and the
+nice thing is you know if I want to add
+an additional field I can get just that
+additional field I don't have to have
+you know if you see remember how big
+that repository endpoint was five of
+those would be huge I'm forced to
+download all of that data even if I
+don't need it
+whereas with graph QL I can express not
+only one endpoint but I've actually
+jumped across two endpoints here and got
+exactly the data that I needed and the
+way this is done graph QL actually
+supports introspection so I can ask for
+example slickin schema I can say what
+are all the types that you have and what
+are their names and I can see here are
+all the different types that this graph
+QL server supports all right so I can
+actually ask I can introspect a server
+and say hey what is the contract that
+you're offering me that you guarantee
+that you're going to have and this is
+going to return something like this
+where we get the schema and the query
+type and whatnot and so in reason we
+have variants they're a bit like enums
+and so a project state really can be two
+things a project state can either be
+open or closed and it's pretty succinct
+in reason but this is how you would
+represent the equivalent in graph QL and
+the nice thing is that's JSON right we
+all know how to work with JSON and so
+now we have this kind of nice
+isomorphism where we can work between we
+can take the server's representation and
+generate our reason representation
+automatically similarly if I have a user
+with a avatar URL this is maybe how I
+would represent it so I would say that
+the marriage of these two things extends
+the reasons domain by such a large
+factor in fact any typed languages
+domain by a huge factor so I want to
+show you what this actually looks like
+when you put it all together so here's
+what it looks like whenever I'm working
+with our API so this is reason
+and I'm able to co-locate my graph you
+all query here alongside my component
+that's gonna be rendered and right now I
+have a query that's gonna check if I'm
+logged in and right now it's
+parameterised by an email variable which
+is a nullable string but i'm gonna come
+in here and i'm gonna make it so that
+this string is not knowable and as soon
+as I do that I have an invalid program
+because in my query where I actually use
+it it's saying hey this email variable
+is non knowable you have to require it
+so now I'm going to add it and now it's
+good again so I have this really nice
+way of iterating through my program and
+making sure that there's type safety all
+the way through to the server and now
+whenever I actually deal with the
+response from the server the response
+can be in three states
+it could be loading it could be failed
+or it could have some data and if it has
+some data I'm gonna ahead and pluck it
+out and if you can see down here for me
+this is amazing it knows the exact shape
+of the response from the server it knows
+the types and so we can do some pretty
+amazing things where we get for example
+autocomplete
+along the way so in this case for
+example let's say that I thought you
+know maybe this was called name rather
+than full name and as soon as I hit save
+it's gonna say hey this field name does
+not exist did you mean full name and as
+soon as I try to type full name it's
+gonna autocomplete right there's
+something magical about being on the
+client and being able to autocomplete
+through a servers API right that's such
+a difference in developer experience
+being able to explore the API from
+within your own editor so on the front
+end with reason in ml and graph QL what
+do we get on the graph QL side we get
+extremely powerful clients that give us
+exactly the data we need across lots of
+lots of different resources so we no
+longer have over fetching or under
+fetching we also have reduced latency
+because everything is together in one
+call on the reason side however reason
+gives us a safe
+that will not compile if this server
+cannot satisfy our query we're also
+forced to make sure that we deal with
+all the no ability checks there's no
+more runtime exceptions for undefined
+our name is not a field of undefined and
+I think this is really unique because
+typically power ease security they're
+all at odds this is a really rare case
+where this is actually easier than the
+alternative it's faster and it's safer
+so I won't go over how to actually use
+it on the front end it's very very quick
+within five minutes you can do a create
+react app at Apollo graph QL and you'll
+be good to go
+the back end however is also I think
+very important for us as developers so I
+spend most of my time on the back end
+and I think that as a back-end developer
+while it can sometimes be bothersome to
+deal with front-end clients it's
+important I generally see them as doing
+a more important job than me they
+actually control the user experience and
+so my job is to serve them and to make
+them as productive as possible so I try
+to keep in mind they want to be
+productive they want to have safety
+don't have stability and they won't have
+certain guarantees for example if as a
+back-end provider I say that I'm gonna
+return a certain type I will always
+return it and if I say that it's not
+knowable I'm never gonna return a null
+and really I want to be as courteous as
+possible so I want to do this on my time
+not theirs so graph qlj s for example
+the reference graphical implementation
+will do these type checks but it will do
+it at query time so it will run a query
+from a client and it will execute
+everything and it will check the result
+to make sure that none of these
+guarantees have been violated and if it
+has it will go ahead and throw an error
+and then the client will have to deal
+with an error they'll never see
+malformed data but they will see more
+errors whereas what I want is for
+something like reason to go ahead and
+give me the guarantees that I will never
+expose my clients to those errors as
+much as possible and the difficulty here
+is maintaining these guarantees as your
+schema grows
+so Facebook's schema graph QL schema
+it's probably the oldest it's from 2012
+I believe and it said I think more than
+40 megabytes ours is upwards of 20
+megabytes that is a huge schema and
+especially as your team grows right it's
+very difficult to maintain these
+guarantees across your team and one that
+resonates with me probably is pushing at
+7:30 you can push with real quick
+commits on Friday and then 2 o'clock on
+Saturday you promise you'll never do it
+again
+so I would say that the best way to do
+to write graph QL server is with a
+project called Oh camel graph QL server
+it is by far the best graphical server
+in the world with the caveat of I have
+not used any others so you know taking
+with a little grain of salt and just
+show you like what this would look like
+to actually build a real graph kill
+server you know if we have a type of
+user here I'm gonna translate from the
+type and say that I have this graphical
+object called the user and I'll give it
+a documentation for the user to be able
+to see and it has these two fields an ID
+and a name and so I just kind of build
+these resolvers these objects with
+certain fields and then finally I put it
+together and one big schema object and
+now I'm gonna have static guarantees
+then my program is going to deliver the
+right response to all my clients and
+they'll be able to introspect and get
+all those guarantees that we saw before
+and this is I think really really
+powerful so for us on every time we
+build push the CI we actually build the
+new server and what it does is it
+downloads the current production schema
+and it downloads the one we're about to
+push and because it's just JSON it's
+really easy to do a diff and to figure
+out are we pushing any breaking changes
+are we about to break any of our clients
+and if we are then we fail the build we
+do not break clients and this is so
+difficult to do without something like
+graph QL without introspective all
+schemas on the server now there are some
+limitations on both the front end and
+back end not all of the graph goes
+is covered in reason and there are
+probably some caveats like it'll always
+be behind the reference implementations
+on the back end I'm happy to say that
+you know I think three or four months
+ago a lot of these were unknowns and
+there's been a lot of progress so now
+actually a lot of the graph QL schema is
+covered pretty well
+biochemical graph QL server pretty happy
+we're pretty happy with it so far I'd
+only give a quick demo of what it would
+look like if you know we have this
+ability to do in editor autocomplete
+type checks all this nice stuff where it
+makes it actually easier for a
+statically typed language to access
+these external api's than a dynamic
+language for the first time I actually
+think this is very reminiscent of
+closure script before react so David
+Nolan talked about this where closure
+script was a really fun hobby project
+but it wasn't really real because you
+could do all of your beautiful
+functional programming inside of closure
+script but as soon as you touch the Dom
+you know the mutable Dom caused all that
+beautiful functional programming to be
+thrown out the window and so you
+couldn't really build real things with
+closure script until react came along
+and recovered that and extended the
+domain for closure script so that now
+it's used at tons of companies similarly
+for statically typed languages I think
+that they were very restricted before
+because communicating with the outside
+world
+is a fundamental like necessity for our
+servers for our clients and so being
+able to extend that domain so that it's
+actually easier than the alternative has
+huge implications so let's imagine for
+example if the entire world
+if every API was built with graph QL it
+might look something like this so let's
+say that I'm dealing with the YouTube
+API I'm gonna build a little app that
+given a video ID it's gonna pull out
+some information on that video so I'm
+gonna come in here and type this out and
+I'll get the title of this you can run
+that and maybe I'll get the channel ID
+and this is typically where rest would
+end right having
+in a video out you would pluck the
+channel ID off and you'd make a
+subsequent requests over to the channel
+in point but really maybe I just want to
+know what channel was it uploaded to so
+I'm just going to hop over to there and
+I'm gonna pull out the title and I was
+able to traverse over these two
+different api's but the cool thing is
+that on YouTube you can associate your
+channel with external media things like
+Instagram or Twitter so we say for every
+Twitter account that this channel is
+associated with on for the first 25
+tweets and now in the Twitter part of
+the API and now for each of these tweets
+I'm gonna plot the text and the Twitter
+API has this concept of entities so say
+in this first 25 tweets for any user who
+is mentioned I'll get their screen name
+and also let's get their first 25 tweets
+and now the obvious thing to do having
+gone from YouTube video to a channel
+over to Twitter to all the way at the
+edges is that if anyone tweeted about a
+video we want to hop back over into
+YouTube and pull out the title of that
+and what would their let's call it the
+statistics and get the view count and
+the light count so run that well make 30
+or 40 API calls I'll mention all back
+together and so you can imagine that
+autocompletes
+inside of your editor that type safety
+across all these different services is
+so phenomenally better than the
+alternative it's crazy so this is what I
+work on this is one graph and I would
+argue that in conclusion if you want if
+you like anything about statically typed
+languages please build your API is with
+graph QL because it will extend
+everyone's ability to use them in
+real-world scenarios and I'll show you
+one last demo just for fun so you can
+build such nice tooling because of this
+introspection you don't always only have
+read-only access we have write access as
+well so I this is actually how most
+people use graph QL in our service they
+just kind of come over here and they're
+able to explore and just see what's
+available so insight I see that there's
+a purchase domain thing here I'll say
+maybe I'll willing to spend $13 on it
+and I'll do or a dev graph QL demo 2018
+calm I'll run that
+and this is going to take a little while
+because it's actually dealing with
+upstream domain providers and whatnot
+but exploring an API like this you can
+imagine if this was in your editor being
+able to kind of click through and see
+everything that an API has to offer and
+to know that they via the server is
+going to give you those guarantees it's
+huge
+alright this will be the last thing
+whether it succeeds or not fingers
+crossed man all right cool
+I now own or a dev graph QL demo 2018
+calm okay
+that is its thank you very much
+[Applause]
+
+3.0s · 36m 23s YouTube · 6.3k words · text via transcript/captionTracks

@@ -1,0 +1,108 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero';
+import Timeline from '../components/Timeline';
+import Talks from '../components/Talks';
+import About from '../components/About';
+import Footer from '../components/Footer';
+import SectionDivider from '../components/SectionDivider';
+---
+
+<Layout title="Sean Grove — Founder, Builder, Hacker">
+  <main>
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 px-6 py-4">
+      <div class="max-w-6xl mx-auto flex justify-between items-center">
+        <a href="/" class="text-stone-800 font-serif text-xl tracking-wide hover:text-warmth transition-colors">
+          SG
+        </a>
+        <div class="hidden md:flex items-center gap-8">
+          <a href="/talks" class="nav-link text-stone-600 text-sm tracking-wide">
+            Talks
+          </a>
+          <a href="/projects" class="nav-link text-stone-600 text-sm tracking-wide">
+            Projects
+          </a>
+          <a href="/ml-explorations" class="nav-link text-stone-600 text-sm tracking-wide">
+            ML
+          </a>
+          <a href="/blog" class="nav-link text-stone-600 text-sm tracking-wide">
+            Blog
+          </a>
+          <a href="#contact" class="px-4 py-2 bg-stone-800 text-sand-50 rounded-full text-sm hover:bg-stone-700 transition-colors">
+            Contact
+          </a>
+        </div>
+        
+        <!-- Mobile menu button -->
+        <button id="mobile-menu-btn" class="md:hidden p-2 text-stone-600" aria-label="Menu">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+      
+      <!-- Mobile menu -->
+      <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 right-0 bg-sand-50/95 backdrop-blur-lg border-b border-sand-200 py-4">
+        <div class="flex flex-col items-center gap-4">
+          <a href="/talks" class="text-stone-600 hover:text-stone-900 text-sm tracking-wide">Talks</a>
+          <a href="/projects" class="text-stone-600 hover:text-stone-900 text-sm tracking-wide">Projects</a>
+          <a href="/ml-explorations" class="text-stone-600 hover:text-stone-900 text-sm tracking-wide">ML Explorations</a>
+          <a href="/blog" class="text-stone-600 hover:text-stone-900 text-sm tracking-wide">Blog</a>
+          <a href="#contact" class="px-4 py-2 bg-stone-800 text-sand-50 rounded-full text-sm">Contact</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <Hero client:load />
+    
+    <!-- Section divider -->
+    <SectionDivider variant="stones" client:visible />
+    
+    <!-- Timeline -->
+    <Timeline client:visible />
+    
+    <!-- Section divider -->
+    <SectionDivider variant="ripple" client:visible />
+    
+    <!-- Talks -->
+    <Talks client:visible />
+    
+    <!-- Section divider -->
+    <SectionDivider variant="moss" client:visible />
+    
+    <!-- About -->
+    <About client:visible />
+    
+    <!-- Footer -->
+    <Footer client:visible />
+  </main>
+
+  <script>
+    // Mobile menu toggle
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    menuBtn?.addEventListener('click', () => {
+      mobileMenu?.classList.toggle('hidden');
+    });
+
+    // Close mobile menu on link click
+    mobileMenu?.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu?.classList.add('hidden');
+      });
+    });
+
+    // Navbar background on scroll
+    const nav = document.querySelector('nav');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        nav?.classList.add('bg-sand-50/90', 'backdrop-blur-lg', 'shadow-sm');
+      } else {
+        nav?.classList.remove('bg-sand-50/90', 'backdrop-blur-lg', 'shadow-sm');
+      }
+    });
+  </script>
+</Layout>

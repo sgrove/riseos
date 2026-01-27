@@ -1,0 +1,7 @@
+{
+  "title": "Making Magic with GraphQL Tooling",
+  "event": "GraphQL SF #9",
+  "date": "2019",
+  "url": "https://www.youtube.com/watch?v=HGqs7pV7c5s",
+  "description": "A demo-heavy showcase of GraphQL tooling innovations from OneGraph, including the GraphQL Explorer for intuitive API discovery, automatic code generation for React components, VS Code and Excel integrations, and techniques for schema-driven UI generation. Demonstrates how thoughtful developer tooling can dramatically lower the barrier to API adoption and empower both developers and non-programmers alike."
+}

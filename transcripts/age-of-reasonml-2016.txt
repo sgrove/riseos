@@ -1,0 +1,823 @@
+Transcript:
+all right everybody good morning body
+salava uh so the cardinal rule for
+presentations is to keep it simple as
+few things as possible just focus on one
+thing so of course I'm going to talk
+about about 100 different things about a
+language so we're going to fly through
+this uh first of all how many of people
+have heard of
+Reason oh this is beautiful all right
+how many people have heard of O actually
+all right of the people to raise their
+hands how many people have built
+something with o
+camel yeah all right that sounds about
+right all right cool um so reason is a
+new language or it's actually more of a
+developer experience based around okam
+okam gives you a bunch of very very cool
+features uh and reason is basically a
+polishing and a bless stack around that
+so some of the goals behind it uh it's
+built by the same people that built
+reacts uh its goals are to have a very
+friendly syntax uh it has very very
+powerful tooling very conscientious
+Tooling in the form of very very deep uh
+editor integration and very carefully
+thought out build
+tooling so first off how many of you
+guys have heard of uh a Pac-Man complete
+language so actually I like this uh this
+metric a bit so we've all heard of tur
+complete languages but that's not a very
+interesting metric right there are lots
+of pretty boring languages that are T
+complete it's only a cool language if
+you can actually do or build Pac-Man in
+it so I just show you real quick um I'm
+going to actually compile this this is a
+live native GL or native openg GL
+application built-in reason uh it's re
+witness for those of you who are
+familiar with the game so I'm going to
+actually go through here I mean that was
+pretty awesome right I actually solved
+that maze in front of everyone Under
+Pressure uh but this is uh so just
+that's just to prove that uh Reon can
+actually build native applications it's
+very cool so whenever I think about
+programming like I inherently think it's
+kind of a fun thing it's something I
+enjoy doing I think most of us would say
+that if if we were asked that we
+actually inherently enjoy programming uh
+but there are times where actually I
+find myself frustrated with programming
+and if I try to separate those times and
+I kind of focus on what is it about
+programming that uh I dislike at times
+often times it's kind of uh if the
+computer's not helping me out very much
+if there are bugs I'm having a very hard
+time tracking down uh and reason kind of
+goes out of its way to address a lot of
+the issues that you might have whenever
+you're or frustrated with whenever
+you're programming so it's kind of the
+goldilux of languages where uh it
+actually helps it tries very very hard
+to help you whenever you're
+programming uh often times so if you're
+familiar with a lot of uh different type
+systems often time kind of feel like
+type systems are like uh haters in the
+rap game right so the compiler is always
+there like looking for you to fail
+trying to tell you like what you're
+doing wrong but actually reason does a
+really good job job of kind of helping
+you along the way and saying actually
+suggesting how you can improve your code
+or how you can fix it uh and for those
+of you like it's very subtle here but
+you can see I've uh bolded really very
+fun there it's very subtle uh you guys
+won't realize it but it's kind of
+subconscious you guys are thinking it's
+already very
+fun so one of the things that makes it
+really fun is the tooling so reason just
+focuses crazy hard on tooling to the
+point where it's kind of like having a
+robotic parabody with you whenever
+you're first learning and one of you're
+actually developing production
+applications and reason giveing you an
+example what this looks like uh let's
+say for example uh that we want to write
+a function called is odd and what we're
+going to do is actually enumerate we're
+going to match on an integer and we
+enumerate all those cases and so if
+we're writing a function we say if it's
+zero it's not odd one it is two it is
+not and as soon as we hit save it's
+actually going to tell us by the way I
+checked your code you missed the case in
+fact here's an example of a of a value
+that you're going to have a runtime
+error for so not only that like as soon
+as you hit save your buddy is watching
+your your back he's making sure that's
+like your code is
+safe but a slightly more realistic
+example might be something like this uh
+we have a type of animal an animal may
+be a cat a dog or a bird and we're going
+to switch over it inside of our function
+and if we only return so say we only
+handle cat and dog as soon as we hit
+save uh it's going to tell us that we
+forgot bird and actually this is really
+important so you can imagine that there
+are lots of cases where you've built
+some application uh kind of expecting a
+data structure someone has come in and
+added a type to that somewhere else
+inside of your code base it's very
+common but now all of your your code
+like a human has to kind of think about
+which functions might be affected by
+this type right where are we actually
+missing code in here what is and you
+have this uh it certainly makes
+deploying to production more exciting in
+a way but not very much fun I
+think uh and not only that but it'll
+actually go out of its way to kind of
+find and make sure that all the types
+match so let's say that we have some
+animals and some sounds and we want to
+make a function that gives us the sound
+for an animal if we match over here uh
+the third time or third case we have a
+string and it'll actually infer based
+off of how you've written this it looks
+like you probably wanted to sound not a
+string so again it's just like having
+that robotic par that's just watching
+you and helping you every time you hit
+save
+uh not only that but one of the things I
+really worry about uh with code is a
+catch all uh there are cases where you
+you think you want to be able to remove
+some code and you're pretty sure that
+it's not used but you're not 100% sure
+and so what happens is like your code
+develops these growths all over the code
+base because everyone is a little bit
+afraid to remove it just in case you hit
+an artery uh but actually you're bought
+Air Bud in this case we're handling true
+and false over a Boolean and it will
+tell you look it's cool you got it like
+you don't need that third case you can
+go ahead and remove it it's a very safe
+it actually watches and make sure that
+you can remove as much code as
+possible um and not only that but reason
+goes pretty far in how much it wants to
+help you so if you think about let's say
+that we were uh dealing with a true or
+false we we just want to do a Boolean
+comparison or conditional uh in this
+case we're actually going to match over
+the true and the false but we could
+write if this then that else this
+um or we could write a tary but reason
+is super it's like it's iron fisted
+hipster conformism it requires as soon
+as you hit save it says no no no I
+looked at the a this is how we write it
+and it will immediately rewrite it for
+you in the browser or sorry in in your
+editor there is
+no discussion about how you write this
+part or represent this particular part
+of the A and only that it doesn't just
+tell you so often times I feel
+frustrated with uh say uh editor tool or
+developer tools and that it will tell
+you what is wrong and like it even says
+like here's what you should be doing but
+it doesn't do it for you right and so
+reason will go out of it way to actually
+rewrite it for you uh as you're working
+with
+it uh they also have crazy good errors
+right El has kind of inspired the I
+think the developer world to try much
+much harder uh for the developer
+experience make sure that errors are
+really reasonable so this is an example
+of what a uh error looked like before uh
+where you know you passed a string and
+it was expected to be bullan uh the way
+reason does it is very similar to Elm
+well we actually want to show you your
+code make sure that you understand
+exactly where there is happening and
+give you a suggestion about how to fix
+it and it goes a bit further to the
+point where even when there are warnings
+where there are parts of the language
+that are kind of hard to understand it's
+going to make sure that it explains to
+you why uh this suggestion is here and
+actually offer you Alternatives about
+how you might write this so it's kind of
+like you have uh or whenever you start
+with a new langage
+often times it feels like you you the
+process is banging your head against the
+wall for about 2 or 3 days for something
+very very simple when you know if
+someone was very experienced sitting
+next to you they'd be like oh no no you
+just do this it would be 5 minutes and
+you be you know it and you'd be done and
+that's what like having a robotic parir
+body and reason is like it actually
+helps you learn as you go
+along but you know as fun as that is
+like it's not a very useful language
+unless you can actually deploy you can
+get in front of people uh and O camel
+has some pretty crazy reach how many of
+you guys have heard of unic
+kernels oo a few all right so unic
+kernels are kind of a new way of
+building applications whereas right now
+whenever we develop an application uh
+we're very very careful with it right
+like we love to delete code uh make the
+surface area of our code as small as
+possible we kind of artisanally craft
+this beautiful application right and
+then what we do is we pull in 15 million
+lines of memory unsafe and type unsafe
+safe code called the Linux kernel and we
+just deploy it what could go wrong right
+um and often times we think like well
+you know if I'm not using all 50 million
+lines of the code of the Linux kernel it
+doesn't really matter right but actually
+there are cases where for example just
+having the code is enough for a security
+vulnerability like 15 million lines of
+code is no human being can keep that in
+their head uh there was a case in uh the
+Zen hypervisor for example where with
+Venom uh where because of a legacy
+floppy disc driver that the hypervisor
+was presenting uh there was actually an
+escalation that would allow you go
+through and break through the hypervisor
+how many of you guys are using floppy
+discs in the cloud these days not so
+many right uh but just the fact that it
+was there was enough for there actually
+to be a very serious escalation so if we
+don't have this code it's much much
+better so unic kernels uh in OK cam kind
+of lead the way here the idea is what
+we're going to do is at compile time
+we're actually going to out and pull in
+just the libraries we need so we need
+like pure oam implementations of TCP and
+IP of TLS of ss all these kinds of
+libraries uh and usually this is like
+that would be a crazy idea to try to
+build out but luckily A team out of
+Cambridge has been working for 7 years
+to build it out and it's already done so
+that means whenever you compile your
+application there is no operating system
+we're literally going to pull in all the
+code and we're going to produce a VM
+which is just your application there's
+no other Services running and it is Tiny
+uh you get some very very cool uh
+numbers that come from this so instead
+of millions of lines of memory and
+unsafe or memories unsafe and type
+unsafe code we're going have tens of
+thousands of lines of memory and type
+safe code and this actually has huge
+security implications because the the
+attack surface of our application is
+vastly reduced and not only that but we
+can actually hold the entire stack all
+the way from the hypervisor up to our
+application in our heads a single human
+being can hold about 10,000 lines and
+follow the the lines of execution
+through that whereas with the Linux
+kernel you're going to have a much more
+challenging time but the artifacts that
+are actually built from there end up
+being very very small so how small can
+you get a Linux VM like pretty small
+maybe uh tens of megabytes hundreds of
+megabytes and you can boot it in a
+couple of seconds it's pretty good we're
+pretty happy with that unic kernels
+actually are in hundreds of kilobytes uh
+there going to be the entire M and they
+boot within say 50 milliseconds and this
+is crazy because it is so small
+literally every time you do a deploy you
+can push that unic kernel into a git
+repo you have an entire audit log of
+everything that has ever been deployed
+on your server and if you have hits an
+error for example you can check out that
+exact version of the server and Repro it
+locally it's
+amazing uh and because it boots up so
+quickly it enables totally new kinds of
+deployment scenarios imagine for example
+that that we have no servers running we
+have just a load balancer a request
+comes in for our server we can literally
+the reply window for TCP is such that we
+can literally Reach Out boot up an
+entire VM just for this one connection
+connect it and then uh as soon as that
+connection is done kill that VM so you
+can kind of Imagine like the hug of
+death uh from Hacker News or reddits or
+something like that as people are coming
+in we're literally going to boot new VMS
+for them and return them in the the
+period of time that takes for the TCP
+connection to
+complete uh so if you guys have used AWS
+Lambda like you can get it pretty fast
+you have like maybe a 40 millisecond
+overhead for a function we can boot our
+entire server uh written in reason in 50
+milliseconds uh and in fact it's uh
+currently closer to 20 or 50
+milliseconds but if you do it right you
+can get down to 5 or 10 milliseconds
+it's
+crazy uh you can also develop for the
+traditional uh say Windows application
+or desk or Linux applications uh just
+kind of a standard thing there and it
+has an amazing JavaScript story uh so
+this is one of the few languages where
+you can actually program you can make
+TCP uh Stacks that are actually
+performant and secure but it's also an
+expressive language that allows you to
+write amazing uis and in this case uh
+Buffalo script is the compiler and it
+focuses on two things very smooth
+integration with existing JavaScript
+libraries so things like react react
+motion Etc and very clean generated
+code and it's not joking about that so
+just give you a quick test uh this is
+some JavaScript this is some
+JavaScript which of these two is written
+by a human any ideas first one second
+one oh second second all right well
+they're they're both written by a
+compiler but you guys have to think
+about it like that
+was uh so this is actually the old camel
+that writes it but the uh the compiler
+is actually super performant and it
+generates just it the exact JavaScript
+that you might write by hand right this
+looks like it's written by a human uh
+you know other than like the little
+comment there but overall like this is
+the nice thing about uh reason and kind
+of Facebook Technologies just like react
+Facebook knows that you have to have
+this clear upgrade path where you can
+start with a small piece and embed it
+and then kind of have it grow and just
+like with that with uh reason you need
+to be able to compile down to JavaScript
+and introduce it into your team in a way
+that is not going to radically require
+you to throw everything out and for your
+entire team to learn reason they need to
+be able to read the JavaScript and still
+understand what's going on so we want to
+have all of the benefits of the typeing
+in that robotic par but we still want to
+be able to work with the existing kind
+of JavaScript
+world all right not only that but we can
+go down to arm 64 it has a great
+compiler down to Native uh iOS for
+example or Android uh where we can it
+has great foreign uh ffi and so we're
+actually able to use the native um IOS
+and Android libraries and we don't
+actually have a jit that we're running
+so we have very very predictable
+performance on Pro on platforms where we
+really care about every little bit or
+every single CPU
+cycle uh and this is for example me
+taking that same exact uh code that I
+ran earlier I bed up a Docker image that
+had the compiler uh tool train installed
+I compiled it out for arm64 and then
+running it on Raspberry Pi so we can
+actually run okl on the browser on
+desktop we can build unic kernels uh we
+can go to um Native mobile and kind of
+sort of embeded devices you know
+raspberry pies they get faster and
+faster every year but it's still a
+platform we really care about having a
+very predictable performance envelope
+and uh kind of eing out every bit of
+performance that we can so we have both
+great reach with reason and and great
+semantics uh so it's like I said it's
+one of these few languages that is
+actually very well suited for both
+systems language or systems level of
+programming but also for application
+development uh okam itself which reason
+is based on has a sometimes worryingly
+or like worrying Obsession uh with uh
+performance they do crazy things to make
+it as fast as possible uh but
+importantly on say in the browser and on
+mobile platforms it has a very very
+predictable uh performance
+characteristic so we can always reason
+about our code if we see it being fast
+once we know it's going to be fast in
+the
+future so overall uh reason has great
+semantics it has crazy reach and this is
+not a like lowest common denominator
+Reach This is we can optimize for every
+platform individually with that same
+language uh we can share that code
+across all the different platforms if we
+change something and there's an error
+say for example in the back end and
+we're sharing code with the front end as
+soon as we hit save we're going to know
+we broke the front end right we don't
+have to wait for tests we don't have to
+wait for Integrations we hit save we
+know
+everything uh so kind of my pitch to say
+if you're coming from it or to this from
+a JavaScript point of view I would say
+if you imagine that flow and battel
+scripts were there from the beginning in
+a language that was very very carefully
+thought out that had some amazing
+Engineers working on it from the
+beginning that had great tooling and
+could go basically anywhere that's
+reason so there is this question okam is
+actually more than 20 years old like if
+it is so good where has it been it can't
+be that good right and actually I would
+argue that uh there's this kind of Chasm
+and the innovators here that's say the
+academics they've been working on OK
+doing crazy cool things uh that make the
+language very interesting and it's just
+kind of at the early adopter stage where
+you have financial services company like
+jam Street uh um basing all of their
+applications on it and they're actually
+trading with their actual money and so
+like they care about correctness and
+performance quite a bit so they're
+willing to pay a lot of the the costs
+that come for early do doctors they want
+to make sure that it actually works but
+they're going to kind of deal with any
+issues that come up the problem is there
+is this Chasm the early majority of the
+pragmatist they just want to get stuff
+done right most of us don't actually
+care about you know it's cool to play
+with the language but we're not going to
+use it in production unless it actually
+works
+and so okl has basically this Chasm is
+where Cool Tech goes to die it's very
+sad there's a lot of cool tech there uh
+but kind of with the amount of resources
+and energy that Facebook has been
+investing in in reason we can kind of
+see it start to jump from the early
+adopter stage over into where it's
+actually pragmatic we can use reason
+today to actually build very very
+interesting
+applications uh so there are some
+actually very cool projects and uh some
+Jared here actually is the author of
+some of them
+uh one of them is rejs so you can kind
+of Imagine often times whenever you're
+trying to integrate with uh
+JavaScript uh let's say you want to
+compile this over you want to get it
+into reason so you can get all those
+benefits of reason that robotic parabody
+the performance the reach
+Etc uh there's a very kind of mechanical
+translation process that happens and
+it's not particularly fun where it's
+kind of like monkey see a line of
+JavaScript Code Monkey L write a line of
+Reason code so what rjs does is actually
+will part your JavaScript for you and
+will output reason code it's not going
+to run but it's going to take care of
+all the mechanical stuff so now you can
+go through and actually very very
+quickly translate your code over and
+then add the annotations so that you can
+uh get it to work on reason and relayout
+is actually an example I think of a
+application or a project that uses it or
+used this initially which if you're
+familiar with the JavaScript
+implementation of flexbox uh Jordan
+actually implemented relayout which is a
+reason port well we took that JavaScript
+implementation wrote it in reason and
+now this runs in webgl it runs on mobile
+it runs in the browser and you can even
+run it on unic kernels if you wanted to
+I'm not sure what you would lay out
+there but it's pretty cool there is a
+danger in Reon and that is that every
+project seems to have to start with re
+uh to the point where we even have re
+react now uh hopefully that changes
+soon um so actually I would encourage
+you guys to ask some questions about uh
+the trade-offs between Javas scpt
+closure script in Elm uh so I work in
+closure dayto day um we did we built
+some products at Elm and I'm happy to
+kind of compare with say for example
+JavaScript and flow and how they're
+different um so actually and there's a
+bunch of other stuff like oaml is a
+crazy language like I said there's so so
+much in here so reason actually allows
+you to separate your syntax and your
+semantics so they have they are able to
+say we all seriz to the same as but but
+that means that we can write a function
+that will take that as and print it into
+different syntaxes in our editor so if
+for example you're like me and you like
+closure syntax you can read your reason
+code in closure syntax you're going to
+save it out to this a and whoever else
+opens it up is going to see it in their
+printer but now we can actually start to
+mold the language into our own vision
+and part of the problem with uh syntax
+is it's a bit like food like everyone
+feels entitled to an opinion uh it's
+very very like it's the the epitome of
+bike shedding topics and so this nice
+thing is now instead of bike shedding we
+can say if you want a different syntax
+just write your printer for it and
+you'll have it you can see it however
+you would like so we kind of we're kind
+of about like a letter a thousand
+syntaxes Bloom face so right now uh
+reason actually has built in uh jsx
+support that's just native uh they're
+working on graphql syntax there are
+super cool stuff that uh happening
+there uh I'll jump down to the bottom
+there but oaml has a new R uh right now
+in GitHub it has super aggressive dead
+code elimination and this works across
+all the different targets but actually
+with this dead code elimination you know
+whereas with our unic kernels where they
+were 100 Kobes before we could actually
+get them down to kilobytes so you can
+imagine your entire server
+infrastructure Is kilobytes boots in
+milliseconds uh and you can boot up as
+many as you want as soon as uh a coner
+comes
+in so I think a couple of people for uh
+this talk I think I'm getting close to
+the
+end or go uh anyway I guess I don't need
+slides but uh we're actually I wanted to
+announce real quick right before the the
+talk ends that uh for those of you who
+are familiar with closure cup which is a
+distributed kind of online programming
+event forclosure we're doing the
+equivalent for reason cop so if you go
+to reason cop.com and you want to kind
+of get into reason and you want to try
+it out uh go there sign up and we'll
+actually like come to the Discord we
+will help you get set up it's a super
+nice Community definitely recommend kind
+of joining uh and hacking on reason it
+will be a lot of fun uh happy to take
+questions and I'm just getting down to
+be with you for the questions yeah sure
+great so the top one here is is it
+reason to reason about reason uh so this
+is actually the other big danger with
+reason is there are so many bad puns it
+is terrible uh everyone loves to make
+dad jokes about reason uh but hopefully
+we get a little bit later uh the second
+one is a good one though doesn't compile
+to asm.js or you know web assembly or
+that kind of thing uh the big thing with
+okam okam relies on having a garbage
+colle garbage collector and asm.js you
+need to have like you can't really
+interupt with the host GC uh as of yet
+you know they're talking about opening
+that up in the future but right now not
+really but the thing is the semantics of
+Reason uh Port really really well to the
+existing JavaScript engines so you can
+make sure that like you
+can uh you don't really need asm.js as
+it is right now because it is super
+amenable to the optimizations that are
+applied in the JavaScript uh
+world uh does a unic will make Docker
+obsolete uh they're very very different
+approaches right so Docker containers
+are this very nice kind of incremental
+change right where like we can't just
+throw out our jvms we can't just throw
+all of our existing infrastructure so
+kind of Docker allows you to
+containerize and make these nice
+improvements uh o camel can and reason
+can compile down to a native uh Unix
+binary and run on there uh and you could
+run that inside of a Docker container
+and you get those nice benefits and then
+once you're you're comfortable once
+you're ready you can then switch that
+over to running in a unicel so there's
+always this nice upgrade path like
+everything about reason is about a
+having a smooth clear easy upgrade path
+uh how is reason compared to Elm good
+job someone asking that uh so actually
+there are a couple of different and
+important changes or differences one is
+reason has fantastic reach reason can go
+to all these different um uh platforms
+and it has this great kind of crazy
+academic team that has been investing in
+it for 20 years but one of the things
+that you're going to see is that Elm has
+this guarantee that it will you will not
+have runtime exceptions it is safer than
+reason in that regard at Le least right
+now there is a new feature kind of
+coming out um hopefully within say the
+next year or so for for reason called
+effect handlers and effect handlers
+totally changed the game the kind of
+tooling you're going to see that is
+possible in reason is uh kind of never
+before possible it's going to be crazy
+uh but for the time being Elm offers
+some great safety and other than that
+they're very very similar so Elm format
+imagine if Elm format was required by
+everyone uh that's kind of how uh reason
+is so it looks amazing as a front- end
+engineer where would I use it uh
+probably on the front end how does it
+compare to and compliment with
+bucklescript so bucklescript is actually
+the compiler that will take reason and
+uh compile it down to JavaScript and so
+there are bindings it is super easy to
+write bindings for using Buckle script
+and reason for existing JavaScript so uh
+the reason cup.com is actually built in
+reason uh using react and react motion
+uh
+it it was a pleasure to
+build um how does reason compared to
+Elixir earling uh they're very very
+different in the sense you know earling
+the the
+fundamental process model is just very
+unique to the uh beam VM uh for Elixir
+and earling uh and they have very very
+kind of different domains Elixir you are
+not going to get very very fast
+performance down in number crunching uh
+reason is actually very very good there
+reason however ever is not going to have
+this kind of beautiful supervisor tree
+approach where you can just easily
+restart your your
+services uh did reason ever piss you off
+when automatic actually I want to I
+don't know if I can get the this to go
+on I was going to give an
+example oh can I switch back to my
+screen actually wanted to show a quick
+example of what uh since someone asked
+if it's
+upsetting uh so basically the question
+is whenever reason fixes your code for
+you does that upset you
+and in the beginning right you're kind
+of like a hipster and like you want
+artisanally place I want that character
+there and I want that character there
+but you get used to it very very quickly
+so here's the example of um make this a
+little bit
+bigger so this is an example of uh we'll
+say we have a cat here we're going to
+peek inside of the box and if the cat uh
+survives then we're going to uh just
+return it and if it doesn't survive then
+we are going to decrement one of its
+lives and as soon as we hit save it's
+going to tell us hey this variable is
+unused so I'm going to remove
+that and then it says by the way I
+noticed I checked your code the type
+shorts are kept only has a field called
+lives and you're using the JavaScript
+spread here and then you're also adding
+in lives you don't need to do that
+you've already exhaustedly enumerated
+all of the fields so you can kind of
+imagine that maybe we did some refactor
+Ing and we change the types we remove
+some fields and now our robotic PA body
+is going to tell us hey you don't need
+this anymore you can literally just
+write
+uh that and now it's happy so it's like
+this peir bodyy that kind of helps us go
+along and learn the language and this is
+really important for
+example let's say I want to do
+um always dangerous to do a live demo
+we'll see how it
+goes
+all right so I'm going to switch over
+Boolean and I'm going to say that if
+it's true I'm going to do zero and if
+it's
+false I'll do one and as soon as I hit
+save it's going to tell me the eror the
+problem here it says that hey by the way
+uh at this point I was expecting a
+closing
+bracket
+one second let's
+see there we
+go all right as soon as I hit save
+fingers crossed it actually
+automatically rewrites it like this so
+it's amazing that you don't actually
+have to worry about how your code is
+formatted it's like someone saying
+instead of encoding your style guide in
+a text file and telling people hey
+follow this style guide It's All Around
+atically built into your editor you
+never have to worry about it so no it
+doesn't upset me it's amazing I don't
+have to worry about this stuff anymore I
+think about the program and the editor
+and the tooling takes care of everything
+else I I don't want to go back to a
+world where I have to care about uh how
+the code is formatted so I think the
+time is about up thank you very much
+check out reason cop.com would love to
+hack with you guys great thank you very
+much
+
+2.5s · 30m 23s YouTube · 5.9k words · text via transcript/captionTracks

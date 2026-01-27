@@ -1,0 +1,7 @@
+{
+  "title": "Having Your Cake and Eating It Too - GraphQL in Reason",
+  "event": "Øredev 2018",
+  "date": "2018",
+  "url": "https://www.youtube.com/watch?v=bdjvLiI5tzA",
+  "description": "Explores the challenges of using statically-typed languages like ReasonML with external APIs, where JSON parsing becomes tedious and error-prone. Demonstrates how GraphQL's built-in type system and introspection capabilities solve these problems by providing automatic type generation, guaranteed contracts between client and server, and eliminating the boilerplate code typically required for safe data conversion."
+}

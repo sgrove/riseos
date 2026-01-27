@@ -1,0 +1,935 @@
+Transcript:
+i'm going to talk about persistent
+queries in graphql today
+uh what they are what they're good at
+why we might want them how they work
+that sort of thing
+but i also want to talk about a grinder
+narrative and that is the
+tension that typically exists between a
+very flexible
+bespoke api and a rigid more static api
+where both of these two different ends
+of the spectrum
+offer lots of benefits and different
+costs to different parties
+but i'm particularly interested in
+exploring that middle ground and seeing
+if there isn't some way to kind of
+bridge that gap
+and maybe pluck a little bit of the best
+of both worlds
+so a quick bit about me i'm sean coming
+out of san francisco
+i work at a company called one graph
+before that i ran engineering
+for a payments company and developer
+tooling has kind of been my bread and
+butter for a long time
+so i've worked on automated testing
+systems and compilers and type systems
+and
+all sorts of stuff so a good developer
+experience good user experiences is very
+near and dear to my heart
+so let's go ahead and dive right in with
+the good points about graphql i think
+everyone who's watching this
+including me is a big fan of graphql and
+it has a lot of benefits
+you know there's no more over fetching
+under fetching which is great for our
+users
+right they're getting exactly the the
+data they need when they need it
+and for developers we have much more
+flexible queries
+we don't have to worry ahead of time
+that that some sort of a pre-ordained
+endpoint has exactly the data we need
+and no more
+we could just specify what we need and
+this is a really liberating experience
+and i would argue that over the medium
+to long term this leads to a much much
+faster uh
+product momentum being able to deliver
+product much faster
+and part of that is the technology
+itself and part of that is that
+developers tend to be much happier
+when using graphql over a longer period
+of time because of the
+uh the more liberating nature because of
+the happier users
+there's this really lovely kind of
+positive feedback cycle that means that
+you have more energy to work on things
+to solve real problems and to ship your
+product faster
+that said everything does have
+trade-offs and i think it's really
+important to acknowledge them
+even in graphql or maybe especially in
+graphql's
+position because for those of uh
+your colleagues who are maybe less
+enthusiastic about it
+if you don't acknowledge the trade-offs
+and the challenges that graphql is
+typically associated with
+then your arguments about why it's so
+great are going to be much less
+effective
+so what are some of the problems that
+are typically associated with uh graphql
+like there are quite a few uh so
+consuming graphql api
+is typically heavier than a rest
+alternative the request bodies can get
+quite large
+uh a lot of the infrastructure and
+tooling that we build doesn't really
+work with it including stuff like
+caching and rate limiting and whatnot
+there's a new problem kind of around
+query complexity
+that can be difficult to implement
+so let's take those at face value so
+let's compare them so for example
+graphql
+is typically considerably heavier to
+consume than a rest api
+and here we have two requests
+the top one is just a simple request to
+a rest api
+and it's gonna hit the twitter api and
+it's going to pull out a list of tweets
+for the currently logged in user and you
+can see that i have a few things you
+know i have the authorization header
+here
+but other than that like i basically
+have like a little named url
+and some json so i can tell maybe the
+intent of this thing
+i can tell the data i'm going to get
+back and i can very like
+succinctly summarize what i'm trying to
+get and if we compare that to a
+well-formed graphql query
+uh we have you know our content type
+headers we have our authorization header
+but we also have quite a bit more text
+in there right
+like we have the exact query that we're
+trying to do
+there are a few things in here that can
+be a little bit nerve-wracking so the
+first 10 this is an argument
+that's required that you may not notice
+just by just scanning this
+so graphql kind of just textually is
+quite a bit heavier and if we were to
+take two different
+developers and just you know have them
+glance at this
+most developers and speaking honestly
+would probably say that this one looks a
+little bit less intimidating
+also each request is kind of unique with
+that rest
+you know url based approach i can just
+read the url and see slash statuses
+slash homeline
+twitter and i get a sense of
+what the semantic intention is just by
+reading the title
+whereas every graphql query is kind of
+unique and
+that makes inferring what the intention
+behind that query is a bit more
+challenging
+everyone is bespoke and a little bit of
+work but also another thing is just
+names
+names are really really important in
+life but also
+especially in programming and rest kind
+of forces you to give names to lots of
+things
+and not everyone gives every graphql
+operation
+a name and that can sometimes mean that
+there's an important bit of semantic
+flag that is
+just missing and i typically
+think of this as kind of uh graphical is
+more like clay
+and rust is more kind of like a megalith
+and rest is a megalith in that you know
+it's visually very simple
+right like rocks just big flat rocks are
+kind of
+very simple to visually parse uh
+conceptually very simple right you have
+a http verb and a
+a uri that you're you're hitting
+the thing is though it's visually and
+conceptually quite simple
+it rarely fits together in the way that
+you're hoping it does right so some
+endpoints are too small some are too
+large
+and you as a consumer really have no
+control over that
+and so you end up with something like
+this structure where yes it is
+visually very simple uh you don't need
+much technology to kind of get started
+with something like this just a lot of
+effort
+but ultimately the structure that you're
+building is unlikely to fit together
+in a seamless way and each of those gaps
+represents work that you are going to
+have to do as a developer to make up for
+it
+in order to provide a good user
+experience so either you do the work of
+manually filling in those gaps or the
+user experience will suffer
+and on the other hand if we take raw
+graphql so
+just graphql as is usually written it's
+very very flexible you can mold it
+however you would like
+exactly the fields you like and the
+fragments and all sorts of great things
+but flexibility implies a very very
+heavy trade-off which is that it is easy
+to build
+the wrong thing and it's easy to break
+things
+uh you can pull off a bit of clay and
+attach it to a different part of your
+clay
+it as much as you would like but it is
+very likely that it is going to fall
+over at
+some point any sort of structural
+integrity
+any sort of aesthetic beauty any sort
+of functionality is often up to
+you as a developer to ensure
+so it's a lot of responsibility to take
+on for the gain and flexibility
+and as a quick aside it's not entirely
+fair because most rest apis do tend to
+grow a sort of expansion fuel approach
+so stripe has it twitter has it where
+you can see here i'm pulling out a tweet
+but i'm also saying well i'd also like
+to expand the attachment media key
+because i don't want to hit the
+attachments endpoint
+and for the tweet fields i really only
+need to have these specific
+uh fields so you can see that all even
+rest apis tend to try to uh
+recover some of the built-in flexibility
+that graphql has
+um and again that's all about trying to
+fill in those gaps in between those
+big monoliths excuse me megaliths
+all right so let's move on to the second
+point which is that graphql requests are
+typically bigger
+and this is because you send over the
+full request and sometimes not just
+the query that you're trying to send
+over but you can send over a full
+operation document
+and then you can in the json you can
+specify which of the operations you want
+to run
+and this might have multiple mutations
+some subscriptions a query some
+fragments
+and you know it's your whole
+applications operation document
+when really you only need to have some
+subset of that
+and really every byte does count because
+uplinks are typically much much slower
+and very importantly they have
+much higher latency than user downlinks
+and this is
+very bad on mobile but given the theme
+of this conference
+it would be especially bad in space
+right the latency would be tremendous
+and so we really want to think about how
+can we minimize
+every bit or every byte that we're
+sending across the wire if at all
+possible
+and rest you know looking at that
+request that we saw earlier it was
+smaller and
+how is it able to achieve this this
+space savings
+and really it's by uh ahead of time
+coordination
+where what's in an ideal world anyway
+what's happening is
+that the api consumer and provider are
+have sat down
+they've discussed use cases and and the
+needs and the apps that are going to be
+built the services that are going to be
+built around this api
+and they've kind of agreed on a certain
+set of endpoints
+that should basically make both sides
+happy the client will be happy to
+consume and build on top of it
+the server will be happy to build and
+provide support for
+and you can kind of think of these
+endpoints as effectively just kind of
+queries that have been baked in
+and this the client can go and retrieve
+them later
+and the other cool thing is that each of
+these queries now has a name right it's
+in the url the url
+and the verb form a name in the rest
+culture
+and that's really important because as
+graphql stands right now it typically
+breaks a lot of the caching techniques
+you really need to have
+a good name a good identifier to cache
+something
+and uh if you have this kind of rigid
+static approach
+it makes it much easier to say this is a
+thing that we're going to cache
+versus with clay you know you can mold
+whatever you want and that makes it very
+challenging to cache
+if you think about the process you'd
+have to do something like make sure
+the query operation is exactly the same
+as the one that you've cached
+uh make sure that the variable inputs
+that are going into this query are
+exactly the same
+make sure that the auth is exactly the
+same whether it's public or private
+and this kind of goes into the query
+complexity as well there effectively
+you have to become deeply familiar with
+both the domain and the technology in
+order to implement things like
+caching and complexity analysis and rest
+is really nice here because
+rest is pre-arranged where the server
+people get to
+kind of hold on to say well we know
+all of the endpoints we know some are
+going to be smaller we know some are
+going to be bigger but we can kind of
+keep an eye out
+for which of these is going to cause
+troubles and we can go ahead and
+commit we can provide some sort of sla
+and say hey we're willing to support
+these in production at some scale
+and that's not quite the same in graphql
+again because we're very flexible we can
+do lots of things
+and if we are trying to prevent some
+sort of uh pathological
+graphql query um whether intentioned or
+or uh
+you know a malfeasance request
+we kind of have to consider depth
+limiting so if you imagine
+you know you have a user and you select
+for friends and then friends of friends
+you want to make sure that they're not
+going 10 000 levels deep
+because there's no service in the world
+that is going to be able to handle the
+explosion
+and complexity of that you also want to
+limit the amount right so if there are a
+million items you probably want to make
+sure that i'm paginating uh at maybe 100
+at a time
+versus trying to pull down a million all
+at once
+and then there are other kind of more
+crude mechanisms like just time or
+memory or cpu or some sort of resource
+limiting where you say hey
+we'll run your query for up to 30
+seconds but if it hasn't returned by
+then we'll just kill the whole thing
+so let's go ahead and take a moment for
+reflection
+and say that you know graphql has some
+really great points it is flexible
+uh makes for happier users and happier
+developers after
+some time after getting used to graphql
+but they're also challenges
+even consuming just a little bit of
+graphql typically requires understanding
+a whole lot of the graphql model right
+you have queries you have variables
+you have operation names it's going over
+this post
+um you have a custom syntax so there is
+kind of a lot
+um it's a bit of a step function in
+terms of the learning curve
+where to even just to kind of start
+dabbling
+your toes in a production manner does
+require a lot of understanding
+also it's easy to exceed the the usage
+limits as we've seen and it's
+difficult to cache because of the
+flexibility
+and then uh server-side off can also be
+a bit tedious to implement
+whereas in rest you have a single
+endpoint that you can kind of lock down
+and graph hill you kind of have to
+specify it at each field you know what
+are the properties that go uh
+the auth properties for each field and
+so if we kind of look at it
+you know we have this the spectrum of
+the flexible dynamic uh graphql api on
+one side and
+the more rigid and pre-coordinated rest
+on the other side
+but as we saw that rest tends to kind of
+over time
+grow this little additional appendage of
+expansion fields
+trying to move a bit left on that graph
+and maybe there is an equivalent if we
+were to take graphql and move a bit
+right
+on the graph towards that more rigid and
+pre-coordinated one
+and that's effectively persistent
+queries so graphql can do a lot of the
+benefits that we've mentioned
+inside of rest and here's how it works
+you're just going to use graphql
+normally during your development time as
+a developer you get to add queries and
+and add fields and you know change
+whatever you want it's great
+but then at bundle or build time
+whenever we're pushing production
+we're going to have some tool that's
+going to walk through our entire code
+base and it's going to extract
+all of our graphql queries and then it's
+going to send them to the server and say
+hey
+i'm going to need these later and during
+that storage
+process the server's going to analyze
+them we're going to do some depth
+analysis
+complexity cost resource usages off all
+that sort of thing
+and it's possible that one of those
+queries will be too large i'm going to
+say that you know what you cannot
+store this you need to actually break
+this up because this will take too much
+resources of
+some type and then the user will be
+forced to go or the developer will be
+forced to go back and
+work around that and you know they
+this still happens at build time so it
+never affects the user but if it does
+pass
+if the server is happy to support this
+then it'll go ahead and store this
+typically in a database somewhere
+and it'll give it an id and return that
+id to the client and then finally the
+client is going to replace its graphql
+query
+uh locally inside of the javascript or
+the the app bundle
+with just that id and the cool thing is
+this actually
+mirrors what is happening inside of the
+rest world the devs and the server team
+are actually coordinating in this
+process they're coordinating ahead of
+time about which queries are needed in
+production
+and the ops and server team can kind of
+assign limits and say well
+we're willing to support up to this
+amount
+that makes sense for us and for our
+resources and as long as you're able to
+do that and then we'll provide that
+and so as an example if we take our
+previous query
+getting a twitter timeline you know we
+can see it's quite large
+but once we persist it we get back just
+this
+id and the way we actually use this in
+production going back to our original
+comparison
+we have our rest api up here that we're
+hitting
+we have our original raw graphql very
+clay-like down here
+and we have our persistent query well
+we're calling that same endpoint
+down here but we're providing a doc id
+and this is the document that was stored
+previously and
+i would basically say that persistent
+graphql is kind of rest plus plus
+uh it's where the client gets to build
+the api and the server just approves
+the api and the cool thing is once you
+have
+persisted that query if we go back no
+one needs to know that this is graphql
+right no
+sophisticated client or anything needs
+to be involved literally just making a
+curl request with a bit of json
+and so you retain all of the flexibility
+uh for your graphql savvy clients the
+ones who really want that
+but the ones who are not yet bought into
+the graphql ecosystem or don't want to
+use sophisticated clients
+they can just make a curl request it's
+great you get all of the build time
+verification that will reject
+pathological cases so
+operations is very happy and importantly
+we now get back a single id
+which means that caching and rate
+limiting and off are now
+infinitely easier so i'll show a quick
+example of what this looks like so over
+here i have a couple of operations i
+have one
+that is going to get the download count
+from npm for a given package name
+and i have one that is going to pull out
+some rss feeds
+so i'm going to go ahead and copy this
+if i were to run this right here this is
+just raw graphql
+it would just run like normal but what i
+want to do
+is actually come in here and i'm going
+to persist this query
+so i'm going to paste this in and i'm
+going to go ahead and say that the user
+is allowed
+to provide a name variable right that's
+one of the the variables that
+is inside of this this query and i want
+to go ahead and say the user can provide
+it
+importantly whenever i persist this i'm
+going to go ahead and say
+this can be stored cached for up to 60
+seconds
+and now whenever i create this persisted
+query i can just copy this
+and if i go into my terminal let's go
+ahead and check out the downloads for
+graphql
+and so you can see and i'll just uh
+pretty far that so you see graphql has
+had quite a few downloads
+you can see it's quite fast after the
+second time
+and if i do react
+and then again after the second time
+very fast
+so you can see that i'm able to use this
+in a very very simple way
+uh to just pull out the downloads from
+npm i don't have to know anything about
+graphql or
+any of that kind of stuff this is just
+an endpoint i hit
+i'll show another example uh where we
+have a rss reader
+so we're making a query into rss given a
+url
+and we're going to pull out some items
+and uh
+their their content and rss doesn't
+change very fast so i'll go ahead and
+say that
+60 seconds is just fine user can provide
+a
+url we'll persist this one
+and now whenever i go into the url i can
+go ahead and say
+let's go ahead and actually pull out one
+of my favorite podcast jamstack radio
+so we'll provide that in there and we'll
+pop that into
+pretty fight and here we go we now have
+a podcast player
+inside of my terminal with
+little to no effort right i was able to
+take that and say hey i don't care about
+all the flexibility i specify the head
+of time
+now i can just call it and i get this
+great javascript based feed
+and again caching and rate limiting is
+all much easier because we can just
+cache on that one id we can rate limit
+on that one id and say
+hey this is an inexpensive query that
+we've cached so hit as much as you like
+or
+this is an expensive query uh you can
+hit this document id
+up to this many times per second
+and in fact by kind of embracing
+the trade-offs between these two
+different uh you know tensions
+on the api spectrum we actually end up
+with potentially superpowers we can do
+things that
+neither could do on their own we can
+actually attach metadata whenever we
+persist
+uh queries uh we can do things like you
+know who persisted it and when was it
+persisted
+what was the client's id and the dev
+time and looking at all sorts of
+interesting analytics
+but the one i want to show today is
+actually auth at
+persist time we can also also say hey
+here's a bit of off that i want to
+provide for you
+and i want you to associate this with
+this query so whoever is calling this
+persisted document
+is going to go ahead they can use my
+auth
+and this is potentially quite dangerous
+because
+you your auth may have access to very
+sensitive things and an api may have
+access you know imagine github
+or quickbooks or you know salesforce
+where
+if you are embedding your auth or you're
+exposing your access to this api you're
+potentially leaking lots of
+dangerous data but sometimes you really
+do want to be able to set up a
+endpoint that can access just a subset
+of that api in a safe way
+and persistent queries are great for
+this
+and i'll show you an example of that
+using the spotify api
+so over here i have a mutation on
+spotify
+and given a track id it is going to play
+that song
+and i'm going to go ahead and copy this
+but i'm going to persist it
+in a new way so whenever i come over
+here to persisted
+first i'm actually going to create an
+auth token and we'll say
+fql in space demo
+and i'm going to off with spotify ahead
+of time
+i'm going to go ahead and get a token
+back that has access to my spotify
+player
+i'm also for the purposes of this demo
+i'm going to give it access to github
+and github is a very sensitive api for
+me it has lots of data that i
+wouldn't want to make public similarly
+twitter
+so with this one token i'm going to have
+access to these three
+separate apis in a really powerful way
+and so i want to make sure that anything
+i give access to it
+publicly is very safe so now whenever i
+paste in my query
+i'm going to go ahead and say that when
+you persist this use that token i just
+created
+and the user is allowed to provide the
+track id
+and the position to start the song
+because sometimes songs you know they
+take a little while to get interesting
+and now whenever i persist this query
+i'm going to go ahead and come in here
+and i'll paste this in
+and i'll also grab that track id
+and you can see that even though this is
+associated this
+off with lots of really sensitive data i
+can only provide
+two values right the track id and the
+position so it doesn't matter
+i've really taken this incredibly
+flexible incredibly powerful api
+and just kind of made a tiny little
+serverless function effectively
+and so now whenever i come into my
+spotify and i run this you can see now
+i'm controlling my spotify player
+from my terminal via a persisted query
+and i can tweet this out and i can say
+anyone who wants can actually run this
+exact same query here
+and if you provide a different track id
+that will actually play on my spotify
+player
+so if i were at a party or something
+like that maybe i had this up on the
+wall then anyone could just
+you know submit a track id and the time
+when the song got good and it would just
+work
+and to drive this point home i'll show
+one example where we actually use this
+this you can build
+full user-facing apps that are
+incredibly sophisticated uh using this
+technique
+so we have a blog uh application that we
+use uh we use it we have lots of users
+who use it
+and it's been on the front of hacker
+news lots of time on uh
+popular subreddits and because of the
+document id because of the persisted
+query nature that means caching kicks in
+a really nice way
+means doesn't even break a sweat at all
+so i'll show you how this works
+so over here i have uh let's get
+them side by side
+so over here we have our change log and
+this is just a way for us to blog
+quickly about
+uh small things that have happened on
+one graph and
+over here it's actually driven by github
+issues
+and anyone can come and open an issue
+that's absolutely fine
+so i'll come in here and i'll say hello
+graphql
+in space
+and everything works so you know
+so everything works exactly as you you
+might expect
+i'll come in here and i'll go ahead and
+create this issue but nothing is
+actually going to change over here if i
+refresh
+nothing actually is live even though
+this is making live queries to
+the graphql api or the github api
+the reason for that is uh
+anyone can create an issue but only
+project admins
+can add labels so if i come in here and
+i add a publish label
+now i can come over here and if i
+refresh
+you can see this works just fine and
+actually comments work
+too and it's very very fast
+and the cool thing is you know no one
+has to know that this is powered by
+github this is just basically taking our
+application flow and making it really
+nice for the user but then powering it
+behind the scenes but it's something
+that we feel comfortable with
+and now whenever i come in here and take
+off a publish label
+because this is live uh you can see it
+goes away
+immediately so it's incredibly powerful
+you can build
+very sophisticated applications one
+other example of this in production
+is a dock editing site so imagine that
+you have some api docs and you want to
+allow your users to come through and
+actually
+edit it you know add nice updates and
+whatnot
+in this case uh we actually built a
+thing where uh users can come and edit
+the docs see that it changes
+live and then create a pr directly from
+the browser
+now the stock site is actually a private
+repository that they don't have access
+to
+but that doesn't matter because we've
+persisted a query with just
+enough permissions to be able to open a
+pr
+with changes for the docs part of the
+site
+and again you can see i come in here and
+i can actually see all the other pr's as
+an admin that
+are pending and
+you know if i like it i can go ahead and
+see the original
+and the very cool thing is you can see
+that the whole comment system even the
+chat system is powered off of github
+chat or github comments and it works
+really fast for that user they don't
+know that they're using
+you know github behind the scenes it's
+we're able to use persistent queries to
+really mold that incredibly powerful api
+in the backend
+into something that is exactly useful
+for just us
+and one last uh example uh to show off
+is
+the gulp site so gulp is an amazing
+javascript bundler
+can do all sorts of uh things and
+they have a lot of support on open
+collective and on github and so they
+show all their
+supporters down here at the bottom of
+the site and you can see that they're
+actually making
+that query to get those supporters
+live every time you load that page with
+just a graphql persisted query so if we
+look at the request doc you can see it's
+just
+a doc id as we saw earlier and if we
+look at the preview of the results you
+can see
+they have data coming in from open
+collective and part of the reason they
+do this is because open collective only
+has very powerful api
+keys and they don't want to expose their
+api key to the
+the front end where anyone could use it
+and you know potentially make financial
+uh mess and similarly with github
+they're getting their github
+organization sponsors here
+and so they're able to kind of mold
+again that very powerful api two apis in
+this case
+and put it down into exactly one query
+one doc id that's then cached for up to
+60 seconds so they never have to worry
+about rate limits
+uh never worry about auth issues and all
+just kind of works really well together
+and this technique is used in production
+at tremendous scale so the tweetdeck
+team uses exclusively persistent queries
+for all of the
+tweetdeck application and there was a
+great talk by tom ashworth
+at a previous graphql conference
+strongly recommend checking it out
+also i would strongly recommend checking
+out relay
+it is an amazing graphql client in lots
+and lots of different ways
+i was skeptical for the longest time and
+i consider that wasted time
+but it's a client that actually takes
+persistent queries uh
+very seriously and it's kind of has you
+know first class support for it
+so that blog i just showed you is
+actually written in
+relay and the thing is as a developer
+you don't even know that
+you are you know using persistent
+queries you set up a function once to
+persist them
+and then you just use graphql and
+literally at build time it will go
+through extract everything just like we
+talked about earlier
+stored on the server and it's amazing
+okay and that's it um happy to talk
+about uh other things uh some other cool
+things i didn't talk about for example
+are once you have persisted a query with
+uh lots of different operations you now
+have effectively have a
+library of uh you know functions you can
+call so imagine you had like
+spotify play mutation pause next
+search query and you can persist that
+all at once
+and now you have one endpoint that has
+all of the off all of the functions you
+need to call
+and also you can generate for example an
+npm package for that
+that will have all the typescript
+bindings or swift uh
+type bindings so your consumers don't
+even know that it's graphql they just
+see
+a list of functions that they can call
+and named arguments that they have to
+provide with their types
+so the autocomplete experience is just
+fantastic with persistent queries
+uh yeah lots of other things i'd be
+happy to talk about but i think that's
+it for today
+cheers
+you
+
+2.8s · 30m 9s YouTube · 5.5k words · text via transcript/captionTracks

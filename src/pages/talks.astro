@@ -1,0 +1,838 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+// Conference/event logo mappings (favicon URLs or logo URLs)
+const eventLogos: Record<string, string> = {
+  // Major conferences
+  "AI Engineer World's Fair": "https://www.ai.engineer/favicon.ico",
+  "AI Engineer World's Fair 2025": "https://www.ai.engineer/favicon.ico",
+  "Everything NYC (Sanity)": "https://www.sanity.io/favicon.ico",
+  "Sanity": "https://www.sanity.io/favicon.ico",
+  "ReasonConf": "https://reason-conf.com/favicon.ico",
+  "ReasonConf 2018": "https://reason-conf.com/favicon.ico",
+  "ReasonConf 2019": "https://reason-conf.com/favicon.ico",
+  "ReasonConf US 2019": "https://reason-conf.com/favicon.ico",
+  "ReactiveConf": "https://reactiveconf.com/favicon.ico",
+  "ReactiveConf 2016": "https://reactiveconf.com/favicon.ico",
+  "ReactiveConf 2017": "https://reactiveconf.com/favicon.ico",
+  "ReactiveConf 2018": "https://reactiveconf.com/favicon.ico",
+  "ReactiveConf 2019": "https://reactiveconf.com/favicon.ico",
+  "Øredev": "https://oredev.org/favicon.ico",
+  "Øredev 2017": "https://oredev.org/favicon.ico",
+  "Øredev 2018": "https://oredev.org/favicon.ico",
+  "GraphQL Conf": "https://graphql.org/favicon.ico",
+  "GraphQL Conf 2022": "https://graphql.org/favicon.ico",
+  "GraphQL Asia": "https://graphql.org/favicon.ico",
+  "GraphQL Asia 2020": "https://graphql.org/favicon.ico",
+  "GraphQL SF": "https://graphql.org/favicon.ico",
+  "GraphQL SF Meetup": "https://graphql.org/favicon.ico",
+  "GraphQL in Space": "https://graphql.org/favicon.ico",
+  "YGLF Lithuania": "https://yglf.com.ua/favicon.ico",
+  "YGLF Lithuania 2019": "https://yglf.com.ua/favicon.ico",
+  "APIdays": "https://www.apidays.global/favicon.ico",
+  "Reactathon": "https://www.reactathon.com/favicon.ico",
+  "Reactathon 2023": "https://www.reactathon.com/favicon.ico",
+  "Vercel Meetup": "https://vercel.com/favicon.ico",
+  "Vercel": "https://vercel.com/favicon.ico",
+  "Worker Conf": "https://www.cloudflare.com/favicon.ico",
+  "Hasura": "https://hasura.io/favicon.ico",
+  "Hasura Community Calls": "https://hasura.io/favicon.ico",
+  // Meetups & podcasts
+  "ReasonSF Meetup": "https://reasonml.github.io/img/reason.svg",
+  "ReasonSF": "https://reasonml.github.io/img/reason.svg",
+  "ReactVienna": "https://reactjs.org/favicon.ico",
+  "ReactiveMeetups": "https://reactiveconf.com/favicon.ico",
+  "The Data & API Show": "https://graphql.org/favicon.ico",
+  "Emelle.tv": "https://reasonml.github.io/img/reason.svg",
+};
+
+// Helper to get logo URL for an event
+function getEventLogo(event: string): string | null {
+  return eventLogos[event] || null;
+}
+
+// Combined and deduplicated talks data from siteConfig.js and all-talks.json
+const talks = [
+  {
+    title: "The New Code",
+    event: "AI Engineer World's Fair 2025",
+    type: "conference",
+    year: 2025,
+    date: "June 2025",
+    location: "San Francisco, California",
+    videoUrl: "https://www.youtube.com/watch?v=8rABwKRsec4",
+    topic: "In an era where AI transforms software development, the most valuable skill isn't writing code - it's communicating intent. Explores specifications as executable blueprints.",
+    featured: true,
+    views: "1M+ views",
+    coverage: [
+      { title: "The Most Valuable Developer Skill in 2025? Writing Code Specifications", source: "Tessl Blog", url: "https://tessl.io/blog/the-most-valuable-developer-skill-in-2025-writing-code-specifications/", type: "article" },
+      { title: "The New Code — Sean Grove (OpenAI)", source: "Son-U Paik on LinkedIn", url: "https://www.linkedin.com/posts/sonupaik_the-new-code-sean-grove-openai-activity-7350077335695474688-qj0k", type: "thread" },
+      { title: "OpenAI's Sean Grove: Everything is a Spec", source: "YouTube Short", url: "https://www.youtube.com/shorts/hSdP5EiroQI", type: "summary" },
+      { title: "Sean from OpenAI says specs are the new code", source: "@mattpocockuk on X", url: "https://x.com/mattpocockuk/status/2009964210667827249", type: "thread" },
+      { title: "Incredible Talk. Must see for every dev", source: "@JonasSiebler on X", url: "https://x.com/JonasSiebler/status/1946480806009909546", type: "thread" },
+      { title: "This entire keynote talk is worth watching", source: "@JoeChoiGreene on X", url: "https://x.com/JoeChoiGreene/status/1932537473550463201", type: "thread" },
+      { title: "Integrated thought clarifier — great talk", source: "@elamadej on X", url: "https://x.com/elamadej/status/1951389903067160582", type: "thread" },
+      { title: "앞으로의 십년은 개발자라면 문서를 통한 소통 능력을... (13K views, 97 likes)", source: "@jaeholee_dev on X", url: "https://x.com/jaeholee_dev/status/1949127592130629854", type: "thread" },
+      { title: "Thought-provoking talk on communicating intent with precision", source: "@MatousRoskovec on X", url: "https://x.com/MatousRoskovec/status/1945032714102460757", type: "thread" },
+      { title: "To learn more, check out this talk from Sean Grove", source: "@ArjunKalsy on X", url: "https://x.com/ArjunKalsy/status/1945468123760476563", type: "thread" },
+      { title: "Skills scarcity is over. Coding is ending.", source: "@asystemarchitec on X", url: "https://x.com/asystemarchitec/status/1944482456054460898", type: "thread" }
+    ]
+  },
+  {
+    title: "AI is here. The future is brighter than you think",
+    event: "Everything NYC (Sanity)",
+    type: "conference",
+    year: 2025,
+    date: "2025",
+    location: "New York City",
+    videoUrl: "https://www.youtube.com/watch?v=gnUxZA7Ew1E",
+    topic: "How to harness AI-powered tokens as a new cognitive power source, using a specification-driven approach where humans become conductors of agent orchestras.",
+    coverage: [
+      { title: "Everything NYC 2025 recap: A day of AI, Content & Creativity", source: "Sanity Blog", url: "https://www.sanity.io/blog/everything-nyc-2025-all-talks", type: "article" },
+      { title: "Specifications are the new code — Sean Grove on the future of AI", source: "Sanity on LinkedIn", url: "https://www.linkedin.com/posts/sanity-io_%F0%9D%97%A6%F0%9D%97%BD%F0%9D%97%B2%F0%9D%97%B0%F0%9D%97%B6%F0%9D%97%B3%F0%9D%97%B6%F0%9D%97%B0%F0%9D%97%AE%F0%9D%98%81%F0%9D%97%B6%F0%9D%97%BC%F0%9D%97%BB%F0%9D%98%80-%F0%9D%97%AE%F0%9D%97%BF%F0%9D%97%B2-%F0%9D%98%81%F0%9D%97%B5-activity-7391856125656309760-71PC", type: "thread" },
+      { title: "3 things I'm taking away from Sanity's Everything Conference", source: "Sanity on LinkedIn", url: "https://www.linkedin.com/posts/sanity-io_excellent-summary-of-our-developer-conference-activity-7379191328657707008-LZRp", type: "thread" }
+    ]
+  },
+  {
+    title: "Web Development in the Age of AI",
+    event: "Reactathon 2023",
+    type: "panel",
+    year: 2023,
+    date: "May 2023",
+    location: "Berkeley, California",
+    videoUrl: "https://www.youtube.com/watch?v=35nC0AtdlJE",
+    topic: "Panel discussion with swyx exploring how AI is transforming web development, from code generation to intelligent tooling."
+  },
+  {
+    title: "GraphQL as a generalized next-generation API Client",
+    event: "GraphQL Conf 2022",
+    type: "conference",
+    year: 2022,
+    location: "Virtual",
+    videoUrl: "https://www.youtube.com/watch?v=-aSZtZPs844",
+    topic: "Explores making integration glue code explicit, versioned, and introspectable."
+  },
+  {
+    title: "Teaching GraphQL to write code for you",
+    event: "GraphQL Conf 2022",
+    type: "conference",
+    year: 2022,
+    location: "Virtual",
+    videoUrl: "https://www.youtube.com/watch?v=T_ZYkTsm_yA",
+    topic: "GraphQL code generation and tooling to automate development workflows."
+  },
+  {
+    title: "Exploring APIs with Sean Grove",
+    event: "The Data & API Show",
+    type: "podcast",
+    year: 2021,
+    date: "December 2021",
+    location: "YouTube",
+    videoUrl: "https://www.youtube.com/watch?v=flE-seOLERE",
+    topic: "A relaxed chat on The Data & API Show."
+  },
+  {
+    title: "GraphQL, OneGraph and ReasonML",
+    event: "Emelle.tv",
+    type: "podcast",
+    year: 2021,
+    date: "December 2021",
+    location: "YouTube",
+    videoUrl: "https://www.youtube.com/watch?v=9-i_7Ldkc_8",
+    topic: "A chat with friends over at Emelle.tv"
+  },
+  {
+    title: "Next-generation API clients",
+    event: "Worker Conf",
+    type: "conference",
+    year: 2021,
+    date: "July 2021",
+    location: "YouTube",
+    videoUrl: "https://www.youtube.com/watch?v=4JdGqWdRH30",
+    topic: "Move fast, own your abstractions - making glue code explicit, versioned, and introspectable."
+  },
+  {
+    title: "Persisted Queries as Legos vs Clay",
+    event: "GraphQL in Space",
+    type: "conference",
+    year: 2020,
+    date: "October 2020",
+    location: "YouTube",
+    videoUrl: "https://www.youtube.com/watch?v=ngmiU3rPB14",
+    topic: "How persisted queries bridge the gap between flexible GraphQL APIs and rigid REST endpoints.",
+    coverage: [
+      { title: "Persisted Queries as Legos vs Clay — GraphQL in Space Discussion", source: "Dgraph Forum", url: "https://discuss.dgraph.io/t/sean-grove-persisted-queries-as-legos-vs-clay-what-if-calling-your-graphql-api-were-as-simple-as-calling-a-serverless-function/10028", type: "thread" },
+      { title: "What if we treat GraphQL Queries as the API definition?", source: "WunderGraph Blog", url: "https://wundergraph.com/blog/what_happens_if_we_treat_graphql_queries_as_the_api_definition", type: "article" }
+    ]
+  },
+  {
+    title: "Using Relay with GraphQL",
+    event: "Hasura Community Calls",
+    type: "panel",
+    year: 2020,
+    date: "August 2020",
+    location: "YouTube",
+    videoUrl: "https://www.youtube.com/watch?v=HapQ-nyT1os",
+    topic: "Panel discussion with Joseph Savona, Jesse Martin & Tanmai Gopal."
+  },
+  {
+    title: "Instant GraphQL with OneGraph",
+    event: "Screenshares in Public with swyx",
+    type: "stream",
+    year: 2020,
+    date: "April 2020",
+    location: "YouTube",
+    videoUrl: "https://www.youtube.com/watch?v=4NaRQ3B-3fg",
+    topic: "A walk through OneGraph for user feedback."
+  },
+  {
+    title: "GraphQL Documentation that comes alive",
+    event: "GraphQL Asia 2020",
+    type: "conference",
+    year: 2020,
+    date: "February 2020",
+    location: "Bengaluru, India",
+    videoUrl: "https://www.youtube.com/watch?v=g8pyzqXAMjE",
+    topic: "Production-grade, bulletproof documentation for your GraphQL API."
+  },
+  {
+    title: "Making magic with GraphQL Tooling",
+    event: "GraphQL SF Meetup",
+    type: "meetup",
+    year: 2020,
+    date: "February 2020",
+    location: "Reddit, SF",
+    videoUrl: "https://www.youtube.com/watch?v=HGqs7pV7c5s",
+    topic: "Schema explorers, code generators, doc systems, and special surprises.",
+    coverage: [
+      { title: "The Future of APIs, GraphQL, and Developer Tooling with Sean Grove", source: "React Round Up Podcast", url: "https://topenddevs.com/podcasts/react-round-up/episodes/rru-092-the-future-of-apis-graphql-and-developer-tooling-with-sean-grove", type: "podcast" },
+      { title: "GraphQL Tooling, Today & Tomorrow", source: "apidays Conference", url: "https://www.youtube.com/watch?v=gAjQ1mg614o", type: "summary" }
+    ]
+  },
+  {
+    title: "The future of GraphQL tooling",
+    event: "APIdays",
+    type: "conference",
+    year: 2019,
+    date: "November-December 2019",
+    location: "London & Paris",
+    videoUrl: "https://www.youtube.com/watch?v=gAjQ1mg614o",
+    topic: "API providers must up their DX game to out-compete for developers."
+  },
+  {
+    title: "Rust in the Browser for Javascripters",
+    event: "ReactiveConf 2019",
+    type: "conference",
+    year: 2019,
+    date: "October 2019",
+    location: "Prague, Czech Republic",
+    videoUrl: "https://www.youtube.com/watch?v=ohuTy8MmbLc",
+    topic: "How Rust can reach the browser via wasm, unlocking high-performance concurrency and graphics."
+  },
+  {
+    title: "Building Real Systems in Reason (Native)",
+    event: "ReasonConf US 2019",
+    type: "conference",
+    year: 2019,
+    date: "October 2019",
+    location: "Chicago, Illinois",
+    videoUrl: "https://www.youtube.com/watch?v=Lv2QCq6ZBPs",
+    topic: "What does it look like to build production-grade systems in Reason (Native)?"
+  },
+  {
+    title: "Workshop: GraphQL with OneGraph, Hasura, and ReasonReact",
+    event: "ReasonConf US 2019",
+    type: "workshop",
+    year: 2019,
+    date: "October 2019",
+    location: "Chicago, Illinois",
+    topic: "Build a podcast player using ReasonReact, GraphQL, and Ant Design bindings."
+  },
+  {
+    title: "Having Your Cake and Eating It Too: GraphQL in Reason",
+    event: "YGLF Lithuania 2019",
+    type: "conference",
+    year: 2019,
+    date: "May 2019",
+    location: "Vilnius, Lithuania",
+    videoUrl: "https://www.youtube.com/watch?v=T--4f6u_Kpw",
+    topic: "Full-stack safety with GraphQL and ReasonML."
+  },
+  {
+    title: "The Secrets of Polymorphic Variants",
+    event: "ReasonConf 2019",
+    type: "conference",
+    year: 2019,
+    date: "April 2019",
+    location: "Vienna, Austria",
+    videoUrl: "https://www.youtube.com/watch?v=TLDNsWXxhbo",
+    topic: "Polymorphic variants for composable libraries that don't depend on one-another.",
+    coverage: [
+      { title: "Polymorphic variants make way more sense now (jealous of the emacs setup)", source: "@_hagnerd on X", url: "https://x.com/_hagnerd/status/1126155903168909312", type: "thread" },
+      { title: "🎙 Open Stage Video: The Secrets of Polymorphic Variants", source: "@reasonconf on X", url: "https://x.com/reasonconf/status/1126079303999836160", type: "thread" }
+    ]
+  },
+  {
+    title: "Workshop: Reason & GraphQL",
+    event: "ReasonConf 2019",
+    type: "workshop",
+    year: 2019,
+    date: "April 2019",
+    location: "Vienna, Austria",
+    topic: "Build a full-stack app with GraphQL + ReasonReact and native Reason GraphQL server."
+  },
+  {
+    title: "The anti-email client in 10 minutes with OneGraph",
+    event: "Vercel Meetup",
+    type: "meetup",
+    year: 2019,
+    date: "March 2019",
+    location: "San Francisco, California",
+    videoUrl: "https://www.youtube.com/watch?v=rLq2zq1vxmA",
+    topic: "A fun, fast-paced lightning talk.",
+    coverage: [
+      { title: "This talk by @sgrove is amazing (10 likes, 5 bookmarks)", source: "@timneutkens on X", url: "https://x.com/timneutkens/status/1178796049563078658", type: "thread" },
+      { title: "Watch @sgrove build a mass-unsubscribe app (6 reposts, 14 likes)", source: "@vercel on X", url: "https://x.com/vercel/status/1117779685167906818", type: "thread" },
+      { title: "OneGraph to rule them all", source: "@benoror on X", url: "https://x.com/benoror/status/1183448913560260609", type: "thread" },
+      { title: "Sean Grove: OneGraph (1 repost, 10 likes)", source: "@atardadi on X", url: "https://x.com/atardadi/status/1114197911372537858", type: "thread" }
+    ]
+  },
+  {
+    title: "Learning Reason as a Junior Developer",
+    event: "ReasonSF Meetup",
+    type: "meetup",
+    year: 2019,
+    date: "February 2019",
+    location: "San Francisco, California",
+    videoUrl: "https://www.youtube.com/watch?v=GLYHbhV3row",
+    topic: "What's the experience of learning a niche language for a junior developer?"
+  },
+  {
+    title: "Rust in the Browser for Javascripters",
+    event: "Øredev 2018",
+    type: "conference",
+    year: 2018,
+    date: "November 2018",
+    location: "Malmö, Sweden",
+    videoUrl: "https://www.youtube.com/watch?v=7JVucZFjOJs",
+    topic: "How JavaScripters can unlock high-performance concurrency and graphics thanks to Rust.",
+    coverage: [
+      { title: "Sean Grove Speaker Profile", source: "Talks @ Confs", url: "https://talksatconfs.com/speakers/sean-grove", type: "article" }
+    ]
+  },
+  {
+    title: "Having Your Cake and Eating It Too — GraphQL in Reason",
+    event: "Øredev 2018",
+    type: "conference",
+    year: 2018,
+    date: "November 2018",
+    location: "Malmö, Sweden",
+    videoUrl: "https://www.youtube.com/watch?v=bdjvLiI5tzA",
+    topic: "GraphQL's type-system enables safety-guarantees and tooling that'll make you swoon."
+  },
+  {
+    title: "Workshop: Cross-platform Games in Reason with Reprocessing",
+    event: "ReactiveConf 2018",
+    type: "workshop",
+    year: 2018,
+    date: "October 2018",
+    location: "Prague, Czech Republic",
+    topic: "Build Frogger with Reprocessing - a graphics library for Reason."
+  },
+  {
+    title: "Workshop: ReasonReact and GraphQL",
+    event: "ReactiveConf 2018",
+    type: "workshop",
+    year: 2018,
+    date: "October 2018",
+    location: "Prague, Czech Republic",
+    topic: "Build a small ReasonReact app from ground up with real-world GraphQL APIs."
+  },
+  {
+    title: "Help Your Computer Help You",
+    event: "ReactiveConf 2018",
+    type: "conference",
+    year: 2018,
+    date: "October 2018",
+    location: "Prague, Czech Republic",
+    videoUrl: "https://www.youtube.com/watch?v=Ya8SffTEHGA",
+    topic: "Next-gen tooling built on self-describing APIs."
+  },
+  {
+    title: "ReasonML and GraphQL Tour",
+    event: "ReactiveMeetups",
+    type: "meetup",
+    year: 2018,
+    date: "May 2018",
+    location: "Slovakia & Czech Republic",
+    videoUrl: "https://www.youtube.com/watch?v=t9a-_VnNilE",
+    topic: "The origin, advantages, and challenges of ReasonML. How GraphQL solves the biggest challenges."
+  },
+  {
+    title: "Having your cake and eating it too — GraphQL in Reason",
+    event: "ReasonConf 2018",
+    type: "conference",
+    year: 2018,
+    date: "May 2018",
+    location: "Vienna, Austria",
+    videoUrl: "https://www.youtube.com/watch?v=OT7xOpPCGds",
+    topic: "Full-stack safety knowing that if programs compile, the server can satisfy requirements."
+  },
+  {
+    title: "Finding joy in programming",
+    event: "Øredev 2017",
+    type: "conference",
+    year: 2017,
+    date: "November 2017",
+    location: "Malmö, Sweden",
+    videoUrl: "https://vimeo.com/242081961",
+    topic: "When is programming intrinsically fun? Looking through the prism of ReasonML."
+  },
+  {
+    title: "Workshop: Introduction to ReasonML",
+    event: "ReactiveConf 2017",
+    type: "workshop",
+    year: 2017,
+    date: "October 2017",
+    location: "Bratislava, Slovakia",
+    topic: "Build React apps with confidence using Reason."
+  },
+  {
+    title: "OneGraph Lightning Demo",
+    event: "ReactiveConf 2017",
+    type: "conference",
+    year: 2017,
+    date: "October 2017",
+    location: "Bratislava, Slovakia",
+    videoUrl: "https://www.youtube.com/watch?v=PnGK6-Vd7Zc",
+    topic: "Fast, furious live demo in front of 1,000+ attendees."
+  },
+  {
+    title: "OneGraph Demo",
+    event: "ReactVienna",
+    type: "meetup",
+    year: 2017,
+    date: "October 2017",
+    location: "Vienna, Austria",
+    videoUrl: "https://www.youtube.com/watch?v=t6CRZ-iG39g",
+    topic: "Live-demo style talk showing off alpha version of OneGraph."
+  },
+  {
+    title: "The Age of Reason(ML)",
+    event: "Reactive Brno Meetup",
+    type: "meetup",
+    year: 2016,
+    date: "November 2016",
+    location: "Brno, Czech Republic",
+    videoUrl: "https://www.youtube.com/watch?v=Ej4HU6gmnls",
+    topic: "A slower, more in-depth version with extended Q&A."
+  },
+  {
+    title: "The Age of Reason(ML)",
+    event: "ReactiveConf 2016",
+    type: "conference",
+    year: 2016,
+    date: "November 2016",
+    location: "Bratislava, Slovakia",
+    videoUrl: "https://www.youtube.com/watch?v=8LCmLQ1-YqQ",
+    topic: "Full-stack apps in one language, from hypervisor unikernel to React clients.",
+    coverage: [
+      { title: "ReactiveConf 2016 — The Age of Reason(ML)", source: "cotalks.dev", url: "https://cotalks.dev/talks/reactive-conf-2016-sean-grove-the-age-of-reason-ml", type: "article" },
+      { title: "The best React videos on the web", source: "Awesome React", url: "https://awesomereact.com/conferences", type: "article" },
+      { title: "ReactiveConf 2016 Schedule", source: "ConfPad", url: "https://confpad.io/2016-10-27-reactiveconf-2016", type: "article" },
+      { title: "This is why JavaScript rules the world", source: "Medium (StarLift)", url: "https://medium.com/starliftorg/this-is-why-javascript-rules-the-world-a4a9384f833b", type: "article" },
+      { title: "react-conf-videos: List of React conference talks", source: "GitHub", url: "https://github.com/simonccarter/react-conf-videos", type: "article" }
+    ]
+  },
+  {
+    title: "Everything happens for (and with) a Reason",
+    event: "ReactVienna",
+    type: "meetup",
+    year: 2016,
+    date: "October 2016",
+    location: "Vienna, Austria",
+    videoUrl: "https://www.youtube.com/watch?v=tB705w4w6H0",
+    topic: "Compelling ideas behind ReasonML to future founders of ReasonVienna."
+  },
+  {
+    title: "Baby steps to unikernels in production",
+    event: "CUFP 2016",
+    type: "conference",
+    year: 2016,
+    date: "September 2016",
+    location: "Nara, Japan",
+    videoUrl: "https://www.youtube.com/watch?v=i9eu9e7gN0Q",
+    topic: "Unikernels with OCaml/Mirage - removing 15 million lines of memory-unsafe code."
+  },
+  {
+    title: "From Unikernels to Databases to UIs",
+    event: "Curry On Rome 2016",
+    type: "conference",
+    year: 2016,
+    date: "July 2016",
+    location: "Rome, Italy",
+    videoUrl: "https://www.youtube.com/watch?v=QWfHrbSqnB0",
+    topic: "Truly full-stack apps in OCaml."
+  },
+  {
+    title: "Full-stack OCaml",
+    event: "PolyConf 2016",
+    type: "conference",
+    year: 2016,
+    date: "June 2016",
+    location: "Poznań, Poland",
+    videoUrl: "https://www.youtube.com/watch?v=F2dPXk__B6M",
+    topic: "From Unikernels to Databases to UIs in OCaml."
+  },
+  {
+    title: "Generating 1,000,000 Selenium tests in 60 minutes",
+    event: "SeleniumConf India 2016",
+    type: "conference",
+    year: 2016,
+    date: "June 2016",
+    location: "Bengaluru, India",
+    videoUrl: "https://www.youtube.com/watch?v=Yp7MmskzF9Y",
+    topic: "Teaching computers to generate tests to break high-level property assertions."
+  },
+  {
+    title: "Dato - a functional way to build reactive applications",
+    event: "ReactiveConf 2015",
+    type: "conference",
+    year: 2015,
+    date: "November 2015",
+    location: "Bratislava, Slovakia",
+    videoUrl: "https://www.youtube.com/watch?v=BiplJ4AFwCc",
+    topic: "A new way of building applications inspired by Meteor/Firebase/Relay with functional programming."
+  }
+];
+
+// Group talks by year
+const talksByYear = talks.reduce((acc, talk) => {
+  const year = talk.year;
+  if (!acc[year]) acc[year] = [];
+  acc[year].push(talk);
+  return acc;
+}, {} as Record<number, typeof talks>);
+
+const years = Object.keys(talksByYear).map(Number).sort((a, b) => b - a);
+const featuredTalk = talks.find(t => t.featured);
+
+function getTypeColor(type: string) {
+  const colors: Record<string, string> = {
+    conference: 'bg-moss-100 text-moss-700',
+    workshop: 'bg-warmth/10 text-warmth',
+    meetup: 'bg-sand-300 text-stone-700',
+    podcast: 'bg-stone-200 text-stone-700',
+    panel: 'bg-stone-200 text-stone-700',
+    stream: 'bg-stone-200 text-stone-700',
+  };
+  return colors[type] || 'bg-stone-100 text-stone-600';
+}
+---
+
+<Layout title="Talks & Workshops — Sean Grove" description="Conference talks, workshops, and podcasts about GraphQL, ReasonML, OCaml, and building the future">
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 px-6 py-4 bg-sand-50/90 backdrop-blur-lg shadow-sm">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <a href="/" class="text-stone-800 font-serif text-xl tracking-wide hover:text-warmth transition-colors">
+        SG
+      </a>
+      <div class="flex items-center gap-8">
+        <a href="/talks" class="text-warmth text-sm tracking-wide transition-colors font-medium">
+          Talks
+        </a>
+        <a href="/projects" class="text-stone-600 hover:text-stone-900 text-sm tracking-wide transition-colors">
+          Projects
+        </a>
+        <a href="/ml-explorations" class="text-stone-600 hover:text-stone-900 text-sm tracking-wide transition-colors">
+          ML
+        </a>
+        <a href="/blog" class="text-stone-600 hover:text-stone-900 text-sm tracking-wide transition-colors">
+          Blog
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="pt-32 pb-20 px-6">
+    <div class="max-w-6xl mx-auto">
+      <!-- Header -->
+      <header class="mb-16 text-center">
+        <span class="text-moss-600 text-sm tracking-[0.3em] uppercase mb-4 block">
+          Speaking
+        </span>
+        <h1 class="text-4xl md:text-6xl font-serif text-stone-800 mb-6">
+          Talks & Workshops
+        </h1>
+        <p class="text-stone-600 text-lg max-w-2xl mx-auto">
+          Conference talks, workshops, and podcasts about GraphQL, ReasonML, OCaml, unikernels, and building the future of software.
+        </p>
+      </header>
+
+      <!-- Featured Talk -->
+      {featuredTalk && (
+        <section class="mb-20">
+          <div class="relative bg-gradient-to-br from-stone-800 to-stone-900 rounded-3xl p-8 md:p-12 text-sand-50 overflow-hidden">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-moss-600/10 rounded-full blur-3xl" />
+            <div class="absolute bottom-0 left-0 w-48 h-48 bg-warmth/10 rounded-full blur-3xl" />
+            
+            <div class="relative z-10">
+              <div class="flex flex-wrap items-center gap-3 mb-6">
+                <span class="px-4 py-1.5 bg-warmth/90 text-white text-sm font-medium rounded-full">
+                  Featured
+                </span>
+                {featuredTalk.views && (
+                  <span class="px-4 py-1.5 bg-white/10 text-sand-200 text-sm rounded-full">
+                    {featuredTalk.views}
+                  </span>
+                )}
+              </div>
+              
+              <h2 class="text-3xl md:text-5xl font-serif mb-4">
+                {featuredTalk.title}
+              </h2>
+              <p class="text-sand-300 mb-2 flex items-center gap-2">
+                {getEventLogo(featuredTalk.event) && (
+                  <img 
+                    src={getEventLogo(featuredTalk.event)} 
+                    alt="" 
+                    class="w-5 h-5 rounded object-contain bg-white/10 p-0.5"
+                    onerror="this.style.display='none'"
+                  />
+                )}
+                {featuredTalk.event} · {featuredTalk.year}
+              </p>
+              <p class="text-sand-300 mb-2">{featuredTalk.location}</p>
+              <p class="text-sand-400 text-lg max-w-3xl mb-8 leading-relaxed">
+                {featuredTalk.topic}
+              </p>
+              
+              {featuredTalk.videoUrl && (
+                <a 
+                  href={featuredTalk.videoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-2 px-6 py-3 bg-sand-50 text-stone-800 rounded-full hover:bg-white transition-colors font-medium group"
+                >
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                  Watch Talk
+                  <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </a>
+              )}
+
+              {/* Coverage Links */}
+              {featuredTalk.coverage && featuredTalk.coverage.length > 0 && (
+                <div class="mt-8 pt-6 border-t border-white/10">
+                  <h4 class="text-sand-300 text-sm font-medium mb-4 flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                    </svg>
+                    Coverage & Discussion
+                  </h4>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {featuredTalk.coverage.map((item: any) => (
+                      <a 
+                        href={item.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="flex items-start gap-3 p-3 bg-white/5 hover:bg-white/10 rounded-lg transition-colors group"
+                      >
+                        <div class="w-8 h-8 rounded bg-white/10 flex items-center justify-center flex-shrink-0">
+                          {/* X/Twitter */}
+                          {item.url.includes('x.com') || item.url.includes('twitter.com') ? (
+                            <svg class="w-4 h-4 text-sand-300" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                            </svg>
+                          ) : item.url.includes('linkedin.com') ? (
+                            <svg class="w-4 h-4 text-sand-300" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                            </svg>
+                          ) : item.url.includes('youtube.com') || item.url.includes('youtu.be') ? (
+                            <svg class="w-4 h-4 text-sand-300" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                            </svg>
+                          ) : item.type === 'podcast' ? (
+                            <svg class="w-4 h-4 text-sand-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                            </svg>
+                          ) : (
+                            <svg class="w-4 h-4 text-sand-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                          )}
+                        </div>
+                        <div class="flex-1 min-w-0">
+                          <p class="text-sand-100 text-sm font-medium truncate group-hover:text-white transition-colors">{item.title}</p>
+                          <p class="text-sand-400 text-xs">{item.source}</p>
+                        </div>
+                        <svg class="w-4 h-4 text-sand-400 group-hover:text-sand-200 transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div class="absolute right-8 bottom-8 md:right-16 md:bottom-16 opacity-10">
+              <svg class="w-32 h-32" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </div>
+          </div>
+        </section>
+      )}
+
+      <!-- Talks by Year -->
+      {years.map(year => (
+        <section class="mb-16">
+          <h2 class="text-2xl font-serif text-stone-800 mb-8 pb-4 border-b border-sand-200">
+            {year}
+          </h2>
+          <div class="space-y-6">
+            {talksByYear[year].filter(t => !t.featured).map(talk => (
+              <article class="bg-white/60 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-sand-200 hover:shadow-lg hover:shadow-stone-200/50 transition-all duration-500 group">
+                <div class="flex flex-col md:flex-row md:items-start gap-4 md:gap-6">
+                  <div class="flex-1">
+                    <div class="flex flex-wrap items-center gap-2 mb-3">
+                      <span class={`px-3 py-1 text-xs font-medium rounded-full ${getTypeColor(talk.type)}`}>
+                        {talk.type}
+                      </span>
+                      <span class="text-stone-500 text-sm flex items-center gap-1.5">
+                        {getEventLogo(talk.event) && (
+                          <img 
+                            src={getEventLogo(talk.event)} 
+                            alt="" 
+                            class="w-4 h-4 rounded object-contain"
+                            onerror="this.style.display='none'"
+                          />
+                        )}
+                        {talk.event}
+                      </span>
+                    </div>
+                    
+                    <h3 class="text-xl md:text-2xl font-serif text-stone-800 mb-2 group-hover:text-warmth transition-colors">
+                      {talk.videoUrl ? (
+                        <a href={talk.videoUrl} target="_blank" rel="noopener noreferrer" class="hover:text-warmth">
+                          {talk.title}
+                        </a>
+                      ) : talk.title}
+                    </h3>
+                    
+                    <p class="text-stone-500 text-sm mb-3">
+                      {talk.location} {talk.date && `· ${talk.date}`}
+                    </p>
+                    
+                    {talk.topic && (
+                      <p class="text-stone-600 leading-relaxed">
+                        {talk.topic}
+                      </p>
+                    )}
+
+                    {/* Coverage Links */}
+                    {talk.coverage && talk.coverage.length > 0 && (
+                      <div class="mt-4 pt-4 border-t border-sand-200">
+                        <p class="text-stone-500 text-xs font-medium mb-2">Coverage:</p>
+                        <div class="flex flex-wrap gap-2">
+                          {talk.coverage.map((item: any) => (
+                            <a 
+                              href={item.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              class="inline-flex items-center gap-1.5 px-2 py-1 bg-sand-100 hover:bg-sand-200 rounded text-xs text-stone-600 hover:text-stone-800 transition-colors"
+                            >
+                              {/* Platform icon */}
+                              {item.url.includes('x.com') || item.url.includes('twitter.com') ? (
+                                <svg class="w-3 h-3 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                                </svg>
+                              ) : item.url.includes('linkedin.com') ? (
+                                <svg class="w-3 h-3 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                                </svg>
+                              ) : item.url.includes('youtube.com') || item.url.includes('youtu.be') ? (
+                                <svg class="w-3 h-3 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                                </svg>
+                              ) : item.url.includes('github.com') ? (
+                                <svg class="w-3 h-3 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                                </svg>
+                              ) : item.type === 'podcast' ? (
+                                <svg class="w-3 h-3 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                                  <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.5 17.5h-3v-6c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v6h-3V9h3v1.13c.69-.78 1.69-1.13 2.63-1.13 2.07 0 3.37 1.63 3.37 3.87v4.63z"/>
+                                </svg>
+                              ) : (
+                                <svg class="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                                </svg>
+                              )}
+                              {item.source}
+                              <svg class="w-3 h-3 flex-shrink-0 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                              </svg>
+                            </a>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  
+                  {talk.videoUrl && (
+                    <div class="flex-shrink-0">
+                      <a 
+                        href={talk.videoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center gap-2 text-sm text-warmth hover:text-warmth-light transition-colors font-medium"
+                      >
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M8 5v14l11-7z" />
+                        </svg>
+                        Watch
+                      </a>
+                    </div>
+                  )}
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      ))}
+
+      <!-- Stats -->
+      <section class="mt-20 py-12 border-t border-sand-200">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          <div>
+            <p class="text-4xl font-serif text-stone-800 mb-2">{talks.length}+</p>
+            <p class="text-stone-600 text-sm">Talks Given</p>
+          </div>
+          <div>
+            <p class="text-4xl font-serif text-stone-800 mb-2">{years.length}</p>
+            <p class="text-stone-600 text-sm">Years Speaking</p>
+          </div>
+          <div>
+            <p class="text-4xl font-serif text-stone-800 mb-2">20+</p>
+            <p class="text-stone-600 text-sm">Countries</p>
+          </div>
+          <div>
+            <p class="text-4xl font-serif text-stone-800 mb-2">1M+</p>
+            <p class="text-stone-600 text-sm">Video Views</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="py-12 px-6 border-t border-sand-200">
+    <div class="max-w-6xl mx-auto text-center text-stone-500 text-sm">
+      <p>© {new Date().getFullYear()} Sean Grove. All rights reserved.</p>
+    </div>
+  </footer>
+</Layout>

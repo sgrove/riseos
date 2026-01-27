@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f5f5f4"/>
+      <stop offset="100%" style="stop-color:#e7e5e4"/>
+    </linearGradient>
+    <pattern id="rake" width="100" height="20" patternUnits="userSpaceOnUse">
+      <path d="M0 10 Q50 5 100 10" fill="none" stroke="#a8a29e" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#rake)" opacity="0.3"/>
+  
+  <!-- Decorative stones -->
+  <ellipse cx="150" cy="500" rx="80" ry="35" fill="#a8a29e" opacity="0.4"/>
+  <ellipse cx="1050" cy="480" rx="100" ry="45" fill="#78716c" opacity="0.3"/>
+  <ellipse cx="200" cy="200" rx="60" ry="25" fill="#d6d3d1" opacity="0.5"/>
+  
+  <!-- Moss accent -->
+  <ellipse cx="900" cy="200" rx="120" ry="60" fill="#94a37d" opacity="0.15"/>
+  
+  <!-- Text -->
+  <text x="600" y="280" font-family="Georgia, serif" font-size="72" fill="#292524" text-anchor="middle">
+    Sean Grove
+  </text>
+  <text x="600" y="360" font-family="system-ui, sans-serif" font-size="28" fill="#78716c" text-anchor="middle">
+    Founder and hacker, on most days
+  </text>
+  
+  <!-- URL -->
+  <text x="600" y="550" font-family="system-ui, sans-serif" font-size="24" fill="#a8a29e" text-anchor="middle">
+    riseos.com
+  </text>
+</svg>

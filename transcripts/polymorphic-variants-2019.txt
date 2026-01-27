@@ -1,0 +1,272 @@
+Transcript:
+reason comes is brought to you by our
+gold sponsors atreus and chain Street
+okay so I have a little bit of a
+clickbait title the secrets of
+polymorphic variants but it's actually a
+little bit about talking about the
+structural typing side of Oh camel and
+why you should or maybe should not use
+it
+but first I want to give a shout out to
+all camel decoders we actually use that
+in anger to parse megabytes of JSON and
+the error message are phenomenal I think
+you actually under sold it and one thing
+I want to actually start with is a quick
+hack or a quick trick that is quite
+useful for under documented Oh camo and
+recent libraries very often if I asked
+for the type of this function it's well
+typed and you can see that this function
+takes a workshop app library T right we
+all know raise your hand if you know how
+to make a workshop library T right and
+like oftentimes there's no way to figure
+out what is this like what do you want
+me to create so as a quick hack if you
+ever find yourself in this situation
+what I do is I'll say you let R and I'll
+tell it hey this is a type of T and it
+equals zero and the compiler will tell
+me obviously that I'm wrong yeah real
+quick
+so I was like no no this is this is an
+int this is wrong however it knows that
+this is of that type so I can ask the
+type and is twice now it tells me the
+record fields so if you ever find
+yourself like trying to figure out what
+do you want from me just like use this
+chick and oak Emma will tell you all
+right so I'll actually get started with
+my talk so most of the like reason that
+we use is nominal types where the types
+are actually based off of names so you
+notice that I have two types here color
+a and color B and they're exactly the
+same right to human those two look very
+very similar an indistinguishable in
+fact but I can't write a function so in
+this case I'm gonna write a function
+that
+string or so a color and returns a
+string I can ask like what's the type of
+this thing and over here it'll tell me
+that this takes a color B and it returns
+a string so in this case I'm making one
+color and I'm saying this is the color a
+it's green green B color B green
+so again this looks like exactly the
+same but Oh camel or a reason is deeply
+unhappy about this right so this is like
+no that function takes a color B and by
+the way with a type inference why is it
+that it thinks that it takes a color B
+what advanced type magic does it use to
+figure out which type it must be and the
+way it works is it just looks up the
+field like up in the file to find the
+closest type that might match that and
+uses that so often like the type
+inference is you know not as advanced as
+you might think sometimes so anyway the
+challenge here is even though this looks
+exactly the same - Oh camel it's
+entirely different so there is this
+thing called polymorphic variance which
+looks very similar but it has this funny
+little back tick first and so these are
+actually structurally typed and this has
+some pretty interesting implications so
+in this case I have color C and color D
+and just like the previous bits right
+these two look very similar and those
+two look very similar but with
+polymorphic variants what you get is
+this way of saying look I don't care
+about the name but as long as the
+structure conforms to what I want then
+I'll take it I can work with it so in
+this case I've written another you know
+string of color function but it works
+off of polymorphic variants it takes
+purple and pink in this case I've said
+hey this pink C is of color C this one
+is of color D and yet it works on both
+of them so you can actually use this as
+a way of saying I don't care about the
+name of the thing just as long as the
+structure conforms to what I need then
+I'm good and this is really useful for
+records even alright let's say that we
+have two records two types of records
+one is a user one is the pet and they
+both have two common fields a created at
+and
+updated ads and they're both the same
+types and I want to write a function
+that works for both of them so in this
+case I've created or I've instantiated
+both of these records and I've written a
+function called has been updated and I
+should just take a thing and if the
+Creator that is not the same as updated
+at then it must have been updated
+however I can't pass me and my dog to
+the same function again because they're
+nominally typed right it must use one or
+the other and what we can do is again we
+can use structural typing here and we
+can use the object system instead and
+say look this is the scary hash symbol
+that I'm sure a lot of you have seen now
+but the idea is like as long as this
+like object has a created at field and
+an updated at field I can work off I'm
+good and so this is how you actually
+creates an object so this is me as an
+object and you'll notice that I actually
+didn't define any types for my users
+here so I can come in here and I can
+actually add additional fields and say
+like his speaker is true and it's happy
+and I can ask hey what's the type of
+this thing and it says alright this is a
+an object that has created at a speaker
+and updated at and now I can take these
+two different objects so me as a speaker
+and my dog as not a speaker and I can
+use this structural approach and they
+both work so it's kind of really cool
+where you know I can write slightly more
+reusable functions that operate as long
+as the structure is there it's very
+similar to like the way type scripts
+works and then one other thing you can
+do is this so in this case I'm switching
+off of an error case so this is a
+polymorphic variant that has lots and
+lots and lots of cases some of them are
+known as errors so what I'm going to say
+is look if there was some sort of
+exception I'm gonna deal with it but for
+any other thing that conforms to a
+status that standard I can ask hey what
+is this thing I'm gonna come in here and
+it says this is a way of like
+summarizing and saying all of these can
+be encapsulated in that and if it's
+any of those I want to do this this
+thing so I don't actually have to like
+summarize or iterate over every single
+possible case like some of the HTTP
+responses are successes some of them are
+failures right think about HIV status
+like 200 201 202 like you don't want to
+iterate over 400 of these different
+cases right so you can say look they
+should be status success is just 200 201
+201 naught and just clots them all
+together and now we can say if it's a
+success 1 or a failure 1 behave
+appropriately and last example is Jason
+so the cool thing here is if you notice
+that we don't with normal typing the
+names belong to modules right so if I I
+mean
+I'm gonna write a really great JSON
+library here I think you're gonna be
+impressed because my JSON is the best
+JSON but this JSON belongs to my module
+and so any library that wants to operate
+off of my JSON has to have me as a
+dependency and this means that libraries
+have to coordinate authors have to
+coordinate and the dependency chains get
+really really deep and so you can see
+here like if I write a function called
+maybe get feel from JSON write given
+some JSON I'm gonna pluck off the field
+and give you the results this will work
+with my JSON but if some competitor like
+you know no one wants to use a
+competitor JSON like let's say someone
+is a bit angsty a little bit arrogant
+and thinks that they can write a better
+JSON library then they come along and
+they write this thing and this function
+will not work with it right because it
+does it's not aware of the competitor
+JSON module it has to know the name in
+order to work with it whereas if they
+are structurally typed so this is
+actually how the standard backend
+JavaScript or JSON is implemented so if
+we look at this the type of this alright
+so this is the case there was talking
+about earlier where I'm asking to type
+and it's like oh yeah this type is
+itself let's say X is your JSON basic 0
+I'm gonna ask what's the type of this
+you can see the way that they've
+implemented Jason here is via
+polymorphic variants right so you have
+boolean Xand strings and floats and why
+not and the idea is as long as any
+library knows about this structure then
+I don't have to know about you know
+where it came from I don't have to know
+about its name so I can write functions
+that operate off of the structure rather
+than off for the names and now as the
+last point the one downside I'm sure all
+of you are really excited about this now
+you're thinking we're gonna write
+everything in objects we've heard a lot
+I think like several people have talked
+about graph QL PBX today and it is just
+like the best thing in the world but it
+uses objects and it's really nice
+because the super dynamic nature light
+of graph QL means you don't want to have
+to give a type to every single field
+right so different components are gonna
+be plucking different fields and whatnot
+and so being able to construct kind of
+objects on the fly is really useful but
+the error messages whenever use
+structural typing tend to be horrendous
+so I have this question that I'm pulling
+out from grab kill API and I'm only
+pointing out a few different fields here
+but one of them is knowable somewhere so
+let's say for example I'm gonna like do
+question votes ever again I'm kind of
+traversing deep down into the structure
+and let's say I do the wrong thing
+you'll notice I go from two question
+marks to one question mark and let's see
+what that error looks like now so this
+expression has type list of jst of dot
+dot votes aggregates dot dot aggregate
+option count and I expected a list dot
+body so and this is for a tiny tiny
+little query imagine that this was you
+know ten times the size and you did one
+wrong thing when you were accessing it
+and because you didn't actually define
+the type of ahead of time you know okay
+I will just says hey here's this huge
+object and what's something in here is
+wrong and I expected this other huge
+object and so you will spend a lot of
+time just staring at that object
+output trying to figure out what is the
+error so polymorphic variants structural
+typing is awesome you should use it and
+then don't use it stop using it okay
+that's it thank you
+[Applause]
+
+2.5s · 11m 26s YouTube · 2.0k words · text via transcript/captionTracks

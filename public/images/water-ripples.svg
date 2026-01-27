@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="ripple1">
+      <stop offset="0%" stop-color="#cdd5c2" stop-opacity="0"/>
+      <stop offset="70%" stop-color="#adb99e" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#8ca07b" stop-opacity="0.1"/>
+    </radialGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="600" fill="#e8ebe3"/>
+  
+  <!-- Ripples -->
+  <g stroke="#cdd5c2" stroke-width="1" fill="none" opacity="0.5">
+    <circle cx="200" cy="150" r="50"/>
+    <circle cx="200" cy="150" r="100"/>
+    <circle cx="200" cy="150" r="150"/>
+    
+    <circle cx="600" cy="300" r="40"/>
+    <circle cx="600" cy="300" r="80"/>
+    <circle cx="600" cy="300" r="120"/>
+    
+    <circle cx="400" cy="450" r="60"/>
+    <circle cx="400" cy="450" r="120"/>
+    <circle cx="400" cy="450" r="180"/>
+  </g>
+  
+  <!-- Subtle gradient overlay -->
+  <rect width="800" height="600" fill="url(#ripple1)" opacity="0.3"/>
+</svg>

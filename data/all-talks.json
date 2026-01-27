@@ -1,0 +1,483 @@
+{
+  "meta": {
+    "lastUpdated": "2026-01-26",
+    "totalTalks": 45,
+    "sources": [
+      "riseos.com/talks_and_workshops",
+      "YouTube",
+      "Software Engineering Daily",
+      "GitNation"
+    ]
+  },
+  "talks": [
+    {
+      "title": "The New Code",
+      "event": "AI Engineer World's Fair 2024",
+      "type": "conference",
+      "year": 2024,
+      "date": "2024-06-25",
+      "location": "San Francisco, California",
+      "videoUrl": "https://www.youtube.com/watch?v=8rABwKRsec4",
+      "duration": "21:00",
+      "views": "1,000,000+",
+      "topic": "In an era where AI transforms software development, the most valuable skill isn't writing code - it's communicating intent. Explores specifications as executable blueprints and uses OpenAI's Model Spec as an example."
+    },
+    {
+      "title": "GraphQL as a generalized next-generation API Client",
+      "event": "GraphQL Conf 2022",
+      "type": "conference",
+      "year": 2022,
+      "location": "Virtual",
+      "videoUrl": "https://www.youtube.com/watch?v=-aSZtZPs844",
+      "duration": "34:35",
+      "topic": "SaaS and APIs make payments, error reporting, helpdesks, CRMs, etc. easy to reuse. Explores making integration glue code explicit, versioned, and introspectable."
+    },
+    {
+      "title": "Teaching GraphQL to write code for you, your users & customers",
+      "event": "GraphQL Conf 2022",
+      "type": "conference",
+      "year": 2022,
+      "location": "Virtual",
+      "videoUrl": "https://www.youtube.com/watch?v=T_ZYkTsm_yA",
+      "duration": "31:00",
+      "topic": "GraphQL code generation and tooling to automate development workflows."
+    },
+    {
+      "title": "The Data & API Show",
+      "event": "YouTube/Podcast",
+      "type": "podcast",
+      "year": 2021,
+      "date": "2021-12",
+      "location": "Virtual",
+      "topic": "A relaxed chat on The Data & API Show discussing OneGraph and API integration."
+    },
+    {
+      "title": "emelletv #9 - GraphQL, OneGraph and ReasonML",
+      "event": "emelletv",
+      "type": "podcast",
+      "year": 2021,
+      "date": "2021-12",
+      "location": "Virtual",
+      "videoUrl": "https://www.youtube.com/watch?v=9-i_7Ldkc_8",
+      "duration": "1:08:52",
+      "topic": "Discussion about GraphQL, OneGraph, and ReasonML with David Sancho."
+    },
+    {
+      "title": "emelletv - October 2020",
+      "event": "emelletv",
+      "type": "podcast",
+      "year": 2020,
+      "date": "2020-10",
+      "location": "Virtual",
+      "topic": "A chat with friends over at Emelle.tv about OCaml, Reason, and related topics."
+    },
+    {
+      "title": "Using Relay with GraphQL",
+      "event": "Hasura Panel Discussion",
+      "type": "panel",
+      "year": 2020,
+      "date": "2020-08",
+      "location": "Virtual",
+      "videoUrl": "https://www.youtube.com/watch?v=HapQ-nyT1os",
+      "duration": "1:14:00",
+      "topic": "Panel discussion with Joseph Savona, Jesse Martin & Tanmai Gopal about using Relay with GraphQL."
+    },
+    {
+      "title": "Instant GraphQL with OneGraph",
+      "event": "Screenshares in Public (with swyx)",
+      "type": "stream",
+      "year": 2020,
+      "date": "2020-04",
+      "location": "Virtual",
+      "videoUrl": "https://www.youtube.com/watch?v=4NaRQ3B-3fg",
+      "duration": "1:33:00",
+      "topic": "A walk through OneGraph for user feedback with swyx."
+    },
+    {
+      "title": "OneGraph: GraphQL Tooling",
+      "event": "Software Engineering Daily",
+      "type": "podcast",
+      "year": 2020,
+      "date": "2020-03-10",
+      "location": "Virtual",
+      "url": "https://softwareengineeringdaily.com/2020/03/10/onegraph-graphql-tooling-with-sean-grove/",
+      "duration": "~60:00",
+      "topic": "Podcast episode explaining OneGraph - a company that builds integrations with third-party services and exposes them through a GraphQL interface."
+    },
+    {
+      "title": "GraphQL Documentation that comes alive",
+      "event": "GraphQL Asia 2020",
+      "type": "conference",
+      "year": 2020,
+      "date": "2020-02",
+      "location": "Bengaluru, India",
+      "topic": "Demo of living documentation tools for GraphQL APIs."
+    },
+    {
+      "title": "User-authorization with GraphQL",
+      "event": "GraphQL Asia 2020",
+      "type": "conference",
+      "year": 2020,
+      "date": "2020-02",
+      "location": "Bengaluru, India",
+      "topic": "Implementing user-authorization using a well-formed GraphQL schema."
+    },
+    {
+      "title": "Making magic with GraphQL Tooling",
+      "event": "GraphQL SF #9 at Reddit",
+      "type": "meetup",
+      "year": 2020,
+      "date": "2020-02",
+      "location": "San Francisco, California",
+      "videoUrl": "https://www.youtube.com/watch?v=HGqs7pV7c5s",
+      "duration": "23:00",
+      "topic": "The introspectable-by-default nature of GraphQL opens incredible tooling possibilities. Demos of schema explorers, code generators, doc systems."
+    },
+    {
+      "title": "Why GraphQL",
+      "event": "Zaiste Programming Stream",
+      "type": "stream",
+      "year": 2020,
+      "location": "Virtual",
+      "videoUrl": "https://www.youtube.com/watch?v=pyHDMchNb6U",
+      "duration": "1:05:33",
+      "topic": "Live chat about GraphQL fundamentals and recent developments."
+    },
+    {
+      "title": "The Future of APIs, GraphQL, and Developer Tooling",
+      "event": "React Round Up Podcast (RRU 092)",
+      "type": "podcast",
+      "year": 2019,
+      "date": "2019-12-17",
+      "location": "Virtual",
+      "videoUrl": "https://www.youtube.com/watch?v=CMbx873OnD8",
+      "duration": "1:01:00",
+      "topic": "Discussion about the future of APIs, GraphQL ecosystem, and developer tooling."
+    },
+    {
+      "title": "DX as an API Competitive Advantage",
+      "event": "APIDays London & Paris",
+      "type": "conference",
+      "year": 2019,
+      "date": "2019-11 & 2019-12",
+      "location": "London, England & Paris, France",
+      "topic": "Developers are increasingly empowered to choose the APIs they want. API providers must up their DX game to out-compete."
+    },
+    {
+      "title": "Rust in the Browser for Javascripters",
+      "event": "ReactiveConf 2019",
+      "type": "conference",
+      "year": 2019,
+      "date": "2019-10-30",
+      "location": "Prague, Czech Republic",
+      "videoUrl": "https://www.youtube.com/watch?v=teDOE7zcf_g",
+      "duration": "30:00",
+      "topic": "Thanks to wasm, Rust can reach the browser. Exploring Rust/wasm/JS interop, canvas instances, service workers, and the future web with a Rust-core/JavaScript-surface design."
+    },
+    {
+      "title": "OSS GraphQL Tools Demo",
+      "event": "ReactiveConf 2019",
+      "type": "conference",
+      "year": 2019,
+      "date": "2019-10",
+      "location": "Prague, Czech Republic",
+      "topic": "Showing off interesting OSS tools: GraphiQL Explorer, Code Exporter, searching a GraphQL schema."
+    },
+    {
+      "title": "Building Real Systems in Reason (Native)",
+      "event": "ReasonConf US 2019",
+      "type": "conference",
+      "year": 2019,
+      "date": "2019-10-08",
+      "location": "Chicago, Illinois",
+      "videoUrl": "https://www.youtube.com/watch?v=Lv2QCq6ZBPs",
+      "duration": "31:00",
+      "topic": "Every technology comes with trade-offs - what does it look like to be on the bleeding edge and build production-grade systems in Reason (Native)?"
+    },
+    {
+      "title": "ReasonReact Workshop with GraphQL & Ant Design",
+      "event": "ReasonConf US 2019",
+      "type": "workshop",
+      "year": 2019,
+      "date": "2019-10",
+      "location": "Chicago, Illinois",
+      "topic": "Build a podcast player using the new simplified React component syntax, GraphQL, and Ant Design bindings."
+    },
+    {
+      "title": "DX as an API Competitive Advantage",
+      "event": "API Strategy & Practice",
+      "type": "conference",
+      "year": 2019,
+      "date": "2019-07",
+      "location": "San Francisco, California",
+      "topic": "Developers are increasingly empowered to choose the APIs they want. API providers must up their DX game."
+    },
+    {
+      "title": "Full-stack safety with GraphQL and ReasonML",
+      "event": "Lambda Days 2019",
+      "type": "conference",
+      "year": 2019,
+      "date": "2019-05",
+      "location": "Vilnius, Lithuania",
+      "topic": "Proper GraphQL support in ReasonML means full-stack safety - if programs compile, the server can satisfy requirements."
+    },
+    {
+      "title": "The Secrets of Polymorphic Variants",
+      "event": "ReasonConf 2019",
+      "type": "conference",
+      "year": 2019,
+      "date": "2019-04-13",
+      "location": "Vienna, Austria",
+      "videoUrl": "https://www.youtube.com/watch?v=TLDNsWXxhbo",
+      "duration": "11:27",
+      "topic": "Lightning talk on polymorphic variants - closer to TypeScript's structural typing. Creating composable libraries that don't depend on one-another."
+    },
+    {
+      "title": "Full-stack Reason + GraphQL Workshop",
+      "event": "ReasonConf 2019",
+      "type": "workshop",
+      "year": 2019,
+      "date": "2019-04",
+      "location": "Vienna, Austria",
+      "topic": "Full-day workshop building a realistic full-stack app with GraphQL + ReasonReact, native Reason GraphQL server, and schema stitching."
+    },
+    {
+      "title": "OneGraph Lightning Demo",
+      "event": "Vercel (formerly ZEIT)",
+      "type": "conference",
+      "year": 2019,
+      "date": "2019-03",
+      "location": "San Francisco, California",
+      "videoUrl": "https://www.youtube.com/watch?v=rLq2zq1vxmA",
+      "duration": "13:03",
+      "topic": "A fun, fast-paced lightning talk demo of OneGraph."
+    },
+    {
+      "title": "Learning Reason as a Junior Developer",
+      "event": "SF ReasonML Meetup",
+      "type": "meetup",
+      "year": 2019,
+      "date": "2019-02",
+      "location": "San Francisco, California",
+      "topic": "What's the experience of learning a niche language like ReasonML for a junior developer?"
+    },
+    {
+      "title": "Rust in the Browser for Javascripters",
+      "event": "Øredev 2018",
+      "type": "conference",
+      "year": 2018,
+      "date": "2018-11",
+      "location": "Malmö, Sweden",
+      "videoUrl": "https://www.youtube.com/watch?v=7JVucZFjOJs",
+      "duration": "40:28",
+      "topic": "How JavaScripters can unlock high-performance concurrency and graphics thanks to Rust and WebAssembly."
+    },
+    {
+      "title": "Having Your Cake and Eating It Too - GraphQL in Reason",
+      "event": "Øredev 2018",
+      "type": "conference",
+      "year": 2018,
+      "date": "2018-11",
+      "location": "Malmö, Sweden",
+      "videoUrl": "https://www.youtube.com/watch?v=bdjvLiI5tzA",
+      "duration": "36:24",
+      "topic": "ReasonML/GraphQL for a less Reason-specific audience. GraphQL's type-system enables safety-guarantees and tooling."
+    },
+    {
+      "title": "Building Frogger with Reprocessing",
+      "event": "ReactiveConf 2018",
+      "type": "workshop",
+      "year": 2018,
+      "date": "2018-10",
+      "location": "Prague, Czech Republic",
+      "topic": "Workshop using Reprocessing - a graphics library for Reason. Drawing graphics, handling input, animation, compiling for desktop and web."
+    },
+    {
+      "title": "Building a ReasonReact App with GraphQL",
+      "event": "ReactiveConf 2018",
+      "type": "workshop",
+      "year": 2018,
+      "date": "2018-10",
+      "location": "Prague, Czech Republic",
+      "topic": "Build a small ReasonReact app from ground up with real-world GraphQL APIs."
+    },
+    {
+      "title": "Self-describing APIs and Next-gen Tooling",
+      "event": "ReactiveConf 2018",
+      "type": "conference",
+      "year": 2018,
+      "date": "2018-10",
+      "location": "Prague, Czech Republic",
+      "topic": "Next-gen tooling will be built on top of self-describing APIs that computers can inspect and compose together."
+    },
+    {
+      "title": "ReasonML and GraphQL Tour",
+      "event": "European Tour",
+      "type": "conference",
+      "year": 2018,
+      "date": "2018-05",
+      "location": "Slovakia (Košice, Bratislava) & Czech Republic (Brno, Hradec Králové, Prague)",
+      "topic": "Origin, advantages, and challenges of ReasonML. How to incrementally adopt Reason. How GraphQL solves the biggest challenge for typed languages."
+    },
+    {
+      "title": "Having your cake and eating it too – GraphQL in Reason",
+      "event": "ReasonConf 2018",
+      "type": "conference",
+      "year": 2018,
+      "date": "2018-05-12",
+      "location": "Vienna, Austria",
+      "videoUrl": "https://www.youtube.com/watch?v=OT7xOpPCGds",
+      "duration": "37:00",
+      "topic": "Full-stack safety with GraphQL and ReasonML. If programs compile, the server can satisfy requirements."
+    },
+    {
+      "title": "ReactiveMeetups: ReasonML GraphQL",
+      "event": "Reactive Meetups",
+      "type": "meetup",
+      "year": 2018,
+      "location": "Europe",
+      "videoUrl": "https://www.youtube.com/watch?v=t9a-_VnNilE",
+      "duration": "1:40:00",
+      "topic": "The future of frontend and backend development with ReasonML and GraphQL."
+    },
+    {
+      "title": "Having Your Cake and Eating It Too - GraphQL in Reason",
+      "event": "You Gotta Love Frontend (Lambda Days)",
+      "type": "conference",
+      "year": 2018,
+      "date": "2018-05",
+      "location": "Vilnius, Lithuania",
+      "videoUrl": "https://www.youtube.com/watch?v=T--4f6u_Kpw",
+      "duration": "40:00",
+      "topic": "GraphQL in ReasonML for full-stack type safety."
+    },
+    {
+      "title": "The Search for Programming Fun",
+      "event": "Øredev 2017",
+      "type": "conference",
+      "year": 2017,
+      "date": "2017-11",
+      "location": "Malmö, Sweden",
+      "topic": "When is programming intrinsically fun, and when is it laborious? Looking at this through the prism of ReasonML."
+    },
+    {
+      "title": "Reason Workshop",
+      "event": "ReactiveConf 2017",
+      "type": "workshop",
+      "year": 2017,
+      "date": "2017-10",
+      "location": "Bratislava, Slovakia",
+      "topic": "Gradually introduce Reason at work and in open-source. From standalone React components to real-world integration with GraphQL backend."
+    },
+    {
+      "title": "OneGraph Lightning Demo",
+      "event": "ReactiveConf 2017",
+      "type": "conference",
+      "year": 2017,
+      "date": "2017-10",
+      "location": "Bratislava, Slovakia",
+      "videoUrl": "https://www.youtube.com/watch?v=PnGK6-Vd7Zc",
+      "duration": "8:49",
+      "topic": "Fast, furious, and live demo of OneGraph alpha in front of 1,000+ attendees."
+    },
+    {
+      "title": "OneGraph Demo",
+      "event": "ReactVienna Meetup",
+      "type": "meetup",
+      "year": 2017,
+      "date": "2017-10",
+      "location": "Vienna, Austria",
+      "topic": "Live-demo style talk showing off alpha version of OneGraph."
+    },
+    {
+      "title": "The Age of Reason(ML) - Deeper Dive",
+      "event": "Reactive Brno Meetup",
+      "type": "meetup",
+      "year": 2016,
+      "date": "2016-11",
+      "location": "Brno, Czech Republic",
+      "videoUrl": "https://www.youtube.com/watch?v=Ej4HU6gmnls",
+      "duration": "1:04:40",
+      "topic": "A slower, more in-depth version with more Q&A time."
+    },
+    {
+      "title": "The Age of Reason(ML)",
+      "event": "ReactiveConf 2016",
+      "type": "conference",
+      "year": 2016,
+      "date": "2016-11",
+      "location": "Bratislava, Slovakia",
+      "videoUrl": "https://www.youtube.com/watch?v=8LCmLQ1-YqQ",
+      "duration": "30:24",
+      "topic": "Reason is a new developer experience by Facebook. Full-stack apps in one language, from hypervisor unikernel to React clients."
+    },
+    {
+      "title": "Everything happens for (and with) a Reason",
+      "event": "ReactVienna Meetup",
+      "type": "meetup",
+      "year": 2016,
+      "date": "2016-10",
+      "location": "Vienna, Austria",
+      "videoUrl": "https://www.youtube.com/watch?v=tB705w4w6H0",
+      "duration": "34:00",
+      "topic": "Rehearsal for ReactiveConf, going over compelling ideas behind ReasonML."
+    },
+    {
+      "title": "Unikernels and OCaml",
+      "event": "ICFP 2016",
+      "type": "conference",
+      "year": 2016,
+      "date": "2016-09",
+      "location": "Nara, Japan",
+      "topic": "Unikernels with Mirage - generating apps that operate without operating systems. Lightweight type-checked code sharing."
+    },
+    {
+      "title": "From Unikernels to Databases to UIs",
+      "event": "Curry On 2016",
+      "type": "conference",
+      "year": 2016,
+      "date": "2016-07",
+      "location": "Rome, Italy",
+      "videoUrl": "https://www.youtube.com/watch?v=QWfHrbSqnB0",
+      "duration": "41:05",
+      "topic": "Truly full-stack apps in OCaml. With Mirage, js_of_ocaml, & ARM compiler output, OCaml apps can operate without OS."
+    },
+    {
+      "title": "Full-stack OCaml",
+      "event": "Lambda Days 2016",
+      "type": "conference",
+      "year": 2016,
+      "date": "2016-06",
+      "location": "Poznań, Poland",
+      "topic": "OCaml for unikernels, browser, and mobile. Removing 15 million lines of memory-unsafe code."
+    },
+    {
+      "title": "Property-based Testing for Web",
+      "event": "JSFoo 2016",
+      "type": "conference",
+      "year": 2016,
+      "date": "2016-06",
+      "location": "Bengaluru, India",
+      "topic": "Teaching computers to generate tests to break high-level property assertions about web applications."
+    },
+    {
+      "title": "Dato - Functional Data-Oriented Apps",
+      "event": "ReactiveConf 2015",
+      "type": "conference",
+      "year": 2015,
+      "date": "2015-11",
+      "location": "Bratislava, Slovakia",
+      "topic": "A new way of building applications inspired by Meteor/Firebase/Relay with functional, data-oriented programming. Time-traveling debuggers, state serialization, query editing."
+    },
+    {
+      "title": "Early OCaml workflow pains",
+      "event": "Personal Channel",
+      "type": "screencast",
+      "year": 2015,
+      "location": "Virtual",
+      "videoUrl": "https://www.youtube.com/watch?v=rDFocxR6Mpw",
+      "duration": "13:04",
+      "topic": "Watch attempts to forge a working OCaml environment."
+    }
+  ]
+}

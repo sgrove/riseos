@@ -1,0 +1,43 @@
+---
+import { getCollection, render } from 'astro:content';
+import BlogLayout from '../../layouts/BlogLayout.astro';
+
+// Map post slugs to their hero images
+const heroImageMap: Record<string, string> = {
+  '2016-02-06-first-post': '/images/blog/first-post.jpg',
+  '2016-02-20-mirage-questions': '/images/blog/mirage-questions.jpg',
+  '2016-02-27-riseos-todos': '/images/blog/riseos-todos.jpg',
+  '2016-02-29-letsencrypt-ssl': '/images/blog/letsencrypt-ssl.jpg',
+  '2016-03-03-install-ocaml-aws-and-dbm-on-osx': '/images/blog/install-ocaml-aws-dbm.jpg',
+  '2016-03-04-ocaml-on-ios-babysteps': '/images/blog/ocaml-ios-babysteps.jpg',
+  '2016-03-31-mirage-build-via-docker': '/images/blog/mirage-docker.jpg',
+  '2016-04-09-email-reports-on-error-in-ocaml-via-mailgun': '/images/blog/email-mailgun.jpg',
+  '2016-09-13-continuously-deploying-mirage-unikernels-to-gce': '/images/blog/deploy-gce.jpg',
+  '2018-02-15-switching-site-to-docusaurus': '/images/blog/docusaurus.jpg',
+  '2018-02-20-quick-reasonml-and-graphql-editor-demo': '/images/blog/reasonml-graphql.jpg',
+};
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+// Get hero image from map, or use frontmatter if specified
+const heroImage = post.data.heroImage || heroImageMap[post.id];
+---
+
+<BlogLayout 
+  title={post.data.title} 
+  description={post.data.description}
+  date={post.data.date}
+  author={post.data.author}
+  heroImage={heroImage}
+>
+  <Content />
+</BlogLayout>

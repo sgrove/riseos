@@ -1,0 +1,210 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const explorations = [
+  {
+    name: "SquireAI",
+    description: "An AI-powered assistant that can use tools to accomplish tasks. Inspired by HuggingGPT, exploring how far GPT can go with access to APIs like Twilio, Gmail, and Calendar. Uses structured communication between tools and handles freeform natural language requests.",
+    videoUrl: "https://www.youtube.com/watch?v=YH5T5a56elk",
+    thumbnail: "https://i3.ytimg.com/vi/YH5T5a56elk/maxresdefault.jpg",
+    tags: ["AI Agents", "Tool Use", "GPT-4"]
+  },
+  {
+    name: "Sagas",
+    description: "Audio-book replacement: ML-rewrite public domain stories to modern versions (Shakespeare, Sherlock Holmes) with modern references, then generate a highly-detailed play version with dialogue, emotion, music notes, laid out in 3D audio space. Copyright-free audio books of timeless stories made modern.",
+    videoUrl: "https://www.youtube.com/watch?v=L0TkAndHpVM",
+    thumbnail: "https://i3.ytimg.com/vi/L0TkAndHpVM/maxresdefault.jpg",
+    tags: ["Audio", "Creative AI", "Storytelling"]
+  },
+  {
+    name: "GenTalk",
+    description: "Inspired by the Reflexion paper, a tool that can write, edit, and speak tech talks tailored to an audience. Two bots - author and audience - critique and incorporate each other's feedback, then read it out in my generated voice. Making myself obsolete ASAP.",
+    videoUrl: "https://www.youtube.com/watch?v=PSmcEOHlYi4",
+    thumbnail: "https://i3.ytimg.com/vi/PSmcEOHlYi4/maxresdefault.jpg",
+    tags: ["Self-improving", "Text-to-Speech", "Reflexion"]
+  },
+  {
+    name: "Conjure",
+    description: "A new UI paradigm where UIs build themselves as ephemeral, on-demand, iterable programs that appear out of nowhere, get used, then disappear. The future: ~10% fixed UIs, ~40% conversational UIs, ~50% long-tail on-the-fly generated UIs.",
+    videoUrl: "https://www.youtube.com/watch?v=xgi1YX6HQBw",
+    thumbnail: "https://i3.ytimg.com/vi/xgi1YX6HQBw/maxresdefault.jpg",
+    tags: ["Ephemeral UI", "Code Generation", "Future of UI"]
+  },
+  {
+    name: "Prof Dumbot",
+    description: "A way to ask questions interactively while reading research papers, tracking conversations across papers down to the specific part that triggered the question. Added polish on the overall experience to make it more and more useful for paper reading.",
+    videoUrl: "https://www.youtube.com/watch?v=w_JRSSR68E8",
+    thumbnail: "https://i3.ytimg.com/vi/w_JRSSR68E8/maxresdefault.jpg",
+    tags: ["Research", "Q&A", "Paper Reading"]
+  },
+  {
+    name: "Journaliza",
+    description: "A nod to the old ELIZA program: a GPT-guided diary to explore what's on your mind, expand it, and write out a narrative as a 1st-person journal entry. Decompress while driving, on the couch, or walking. The most personally engaging project so far.",
+    videoUrl: "https://www.youtube.com/watch?v=EcHMCtb_iO0",
+    thumbnail: "https://i3.ytimg.com/vi/EcHMCtb_iO0/maxresdefault.jpg",
+    tags: ["Mental Health", "Journaling", "Voice"]
+  },
+  {
+    name: "Prator",
+    description: "A pull request tool using GPT-4 to make suggestions on GitHub PRs. Leave a comment and the tool uses the entire file context to create a suggestion that can be committed directly. Make suggestions and get a first pass without switching context.",
+    videoUrl: "https://www.youtube.com/watch?v=wLLK7x9m-RM",
+    thumbnail: "https://i3.ytimg.com/vi/wLLK7x9m-RM/maxresdefault.jpg",
+    tags: ["Developer Tools", "GitHub", "Code Review"]
+  },
+  {
+    name: "HN GPT",
+    description: "Summarize HN discussions and extract overall sentiment and keywords automatically. Using the extracted summary + sentiment, generate an embedding and store it with like/dislike data. Use embeddings to predict how likely you'll enjoy other stories on the HN frontpage.",
+    videoUrl: "https://www.youtube.com/watch?v=gULJOZZN0hE",
+    thumbnail: "https://i3.ytimg.com/vi/gULJOZZN0hE/maxresdefault.jpg",
+    tags: ["Embeddings", "Recommendations", "Hacker News"]
+  },
+  {
+    name: "Dungeon GPT",
+    description: "A Swift project for a GPT-4 powered dungeon story where the setting is made up on the spot. The storyteller tracks HP, mana, and stats as you decide what to do. At each step, a comic book image is generated for the scene via Stable Diffusion.",
+    videoUrl: "https://www.youtube.com/watch?v=vff-8H-cZ7w",
+    thumbnail: "https://i3.ytimg.com/vi/vff-8H-cZ7w/maxresdefault.jpg",
+    tags: ["Games", "Image Generation", "Interactive Fiction"]
+  },
+  {
+    name: "Transformed Mind",
+    description: "A tool to explore startup ideas by simulating YC interview prep. Create a mind map, and GPT asks questions you may not have thought of. As you answer, the tool follows up the chain, leading to better and better questions. A 90-minute hack that shows how powerful modern LLMs are.",
+    videoUrl: "https://www.youtube.com/watch?v=crDmEQxfaG8",
+    thumbnail: "https://i3.ytimg.com/vi/crDmEQxfaG8/maxresdefault.jpg",
+    tags: ["Mind Mapping", "Startups", "YC Prep"]
+  }
+];
+---
+
+<Layout title="ML Explorations — Sean Grove" description="Experiments, failures, dalliances, and plenty of unfinished hacks in machine learning">
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 px-6 py-4 bg-sand-50/90 backdrop-blur-lg shadow-sm">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <a href="/" class="text-stone-800 font-serif text-xl tracking-wide hover:text-warmth transition-colors">
+        SG
+      </a>
+      <div class="flex items-center gap-8">
+        <a href="/talks" class="text-stone-600 hover:text-stone-900 text-sm tracking-wide transition-colors">
+          Talks
+        </a>
+        <a href="/projects" class="text-stone-600 hover:text-stone-900 text-sm tracking-wide transition-colors">
+          Projects
+        </a>
+        <a href="/ml-explorations" class="text-warmth text-sm tracking-wide transition-colors font-medium">
+          ML
+        </a>
+        <a href="/blog" class="text-stone-600 hover:text-stone-900 text-sm tracking-wide transition-colors">
+          Blog
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="pt-32 pb-20 px-6">
+    <div class="max-w-6xl mx-auto">
+      <!-- Header -->
+      <header class="mb-16 text-center">
+        <span class="text-moss-600 text-sm tracking-[0.3em] uppercase mb-4 block">
+          Experiments
+        </span>
+        <h1 class="text-4xl md:text-6xl font-serif text-stone-800 mb-6">
+          ML Explorations
+        </h1>
+        <p class="text-stone-600 text-lg max-w-2xl mx-auto">
+          Experiments, failures, dalliances, and plenty of unfinished hacks. 
+          Leaning hard into the "make myself obsolete ASAP" role.
+        </p>
+      </header>
+
+      <!-- Explorations Grid -->
+      <div class="grid md:grid-cols-2 gap-8">
+        {explorations.map((project, index) => (
+          <article class={`group ${index === 0 ? 'md:col-span-2' : ''}`}>
+            <a 
+              href={project.videoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class={`block bg-white/60 backdrop-blur-sm rounded-3xl overflow-hidden border border-sand-200 hover:shadow-xl hover:shadow-stone-200/50 transition-all duration-500 ${index === 0 ? 'md:flex' : ''}`}
+            >
+              <!-- Thumbnail -->
+              <div class={`relative overflow-hidden ${index === 0 ? 'md:w-1/2' : 'aspect-video'}`}>
+                <img 
+                  src={project.thumbnail} 
+                  alt={project.name}
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                />
+                <!-- Play button overlay -->
+                <div class="absolute inset-0 flex items-center justify-center bg-stone-900/30 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div class="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center">
+                    <svg class="w-6 h-6 text-stone-800 ml-1" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Content -->
+              <div class={`p-6 md:p-8 ${index === 0 ? 'md:w-1/2 md:flex md:flex-col md:justify-center' : ''}`}>
+                <h2 class={`font-serif text-stone-800 mb-3 group-hover:text-warmth transition-colors ${index === 0 ? 'text-3xl md:text-4xl' : 'text-2xl'}`}>
+                  {project.name}
+                </h2>
+                
+                <p class={`text-stone-600 leading-relaxed mb-4 ${index === 0 ? 'text-lg' : ''}`}>
+                  {project.description}
+                </p>
+                
+                <div class="flex flex-wrap gap-2">
+                  {project.tags.map(tag => (
+                    <span class="px-3 py-1 bg-sand-200/50 text-stone-600 text-xs rounded-full">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </a>
+          </article>
+        ))}
+      </div>
+
+      <!-- Philosophy Section -->
+      <section class="mt-20 max-w-3xl mx-auto text-center">
+        <div class="bg-gradient-to-br from-stone-800 to-stone-900 rounded-3xl p-8 md:p-12 text-sand-50">
+          <h2 class="text-2xl md:text-3xl font-serif mb-6">
+            The "Make Myself Obsolete" Philosophy
+          </h2>
+          <p class="text-sand-300 leading-relaxed mb-6">
+            Part of a series where I lean hard into automating away my own tasks, 
+            hoping for a phoenix-like rebirth as a new, more powerful, and more useful 
+            version of myself on the other side of being automated away.
+          </p>
+          <p class="text-sand-400 text-sm">
+            These are experiments and explorations — some work, many don't, 
+            all teach something interesting.
+          </p>
+        </div>
+      </section>
+
+      <!-- YouTube CTA -->
+      <section class="mt-12 text-center">
+        <p class="text-stone-600 mb-4">More experiments and demos on YouTube</p>
+        <a 
+          href="https://www.youtube.com/results?search_query=sean+grove"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 px-6 py-3 bg-stone-800 text-sand-50 rounded-full hover:bg-stone-700 transition-colors font-medium"
+        >
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+          </svg>
+          Watch on YouTube
+        </a>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="py-12 px-6 border-t border-sand-200">
+    <div class="max-w-6xl mx-auto text-center text-stone-500 text-sm">
+      <p>© {new Date().getFullYear()} Sean Grove. All rights reserved.</p>
+    </div>
+  </footer>
+</Layout>

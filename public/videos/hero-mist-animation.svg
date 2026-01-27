@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1920" height="1080" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="turbulence">
+      <feTurbulence type="fractalNoise" baseFrequency="0.01" numOctaves="2" result="turbulence" seed="5">
+        <animate attributeName="baseFrequency" values="0.01;0.02;0.01" dur="30s" repeatCount="indefinite"/>
+      </feTurbulence>
+      <feColorMatrix in="turbulence" type="saturate" values="0"/>
+      <feComponentTransfer>
+        <feFuncA type="discrete" tableValues="0 .1 .2 .3 .4 .5 .6 .7 .8 .9 1"/>
+      </feComponentTransfer>
+      <feGaussianBlur stdDeviation="3"/>
+    </filter>
+    
+    <linearGradient id="mistGradient" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#f9f6f1" stop-opacity="0.8"/>
+      <stop offset="50%" stop-color="#f2ede3" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#e8ebe3" stop-opacity="0.1"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Animated mist layers -->
+  <g opacity="0.6">
+    <!-- Layer 1 - slow drift -->
+    <rect width="2400" height="400" y="680" fill="url(#mistGradient)" filter="url(#turbulence)">
+      <animateTransform attributeName="transform" type="translate" values="0,0; -480,0; 0,0" dur="60s" repeatCount="indefinite"/>
+    </rect>
+    
+    <!-- Layer 2 - medium drift -->
+    <rect width="2880" height="300" y="500" fill="url(#mistGradient)" filter="url(#turbulence)" opacity="0.5">
+      <animateTransform attributeName="transform" type="translate" values="0,0; -960,0; 0,0" dur="45s" repeatCount="indefinite"/>
+    </rect>
+    
+    <!-- Layer 3 - fast drift -->
+    <rect width="3360" height="200" y="300" fill="url(#mistGradient)" filter="url(#turbulence)" opacity="0.3">
+      <animateTransform attributeName="transform" type="translate" values="0,0; -1440,0; 0,0" dur="30s" repeatCount="indefinite"/>
+    </rect>
+  </g>
+</svg>

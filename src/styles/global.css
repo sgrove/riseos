@@ -1,0 +1,414 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@import "@fontsource/cormorant-garamond/400.css";
+@import "@fontsource/cormorant-garamond/500.css";
+@import "@fontsource/cormorant-garamond/600.css";
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/500.css";
+
+@theme {
+  /* Zen Garden Color Palette */
+  --color-stone-50: #fafaf9;
+  --color-stone-100: #f5f5f4;
+  --color-stone-200: #e7e5e4;
+  --color-stone-300: #d6d3d1;
+  --color-stone-400: #a8a29e;
+  --color-stone-500: #78716c;
+  --color-stone-600: #57534e;
+  --color-stone-700: #44403c;
+  --color-stone-800: #292524;
+  --color-stone-900: #1c1917;
+  
+  --color-moss-50: #f6f7f4;
+  --color-moss-100: #e8ebe3;
+  --color-moss-200: #d1d7c7;
+  --color-moss-300: #b3bea3;
+  --color-moss-400: #94a37d;
+  --color-moss-500: #768860;
+  --color-moss-600: #5c6b4a;
+  --color-moss-700: #48543b;
+  --color-moss-800: #3b4432;
+  --color-moss-900: #333a2c;
+  
+  --color-sand-50: #fdfcfa;
+  --color-sand-100: #f9f6f1;
+  --color-sand-200: #f2ede3;
+  --color-sand-300: #e8e0d0;
+  --color-sand-400: #d9ccb5;
+  --color-sand-500: #c4b193;
+  --color-sand-600: #a89470;
+  --color-sand-700: #8c7859;
+  --color-sand-800: #73634a;
+  --color-sand-900: #5f523f;
+  
+  /* Bamboo Green Range */
+  --color-bamboo-50: #f4f6f2;
+  --color-bamboo-100: #e6eae0;
+  --color-bamboo-200: #cdd5c2;
+  --color-bamboo-300: #adb99e;
+  --color-bamboo-400: #8ca07b;
+  --color-bamboo-500: #6b8a4f;
+  --color-bamboo-600: #5a7247;
+  --color-bamboo-700: #4a5e3b;
+  --color-bamboo-800: #3c4b31;
+  --color-bamboo-900: #333f2a;
+  
+  /* Glazed Black Pottery Range */
+  --color-pottery-50: #f5f5f5;
+  --color-pottery-100: #e9e9e9;
+  --color-pottery-200: #d3d3d3;
+  --color-pottery-300: #b3b3b3;
+  --color-pottery-400: #737373;
+  --color-pottery-500: #525252;
+  --color-pottery-600: #404040;
+  --color-pottery-700: #2d2d2d;
+  --color-pottery-800: #1a1a1a;
+  --color-pottery-900: #0f0f0f;
+  
+  /* Brown Accents Range */
+  --color-brown-50: #fdf8f0;
+  --color-brown-100: #faefd9;
+  --color-brown-200: #f4dcb3;
+  --color-brown-300: #ecc082;
+  --color-brown-400: #e19e4f;
+  --color-brown-500: #d17f2a;
+  --color-brown-600: #a67c52;
+  --color-brown-700: #8b6914;
+  --color-brown-800: #735514;
+  --color-brown-900: #5f4815;
+  
+  --color-warmth: #c4785a;
+  --color-warmth-light: #d4967d;
+  
+  /* Fonts */
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+}
+
+/* Base styles */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-sand-50);
+  color: var(--color-stone-800);
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-sand-100);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-stone-400);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-stone-500);
+}
+
+/* Selection */
+::selection {
+  background-color: var(--color-moss-200);
+  color: var(--color-stone-900);
+}
+
+/* Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes ripple {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+/* Zen patterns */
+.zen-lines {
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 20px,
+    var(--color-sand-200) 20px,
+    var(--color-sand-200) 21px
+  );
+}
+
+.raked-sand {
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      transparent 8px,
+      var(--color-sand-300) 8px,
+      var(--color-sand-300) 9px
+    );
+  background-size: 100% 18px;
+}
+
+/* Hover Effects */
+.timeline-item {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(0);
+}
+
+.timeline-item:hover {
+  transform: translateY(-8px);
+  box-shadow: 
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04),
+    0 0 0 1px var(--color-sand-200);
+}
+
+.nav-link {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  transition: color 0.3s ease;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-bamboo-600), var(--color-bamboo-500));
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 1px;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.nav-link:hover {
+  color: var(--color-bamboo-600);
+}
+
+.zen-card {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: scale(1);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.zen-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg, 
+    transparent, 
+    rgba(230, 234, 224, 0.2), 
+    transparent
+  );
+  transition: left 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.zen-card:hover {
+  transform: scale(1.05);
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(205, 213, 194, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.zen-card:hover::before {
+  left: 100%;
+}
+
+/* Gentle pulsing effect for special elements */
+@keyframes zenPulse {
+  0%, 100% { 
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 0.8;
+    transform: scale(1.02);
+  }
+}
+
+.zen-pulse {
+  animation: zenPulse 3s ease-in-out infinite;
+}
+
+/* Zen-specific utility classes */
+.text-bamboo {
+  color: var(--color-bamboo-600);
+}
+
+.text-pottery {
+  color: var(--color-pottery-700);
+}
+
+.text-brown-accent {
+  color: var(--color-brown-600);
+}
+
+.bg-bamboo-gradient {
+  background: linear-gradient(135deg, var(--color-bamboo-500), var(--color-bamboo-600));
+}
+
+.bg-pottery-gradient {
+  background: linear-gradient(135deg, var(--color-pottery-700), var(--color-pottery-800));
+  background-size: 100% 100%;
+  background-image: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, transparent 70%);
+}
+
+/* Enhanced stone texture */
+.stone-texture {
+  position: relative;
+}
+
+.stone-texture::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 30% 20%, rgba(255,255,255,0.1) 0%, transparent 50%),
+    radial-gradient(circle at 70% 80%, rgba(0,0,0,0.05) 0%, transparent 40%);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* Zen focus state for interactive elements */
+.zen-focus:focus-visible {
+  outline: 2px solid var(--color-bamboo-500);
+  outline-offset: 2px;
+}
+
+/* ==========================================
+   Code Block Styling - Zen Terminal Theme
+   ========================================== */
+
+/* Monospace font stack */
+code, pre, kbd, samp {
+  font-family: "JetBrains Mono", "Fira Code", "SF Mono", "Menlo", "Monaco", "Consolas", monospace;
+  font-feature-settings: "liga" 1, "calt" 1; /* Enable ligatures if available */
+}
+
+/* Inline code */
+:not(pre) > code {
+  background-color: var(--color-sand-200);
+  color: var(--color-pottery-700);
+  padding: 0.2em 0.4em;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+  font-weight: 500;
+  border: 1px solid var(--color-sand-300);
+}
+
+/* Code blocks - Works with Shiki (which applies inline styles) */
+pre {
+  padding: 1.25rem 1.5rem !important;
+  border-radius: 0.75rem !important;
+  font-size: 0.875rem !important;
+  line-height: 1.7 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.15),
+    0 2px 4px -1px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+  margin: 1.5rem 0 !important;
+}
+
+/* Ensure code inside pre inherits properly */
+pre > code {
+  display: block;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  font-size: inherit !important;
+  line-height: inherit !important;
+}
+
+/* Code block scrollbar */
+pre::-webkit-scrollbar {
+  height: 8px;
+}
+
+pre::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+pre::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+pre::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Prose overrides for better code integration */
+.prose :not(pre) > code {
+  background-color: var(--color-sand-200);
+  color: var(--color-pottery-700);
+  padding: 0.2em 0.4em;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+  font-weight: 500;
+  border: 1px solid var(--color-sand-300);
+}
+
+/* Language label for code blocks */
+pre[data-language] {
+  position: relative;
+}
+
+pre[data-language]::after {
+  content: attr(data-language);
+  position: absolute;
+  top: 0.5rem;
+  right: 0.75rem;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.4);
+  font-weight: 500;
+  pointer-events: none;
+}

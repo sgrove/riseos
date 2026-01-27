@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="stone" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#78716c"/>
+      <stop offset="100%" style="stop-color:#44403c"/>
+    </linearGradient>
+  </defs>
+  <!-- Zen stone/circle -->
+  <circle cx="50" cy="50" r="45" fill="url(#stone)"/>
+  <!-- Enso-inspired brush stroke -->
+  <path d="M25 50 Q25 25 50 25 Q75 25 75 50 Q75 75 50 75" 
+        fill="none" 
+        stroke="#f5f5f4" 
+        stroke-width="4" 
+        stroke-linecap="round"
+        opacity="0.9"/>
+</svg>

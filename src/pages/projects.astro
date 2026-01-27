@@ -1,0 +1,236 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const projects = [
+  {
+    name: "OneGraph",
+    description: "A unified GraphQL API that connects to all your SaaS services. Built GraphQL tooling including GraphiQL Explorer, which was later donated to the GraphQL Foundation.",
+    period: "2017-2022",
+    status: "Acquired by Netlify",
+    link: "https://www.onegraph.com",
+    tags: ["GraphQL", "Developer Tools", "SaaS"],
+    featured: true
+  },
+  {
+    name: "Tehila",
+    description: "A series of video tutorials and explorations in functional programming and language design.",
+    image: "/img/tehila.jpg",
+    link: "https://www.youtube.com/playlist?list=PL9Tsx6iEMvYKa70qB-WbYQ8XYAJ9hV4RP",
+    tags: ["Education", "Functional Programming"]
+  },
+  {
+    name: "Xiangqi",
+    description: "Chinese Chess implementation with AI opponent, exploring game theory and functional programming patterns.",
+    image: "/img/xiangqi.jpg",
+    link: "https://www.youtube.com/watch?v=cTUQFgo4mII&index=1&list=PL9Tsx6iEMvYKP8UkGWuW9wSfRAAie20Dr&t=0s",
+    tags: ["Games", "AI", "Functional Programming"]
+  },
+  {
+    name: "LearnGamma",
+    description: "Educational platform for learning functional programming concepts through interactive examples.",
+    image: "/img/learn_gamma.jpg",
+    link: "https://www.youtube.com/watch?v=Gbpe3hEYKgg&t=4s",
+    tags: ["Education", "Interactive Learning"]
+  },
+  {
+    name: "GraphiQL Explorer",
+    description: "A visual query builder for GraphQL that was integrated into GraphiQL and donated to the GraphQL Foundation. Used by millions of developers.",
+    link: "https://github.com/graphql/graphiql",
+    tags: ["GraphQL", "Open Source", "Developer Tools"],
+    featured: true
+  },
+  {
+    name: "RiseOS",
+    description: "This site! Originally built as a Mirage unikernel running OCaml, exploring the future of infrastructure.",
+    link: "https://github.com/sgrove/riseos",
+    tags: ["OCaml", "Unikernels", "Mirage"]
+  },
+  {
+    name: "Reason Town Podcast",
+    description: "A podcast about ReasonML and the OCaml ecosystem, discussing the future of typed functional programming on the web.",
+    link: "https://reason.town",
+    tags: ["Podcast", "ReasonML", "Community"]
+  }
+];
+
+const featuredProjects = projects.filter(p => p.featured);
+const otherProjects = projects.filter(p => !p.featured);
+---
+
+<Layout title="Projects — Sean Grove" description="Software projects, open source contributions, and experiments">
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 px-6 py-4 bg-sand-50/90 backdrop-blur-lg shadow-sm">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <a href="/" class="text-stone-800 font-serif text-xl tracking-wide hover:text-warmth transition-colors">
+        SG
+      </a>
+      <div class="flex items-center gap-8">
+        <a href="/talks" class="text-stone-600 hover:text-stone-900 text-sm tracking-wide transition-colors">
+          Talks
+        </a>
+        <a href="/projects" class="text-warmth text-sm tracking-wide transition-colors font-medium">
+          Projects
+        </a>
+        <a href="/ml-explorations" class="text-stone-600 hover:text-stone-900 text-sm tracking-wide transition-colors">
+          ML
+        </a>
+        <a href="/blog" class="text-stone-600 hover:text-stone-900 text-sm tracking-wide transition-colors">
+          Blog
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="pt-32 pb-20 px-6">
+    <div class="max-w-6xl mx-auto">
+      <!-- Header -->
+      <header class="mb-16 text-center">
+        <span class="text-moss-600 text-sm tracking-[0.3em] uppercase mb-4 block">
+          Building
+        </span>
+        <h1 class="text-4xl md:text-6xl font-serif text-stone-800 mb-6">
+          Projects
+        </h1>
+        <p class="text-stone-600 text-lg max-w-2xl mx-auto">
+          A selection of software projects, open source contributions, and experiments in building better developer tools.
+        </p>
+      </header>
+
+      <!-- Featured Projects -->
+      <section class="mb-20">
+        <h2 class="text-sm text-moss-600 tracking-[0.2em] uppercase mb-8">Featured Work</h2>
+        <div class="grid md:grid-cols-2 gap-8">
+          {featuredProjects.map(project => (
+            <article class="relative bg-gradient-to-br from-stone-800 to-stone-900 rounded-3xl p-8 text-sand-50 overflow-hidden group">
+              <div class="absolute top-0 right-0 w-48 h-48 bg-moss-600/10 rounded-full blur-3xl" />
+              <div class="absolute bottom-0 left-0 w-32 h-32 bg-warmth/10 rounded-full blur-3xl" />
+              
+              <div class="relative z-10">
+                {project.status && (
+                  <span class="px-3 py-1 bg-warmth/90 text-white text-xs font-medium rounded-full mb-4 inline-block">
+                    {project.status}
+                  </span>
+                )}
+                
+                <h3 class="text-2xl md:text-3xl font-serif mb-3 group-hover:text-warmth-light transition-colors">
+                  {project.link ? (
+                    <a href={project.link} target="_blank" rel="noopener noreferrer">
+                      {project.name}
+                    </a>
+                  ) : project.name}
+                </h3>
+                
+                {project.period && (
+                  <p class="text-sand-400 text-sm mb-4">{project.period}</p>
+                )}
+                
+                <p class="text-sand-300 leading-relaxed mb-6">
+                  {project.description}
+                </p>
+                
+                <div class="flex flex-wrap gap-2 mb-6">
+                  {project.tags.map(tag => (
+                    <span class="px-3 py-1 bg-white/10 text-sand-300 text-xs rounded-full">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                
+                {project.link && (
+                  <a 
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center gap-2 text-sand-200 hover:text-white transition-colors font-medium text-sm"
+                  >
+                    View Project
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                  </a>
+                )}
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <!-- Other Projects -->
+      <section>
+        <h2 class="text-sm text-moss-600 tracking-[0.2em] uppercase mb-8">Other Projects</h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {otherProjects.map(project => (
+            <article class="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-sand-200 hover:shadow-lg hover:shadow-stone-200/50 transition-all duration-500 group">
+              {project.image && (
+                <div class="aspect-video bg-sand-200 rounded-xl mb-4 overflow-hidden">
+                  <img 
+                    src={project.image} 
+                    alt={project.name}
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+              )}
+              
+              <h3 class="text-xl font-serif text-stone-800 mb-2 group-hover:text-warmth transition-colors">
+                {project.link ? (
+                  <a href={project.link} target="_blank" rel="noopener noreferrer">
+                    {project.name}
+                  </a>
+                ) : project.name}
+              </h3>
+              
+              <p class="text-stone-600 text-sm leading-relaxed mb-4">
+                {project.description}
+              </p>
+              
+              <div class="flex flex-wrap gap-2 mb-4">
+                {project.tags.map(tag => (
+                  <span class="px-2 py-1 bg-sand-200/50 text-stone-600 text-xs rounded-full">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+              
+              {project.link && (
+                <a 
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-1 text-warmth hover:text-warmth-light transition-colors font-medium text-sm"
+                >
+                  View
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+              )}
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <!-- GitHub CTA -->
+      <section class="mt-20 text-center">
+        <p class="text-stone-600 mb-4">More projects and contributions on GitHub</p>
+        <a 
+          href="https://github.com/sgrove"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 px-6 py-3 bg-stone-800 text-sand-50 rounded-full hover:bg-stone-700 transition-colors font-medium"
+        >
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
+          </svg>
+          @sgrove
+        </a>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="py-12 px-6 border-t border-sand-200">
+    <div class="max-w-6xl mx-auto text-center text-stone-500 text-sm">
+      <p>© {new Date().getFullYear()} Sean Grove. All rights reserved.</p>
+    </div>
+  </footer>
+</Layout>

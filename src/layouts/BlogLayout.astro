@@ -1,0 +1,96 @@
+---
+import Layout from './Layout.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  date?: Date;
+  author?: string;
+  heroImage?: string;
+}
+
+const { title, description, date, author, heroImage } = Astro.props;
+
+const formattedDate = date ? new Intl.DateTimeFormat('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+}).format(date) : null;
+---
+
+<Layout title={`${title} — Sean Grove`} description={description}>
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 px-6 py-4 bg-sand-50/90 backdrop-blur-lg shadow-sm">
+    <div class="max-w-4xl mx-auto flex justify-between items-center">
+      <a href="/" class="text-stone-800 font-serif text-xl tracking-wide hover:text-warmth transition-colors">
+        SG
+      </a>
+      <div class="flex items-center gap-8">
+        <a href="/talks" class="text-stone-600 hover:text-stone-900 text-sm tracking-wide transition-colors">
+          Talks
+        </a>
+        <a href="/projects" class="text-stone-600 hover:text-stone-900 text-sm tracking-wide transition-colors">
+          Projects
+        </a>
+        <a href="/ml-explorations" class="text-stone-600 hover:text-stone-900 text-sm tracking-wide transition-colors">
+          ML
+        </a>
+        <a href="/blog" class="text-stone-600 hover:text-stone-900 text-sm tracking-wide transition-colors">
+          Blog
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="pt-32 pb-20 px-6">
+    <article class="max-w-3xl mx-auto">
+      <!-- Header -->
+      <header class="mb-12">
+        <a href="/blog" class="text-warmth hover:text-warmth-light text-sm transition-colors mb-4 inline-block">
+          ← Back to Blog
+        </a>
+        <h1 class="text-4xl md:text-5xl font-serif text-stone-800 mb-4 leading-tight">
+          {title}
+        </h1>
+        {(formattedDate || author) && (
+          <div class="flex items-center gap-4 text-stone-500 mb-8">
+            {author && <span>{author}</span>}
+            {formattedDate && author && <span>·</span>}
+            {formattedDate && <time>{formattedDate}</time>}
+          </div>
+        )}
+        
+        {/* Hero Image */}
+        {heroImage && (
+          <div class="relative -mx-6 md:-mx-12 lg:-mx-24 mb-12 overflow-hidden rounded-2xl">
+            <img 
+              src={heroImage} 
+              alt={title}
+              class="w-full h-64 md:h-80 lg:h-96 object-cover"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-stone-900/20 to-transparent pointer-events-none" />
+          </div>
+        )}
+      </header>
+
+      <!-- Content -->
+      <div class="prose prose-stone prose-lg max-w-none
+        prose-headings:font-serif prose-headings:text-stone-800
+        prose-a:text-warmth prose-a:no-underline hover:prose-a:text-warmth-light
+        prose-img:rounded-xl prose-img:shadow-lg
+        prose-blockquote:border-warmth prose-blockquote:bg-sand-100 prose-blockquote:py-1 prose-blockquote:rounded-r-lg
+        prose-strong:text-stone-700
+        prose-li:marker:text-stone-400
+      ">
+        <slot />
+      </div>
+    </article>
+  </main>
+
+  <!-- Footer -->
+  <footer class="py-12 px-6 border-t border-sand-200">
+    <div class="max-w-4xl mx-auto text-center text-stone-500 text-sm">
+      <p>© {new Date().getFullYear()} Sean Grove. All rights reserved.</p>
+    </div>
+  </footer>
+</Layout>

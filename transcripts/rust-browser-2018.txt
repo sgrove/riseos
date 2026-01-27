@@ -1,0 +1,973 @@
+Transcript:
+our everybody I think it's probably time
+to get started I'm gonna be talking
+about rust for JavaScript errs raise
+your hand if you write JavaScript
+frequently raise your hand if you write
+Russ frequently all right and raise your
+hand if you have ever written any rust
+whatsoever Oh perfect all right we have
+a good mix then all right so I'm gonna
+be talking a pretty high level I'll go
+over some examples and whatnot
+this is kind of a lot about to the why
+of rust and web assembly in JavaScript
+if you are interested at the end about
+how to do it and how it works under the
+hood
+I really recommend building a time
+machine going back to about 10:30 this
+morning and watching Steve's talk where
+he went over how it all works but I'm
+gonna try to cover a little bit about
+the memory model interrupt that kind of
+thing so real quick my background so I'm
+Shawn Grove I'm coming out of San
+Francisco I work at a company called one
+graph I'm not gonna talk about that
+today though in a previous life I worked
+on a project I've only shipped one
+production Rost project but it was in
+the context of a embedded cross-compiled
+IOT device and we needed to be able to
+continually ship updates to the edge to
+these things it was a project that was
+previously written in Oh camel and we
+really really cared about performance we
+could not afford to lose these devices
+at the edge and so rust was a really
+nice fit for being to deploy to these
+devices and guarantee correctness so
+that we didn't have crashes that would
+cause us to lose these devices at the
+edge before that I wrote a lot of
+closure and clojurescript contributed
+quite a bit to the clojurescript
+compiler these days I write primarily in
+a reason ml and a little bit of rust
+however cool so for those of you who
+have not written any rust here's my
+pitch to you
+rust is like banging your head against a
+wall so part of this talk is about
+setting expectations I think if there is
+a lot of hype around Ross the developer
+experience web assembly that kind of
+thing so I want to make sure that we're
+at the same
+like whenever you enter it you're not
+going to be too disappointed so one of
+the caveats going into this is you
+should always expect that the RUS code
+is going to be longer and more verbose
+than the JavaScript equivalent this
+isn't strictly true but it's true enough
+that if you go into it with this exact
+expectation you won't be disappointed
+so whenever you see kind of longer bits
+of code just take a deep breath it's
+okay it's there for a reason
+and it will help you understand a bit
+more so with that in mind
+so rust is a systems level programming
+language I don't know if that's a great
+term but for better or for this is how
+they describe themselves it's very it's
+focused very much on performance and
+correctness I would say for JavaScript
+errs though the aspects that will be
+relevant are that Russ gives you very
+very low-level control over things like
+memory layout and this in turn
+translates into very nice performance
+benefits however traditionally whenever
+you're working at with these low level
+abstractions it's very difficult to get
+a program correct right so seg faults in
+C are a thing that JavaScript people
+don't typically have to worry about
+leaking memory is a thing that can
+happen in JavaScript but it's not the
+end of the world right the garbage
+collectors are really amazing in today's
+browsers so whenever we're working with
+these lower-level obstructions we want
+to have a language it actually helps us
+as much as possible pattern matching
+type inference a few other things so the
+low level abstractions come from we want
+to have predictable performance what is
+it like while a garbage collector is
+amazing right it's kind of a modern
+wonder I would argue the problem is that
+it can be very difficult to predict when
+a garbage collection is going to run
+right this is typically known as jank
+whenever you're scrolling through a page
+and you see frames are dropped like
+you're incurring these hits either from
+the garbage collector or from stris home
+javascript is running and it's hard to
+predict whether or not you're going to
+be able to maintain a high fidelity
+experience
+in JavaScript however you also like
+while you are working with those
+low-level primitives it can be very very
+verbose very unpleasant so really we do
+want to still have those abstractions
+that we've come to love and languages
+like JavaScript so rust ambition here is
+to give you the ability to layer on
+those abstractions without incurring the
+additional costs that you traditionally
+have and I would say that you know they
+go over guaranteed memory safety and
+this is just because getting like in the
+face of mutation it's very very
+difficult to have data integrity
+guaranteed in particular when we
+introduce things like concurrency
+JavaScript doesn't have a ton of
+concurrency but it can still and so we
+have a whole class of foot guns that are
+removed from the language but whenever
+we want to be able to reach for that
+additional performance we are
+introducing potentially huge amounts of
+suffering for us as developers and so
+rust inherently in the language works
+very very hard to make sure that we can
+approach this level of concurrency while
+still maintaining tons of data integrity
+and it has type inference which is
+really really nice but I would argue
+like ask what is what are types for and
+traditionally I think for C if you have
+a program C types are mainly there for
+performance right they are describing to
+the compiler how you want the data to be
+laid out in memory the compiler you know
+these days C compilers do a lot more but
+it's not going to do a ton to help you
+if you get things too wrong well on the
+other hand if you've worked in something
+like type or flow the type information
+is not used at all for optimizing the
+output right it's only used for
+correctness just to make sure that you
+aren't making mistakes and with rust we
+kind of want both of these things right
+we want to make sure that we're not
+making mistakes either at a low level or
+a high level and we still want to be
+able to actually control how our data
+structures are laid out so that we can
+maximize the performance wherever we
+find it's necessary but there's another
+language that also has
+types for performance and for
+correctness and that's Java raise your
+hand if you've written Java before okay
+pretty much everyone and I don't wanna
+pick too much on Java I mean I think as
+a improvement over C for example it is
+fundamentally amazing however as a
+language it does require a lot of
+repetition here right so I have a number
+that is 29 and have to tell it it's an
+integer I have to repeat myself quite a
+few times here so boolean is false and
+so on and so forth and that's where type
+inference comes in so a lot of people's
+experience with types is typically in
+something like Java where the computer
+does so little work for you right it
+requires you to tell it over and over
+again what the types are so this is an
+example of rust and in this case I can
+create an element and this u8 is a
+literal for a unsigned 8-bit integer and
+this is so I'm actually telling it this
+is a type annotation this is a literal
+however I can also create a vector and a
+vector is like an array I like stuff we
+can resize it but you'll notice that I
+didn't tell it what this is a vector of
+right in Java I would be required or
+inflow or in typescript I would be
+required to say this is a array of this
+type
+however in rust we have one requirement
+which is you have to have homogeneous
+erase so you can't have an array of an
+integer and a string and an object if
+you have one integer everything else has
+to be an integer so right now Russ can
+look at the the creation of this
+variable and know that it is a vector of
+some sort but it's not sure what kind
+yet but as soon as we use it right as a
+human you'll walk through this and you'd
+say all right well you push that element
+onto the vector this must be a vector of
+unsigned 8-bit integers right why do we
+have to repeat that for the compiler the
+compiler can also follow those steps and
+actually infer the type for us and so
+Russ gets
+away with a I would say a minimal amount
+of type annotations which is really nice
+it lets you focus on the logic of the
+program rather than repeating yourself
+about what the implementations actually
+are and I think this makes both the
+compiler happy and the program are happy
+and again this comes from as much as
+possible where the computer is better
+than humans the computer should be doing
+work not us like let's like computers
+are great at this let's make them do the
+work we shouldn't feel shy about that
+and then finally Russ really focuses on
+a minimal runtime Russ has gone through
+a large evolution since its beginning I
+used to have a lot of additional
+features and bells and they've actually
+done some painful extractions of those
+over the years to actually make it so
+that it is as close to zero cost
+abstraction that the delivery payload is
+as small as possible and to kind of
+compare this to some other languages
+that haven't done this go for example if
+it actually has reasonably good web
+assembly support at this point however
+whenever you generate a web assembly
+binary from go the output is fairly
+large because there is an inherent
+runtime and go and so it's not it's
+normal to see not gzipped just a plain
+you know 2 megabyte output and if you
+include some libraries they'll go up to
+maybe 10 megabytes and to be fair go is
+making a lot of progress here there is a
+subset of go called tiny go and if you
+use that it's not uncommon to see for
+example 10 kilobytes of output however
+it's a lot of recovering that set of
+small delivery payload
+whereas Russ has kind of had that as an
+inherent attribute from day one and
+pattern-matching raise your hand if you
+have never seen pattern matching or
+never used it in production everyone has
+used pattern matching ok amazing alright
+so I'll just go over this quickly then
+so we have a array of strings or a list
+of strings and we're going to iterate
+over it we're gonna de structure here
+get a number out and match is just like
+switch and drop
+script so I'm gonna switch based off of
+this number and based off the number I'm
+going to print a different string out
+but you'll notice that it's possible
+that someone may come and actually add
+an additional string to that list you
+know maybe that list is somewhere else
+in the code base they're not co-located
+and now what's gonna happen at runtime
+whenever I execute this bit of code
+right it'll get to three there's no case
+there this will crash so this is not
+just pattern matching this is exhaustive
+pattern matching where rust is like this
+amazing like pair programming buddy that
+will tell you hey I noticed that you
+missed this case this is if this happens
+in runtime I will crash and it will
+forbid you from actually compiling this
+application and if you'll notice the
+error messages are heavily inspired from
+Elms developer experience and this is
+unusual in a systems level programming
+language and this is actually ends up
+being very nice if you're coming to it
+from something like Java scripts where
+you want to like gradually learn these
+concepts and figure out why is this
+potentially dangerous so in this case
+you'll notice that the error message
+comes out and it says if you want to
+know more you can run this they have
+canonicalized errors which means that
+you can get great documentation either
+in your editor or straight on the
+command line and this this goes on for a
+while but this actually explains all of
+the different reasons why this might be
+a problem if you miss this case so Russ
+is one of these rare exceptions where
+the developer experience allows you to
+gradually onboard and learn these
+experiences without having to work
+necessarily right next to someone or to
+just painfully go through it so now
+we've updated our code example and we've
+added this underscore which is a default
+case and now it won't crash right in
+this case rust is smart enough to know
+that the number of integers goes on
+forever infinitely in both directions so
+you'll probably want to have a default
+case you can never exhaustively list all
+of the cases however if you had an enum
+for example maybe you have an enum
+that's
+state is either open or closed and you
+only cover the open it would suggest
+rather than a default case maybe you
+really should have a closed case so
+we'll go through and actually help you
+write your program and tell you what
+you're missing as you go along and again
+because the compiler is checking all the
+stuff the compiler is both gonna be
+happy and you as a programmer will be a
+little bit happier and this comes to
+this point of correctness and I think
+fundamentally debugging just sucks
+there there are very few cases outside
+of maybe a hobby project where you're
+tracking down like this elusive rabbit
+hole bug and you're thinking man this is
+gonna be a great story to tell other
+people at the pub but outside of that
+debugging generally sucks and I would
+say there are three questions an order
+of easiest to hardest about debugging
+the first is who should be doing the
+debugging second is when should it be
+done and the third is where and I think
+who is really easy fundamentally the
+language should be the one who is doing
+the both the debugging a language should
+give you the expressive power to make
+bugs impossible to represent in the code
+right if we can eliminate entire classes
+of errors just by nature of construction
+in the language that's huge second is
+something like a compiler that is going
+to be able to read our code and
+understand what our intentions are and
+it's going to tell us whenever we make
+these different mistakes whenever we
+forget a case whenever we get a type
+error between two different function
+calls the compiler can do a lot of the
+debugging at least noticing where the
+bugs are and so now as a human we can
+fix those bugs
+second is linters and tests and the
+developer is kind of the last stage
+where debugging should happen because
+our time is worth a lot more I think
+than the compiler and we're also a lot
+worse at noticing these errors than the
+compiler and the language and ultimately
+if a developer doesn't do the debugging
+if you push it off until the very last
+minute that means it's the user that
+does the debugging I mean this is
+the room of JavaScript's developers so
+there's a good chance that we've all
+been on some error like airline booking
+sites or a train booking site and the
+form didn't submit so you open up the
+JavaScript console and you submit it via
+JavaScript and it works right that's not
+a great experience the second question
+is when should it be done and this is a
+little bit more difficult because one
+thing that is really powerful with
+JavaScript is you can get something
+running very very quickly you get
+something running very quickly right
+it'll be on the web page you can see it
+you can click it on you can touch it you
+can interact with it but when the bugs
+happen they happen much much further
+away from where they occurred right
+whenever you actually put in the bug in
+the source code when you experience it
+it's much further down your context
+first resolving it is much much less and
+so very similar to Elm rust insists that
+debugging happen upfront the compiler is
+going to go through and check all those
+cases and if it can prove that there is
+a bug it's going to require that you
+debug it now while you have the most
+context so this is a painful shift I
+think from more dynamic languages like
+JavaScript or closure script or these
+kinds of things but it does make a big
+difference once you kind of accept that
+it's like banging your head against to
+the wall and you kind of come to enjoy
+it
+then it's kind of nice and it's not it's
+not uncommon to have Russ programs that
+once you get through all of the errors
+just work even at a systems level and
+I'll give a quick shout out about why
+you might care as a JavaScript or about
+the community but it is an incredibly
+warm and welcoming community and they
+have in a very unusual emphasis on
+empathy systems level programmers I
+think often underestimates how difficult
+how complex front and engineering is
+right the possible state explosions that
+happen in UI programming are phenomenal
+but it's often looked down on as not a
+real engineering discipline and this is
+fatica ly not the case in rust it's
+incredibly warm and while
+I mean community so as JavaScript errs
+why would we care let's talk about
+combining JavaScript and rust now that
+we're all sold on the experience of rust
+so I want to say there is a caveat here
+that using web assembly and and
+therefore rust from JavaScript is
+initially going to feel foreign and
+onion do magic and uncomfortable I will
+see what we can do to recover some of
+that but just by default so let's go
+into it with this expectation we're
+gonna get some of those nice benefits
+from rust but we are gonna have some
+trade-offs initially so just as a
+high-level if we're doing JavaScript to
+rust Interop we've written some code and
+rust and we want to use it from our
+JavaScript application initially what
+this might look like is you know your
+JavaScript loads up it then goes out and
+fetches and load some web assembly
+webassembly is going to expose some
+functions over a bridge that javascript
+can call into and then so javascript
+calls into it and then the rust does
+some magic and eventually returns some
+data maybe a string and the problem here
+is that if you do this naive approach
+then this involves a lot of allocations
+by default javascript has its memory
+whenever you send stuff over to web
+assembly there is this bridge that the
+set of exposed functions and the runtime
+has to do translations between
+javascript representation and web
+assemblies representation what russ
+expects and so there is a lot of
+overhead potentially by copying by
+serializing and deserializing and if you
+remember one of the main reasons we
+wanted to use russ in the first place is
+that it opens up this potential for
+higher performance and correct
+concurrency and so by incurring all this
+overhead we're kind of shooting
+ourselves in the foot so whenever we're
+doing Interop we kind of have this goal
+that as much as possible we want to
+expose an interface from the russ side
+that minimizes copying serialization and
+deserialization and the way to typically
+do this is just kind of via pointers so
+on the rust so what you would kind of
+see is opposed to that initial naive
+approach javascript would load up some
+web assembly Russ would expose a number
+of functions but one of those functions
+would typically be create the world or
+create an object and Russ will store all
+of its objects all of this the world
+that it knows about and a little bit of
+memory that it controls and then it
+returns a pointer or a handle back to
+JavaScript and then it JavaScript and
+use that handle a very very small bit of
+data that it sends back and forth as a
+way of manipulating that bit of data
+from afar so you know if you were to say
+let's go into this so this you know
+fundamentally this happens because again
+these are two separate worlds on the
+JavaScript side we have a lot of things
+that we're used to that are incredibly
+nice things like Dom access garbage
+collection we are all familiar with
+objects and proxies and all the lovely
+things that come from there Java has a
+race and a string how many kinds of
+strings that JavaScript have right like
+that's not a question that makes sense
+it doesn't really compute whereas on the
+rest side right russ has some nice
+things it has performance and manual
+memory management and whatnot but it
+doesn't really have objects right it has
+strokes there may be on the surface very
+similar to JavaScript objects but
+underneath the hood quite different
+similarly it doesn't just have arrays it
+has arrays and vectors because these
+have different performance
+characteristics different mem memory
+requirements and so it gives you the
+ability to choose what your
+representation is going to be but that
+is an additional obligation so you can
+kinda either think of it as you know a
+power that russ gives you or an
+obligation and responsibility that russ
+gives you and finally if you ask someone
+coming from javascript
+rust has two kinds of strings I know
+that on their documentation they say
+they only have one but you inside of
+their code any code example you'll see
+two kinds of strings
+however rust has a webassembly has a
+very simple memory model it's
+effectively just one long array raise
+your hand if you have used array buffers
+and JavaScript okay so for those of you
+who haven't the idea is simply we're
+just going to allocate this big array
+and it's just bytes in there and we can
+choose to view them as unsigned 8-bit
+integers or 32-bit floats or whatnot but
+it's up to us it's basically just a
+region of memory that we can bash on and
+that's what webassembly
+operates off of and so and the nice
+thing is this can actually be shared
+between both javascript and rust so rust
+can very very efficiently layout and
+this can be done automatically by the
+compiler can lay out those data
+structures inside of this web or this
+bit of shared memory and then JavaScript
+can also peek and poke inside of that if
+it needs to without going over the
+bridge so this is how we're going to
+build an efficient rust library to use
+from JavaScript you can see that this
+already feels kind of foreign pretty uh
+nadeo matic right we're not passing
+objects back and forth that is possible
+will we incur those overheads as we
+mentioned this ends up being basically
+the lingua franca is just bytes what you
+want to do is just have rust bash on
+that bit of shared memory and javascript
+is going to read from it so you can
+imagine for example if you're building a
+game you would have JavaScript
+initialize a tick maybe send the input
+over to the rust side the rust very
+quickly computes what the next state of
+everything is it runs all the physics it
+updates all the positions and then
+stores that inside of this shared memory
+JavaScript then whenever that's finished
+go ahead and it takes that memory and
+then renders it to a canvas or inside of
+WebGL and so that is a fairly unpleasant
+you know mental model as a JavaScript
+person to think about right we are now
+burdened with thinking about the byte
+representation
+of the rust library rust has imposed its
+view of the world on us as JavaScript
+developers however the the rust
+developer team is very aware of this and
+actually has gone to heroic lengths to
+make this really really smooth so let's
+say for example this is just a small bit
+of code from a game of life so this is
+kind of on the hello world
+rust web assembly example and here I
+have an enum and as a cell right so a
+cell can either be dead or it can be
+alive and I'm choosing to represent
+those items as either 0 or 1 so I get to
+refer to them in the nice terms like
+dead or alive but rust is going to take
+care of representing them in a very
+performant and space-efficient way you
+can see I have this function tick that
+is going to iterate and it's gonna check
+everything and if a cell is alive and X
+and you know there is a lot of code here
+more than if it were just JavaScript but
+it's not too bad so we have you know
+three or four different functions that
+we've written here in rust and again
+this is going to be operating on that
+shared memory that is foreign to
+JavaScript and this is amazing
+whenever you build that package rust is
+actually going to generate for you an
+NPM package it will also generate a
+typescript binding that works out of the
+box with things like vs code that gives
+you an idiomatic interface right so
+typescript doesn't care that the
+representation is 0 or 1 it's able to
+represent it in this really nice way
+right so you get type checking all the
+way through from your JavaScript into
+your Russ code and in fact the
+typescript bindings that are generated
+those are generated as though you were
+really a good typescript developer right
+look one of the big challenges with
+typescript is at any given time when you
+do have to ship and you're thinking well
+I'll come back and I'll type this later
+this is this is just any right now and
+that doesn't do a lot of good for your
+co-workers or for you later but because
+russ has deep insight into the types of
+its code it can generate
+really really well formed typescript
+bindings so you get nice autocomplete
+and nice idiomatic functions that you
+can use from JavaScript this is a really
+really impressive accomplishment so I'm
+gonna show a few basic examples of what
+this actually looks like inside of the
+rust side of things so there is a
+framework called you this is one of the
+more extreme examples but you is meant
+it's inspired by react in Elm and it's
+meant to be able to build entire
+front-end applications in rust and it
+wants to be able to do to take advantage
+of the correctness and the performance
+of rust so it does things automatically
+like supporting concurrency it does
+concurrency across web workers in a
+really impressive way and you can notice
+here that so for better or for worse
+javascript has struggled with the idea
+of macros you know there are suites j/s
+a long time ago there now babel
+transforms but it hasn't really made it
+mainstream inside of javascript rust has
+macros and that means that library
+authors can customize their libraries to
+really match the domain so this is valid
+rust this looks very very similar to JSX
+except that JSX can be provided as a
+library not as some sort of secondary
+transform step or as a babel plugin and
+this is entirely type checked each bit
+of these if you get a mistake in the the
+property name here it won't compile if
+you pass the wrong type in there it
+won't compile you get strong guarantees
+while also not paying a huge overhead in
+terms of syntax all right this is not
+terribly verbose there are some scary
+you know ampersands and greater than
+symbols and hashtags and whatnot we'll
+go over that a little bit later but
+overall like you can kind of squint your
+eyes and this looks readable
+similarly with web workers I think this
+is a thing that is doable initially it
+seems very doable in JavaScript but it
+becomes very very challenging to
+guarantee correctness between an
+performance
+between webworkers so in this you
+framework you define an actor and you
+say I have a request whenever someone's
+talking to me they can send me a request
+so they can ask me a question for
+example and that question will have a
+string and I will respond to them with
+an answer which is a string and now
+whenever now I have to write a function
+that handles incoming messages and you
+can see that I'm gonna switch over that
+message and if it's a question I'm gonna
+extract the body and then I'm gonna
+respond with an answer that's cool and
+the impressive thing is if I go ahead
+and add maybe you know I want to change
+my program a little bit I want to change
+my webworkers so instead of just the
+question they can also send me a demand
+that's possible if I add that here this
+will fail to compile because I don't
+handle that case so Russ is it has my
+back it's gonna watch out for me it's
+gonna make sure that I don't forget a
+case and then the underlying framework
+is going to take care of spawning
+webworkers and communicating with them
+just like threads but keeping that
+guarantee of correctness and security
+finally a bit of canvas drawing so again
+rust has its memory JavaScript has its
+memory but they can share memory by this
+shared array buffer so this is on the
+JavaScript side I'm gonna import the
+memory from my you know wasm application
+and in JavaScript I'm going to go ahead
+and do all my drawing right Russ has
+done all the heavy lifting it's done the
+computing on the back end you know the
+back end inside of the browser I'm gonna
+extract the memory that we share and now
+I'm gonna iterate over it so I'm gonna
+you know manifest this as a bit integers
+and I can just say hey if this index is
+dead then it's dead or else alive and I
+just draw I feel a rectangle inside of
+my canvas so I'm doing as little you can
+notice there's nearly no allocations
+within here this is very very performant
+JavaScript and it also doesn't
+too burdensome it's not syntactically
+heavy it's not too difficult to read and
+yet we're able to benefit from all of
+that thought and correctness that has
+gone into the rest side of things and so
+I mentioned beforehand that there are a
+lot more symbols Russ is more symbol
+heavy than JavaScript at least for the
+time being you know give the Sanders
+body more time I'm sure JavaScript will
+get more symbols but if you in this case
+like one of the really cool things
+especially for me whenever I first start
+out with rust is that I didn't
+understand these symbols you know I'll
+read a tutorial and I think oh I kind of
+get it maybe but what happens is if you
+omit it if you do it wrong that has some
+semantic meaning and rust cares about
+correctness and so if your semantics are
+incorrect it's going to tell you and
+then that combined with the rust teams
+focus on developer experience and good
+errors means that oftentimes it will
+navigate you out of that problem so in
+this case you can see that I have this
+ampersand and a mute symbol which means
+that I want to get this bar this as a
+mutable thing I want to have right
+access to this right now this is not an
+immutable reference to this thing and it
+says here that like you're using mute B
+to make it mutable but you're also
+trying to borrow it and you can't really
+do that so maybe you should just try
+removing the an mute part and will
+actually guide you out and so what
+happens is as you start to remove these
+things and you see the errors go like
+pop up and go away you start to get a
+sense of what these things actually mean
+and again it helps you kind of climb
+that hill from being you know someone
+who is new to having some proficiency in
+this language without all that painful
+intermediate step oftentimes like the
+biggest problem whenever you're
+approaching a new language is there's
+something very very simple but you don't
+know how to fix it and you spend two
+days banging your head against all
+trying to figure it out and if you just
+had someone who could tell you hey this
+is why this happens don't do this do
+this instead it would be five minutes
+and you could move on so the RUS team
+has done a good job of pushing that set
+of experiences down
+into the compiler itself so I want to
+end with one big demo this is not
+written by me but this is like one of my
+favorite examples here so while we've
+been talking this is a game way emulator
+written in rust and then drawn on the
+front end which all the script this has
+been running the entire time and if I go
+ahead and record some performance of
+this and I'll start playing this and I
+don't know what language this this is
+this is a Zelda so I'll go ahead and
+stop this and the cool thing is if we
+zoom into the sack traces here or into
+the performance profile this is how much
+time you know granted game boys are not
+the most advanced systems and maybe I
+shouldn't be taking so much time but
+inside of with rust we can implement
+very very kind of idiomatically we can
+understand the performance are in the
+structure of the underlying hardware
+build out an emulator that is very
+performant and then expose a nice
+interface into JavaScript so that if you
+look at this like the performance timing
+is here there's tiny right it's taking
+up so little of our of our CPU and this
+is a fantastic experience both for the
+developers but also for us as end-users
+we can push a lot of that complexity
+down into rust but still expose a nice
+interface for us to use as JavaScript
+and of course the obvious thing that you
+would want to do with that next is
+obviously what the author did here which
+is to hook this up to web PR and so you
+can play your your game boy emulator on
+the web through rust in web VR alright
+and this is one quick crazy idea that I
+can't vouch for but I came across while
+I was researching this and it seems
+pretty crazy there someone has written
+so crys is a big rust emulator writer
+and kind of speed gamer and he has
+written a web assembly to rust compiler
+and there is a
+subset of typescript called assembly
+script an assembly script is a non
+garbage-collected subset of typescript
+so what he did was take that subset
+compile it down to web assembly so there
+was a gate Gameboy emulator written in
+typescript or in the assembly scripts
+part of me he took that compile it down
+to web assembly then compiled that web
+assembly over to rust and then added
+some SDL on top of it and had a native
+running Gameboy emulator on his system
+without having to rewrite it which I
+think you know I don't I don't totally
+know where that's gonna go but that is
+something mind-blowing right being able
+to compile these higher-level languages
+down into web assembly which then
+becomes kind of a universal format that
+can even go to native it's crazy so I
+want to end on this idea that I think we
+were actually at an unprecedented
+opportunity in our industry that
+generally speaking our industry only
+moves forward via secretion it's in some
+ways incredibly depressing it's always
+amazing but mostly depressing a big part
+of the reason that we have so many
+security vulnerabilities and whatnot is
+because we continually additional layer
+to fix the problems of the previous
+layer and we lay another layer and
+another layer right security is hard
+maybe cgroups maybe we add in C groups
+to Linux but that's kind of
+uncomfortable to you so maybe we do
+docker and then of like suddenly this
+whole set of companies and whatnot are
+built on top of this set of abstractions
+and those abstractions also contain all
+of the previous abstractions for me we
+have terminals this is the craziest idea
+I feel I have a terminal inside of my
+computer it's called the terminal like
+an endpoint but I don't use it to
+actually speak to any mainframes
+as far as I know I generally use it to
+work on my computer it's an embedded
+thing but the terminal is such a layered
+tool at this point it still understands
+ancient xscape codes it's still
+compatible with these old ways and in
+some ways that is impressive in some
+ways that's incredibly restrictive it
+makes it very difficult to have a good
+experience from a program written for a
+terminal
+because it has assumptions built into
+mainframes communicating to teletypes
+and this is one of the first times where
+we have a chance for a clean slate
+implementation right so I worked on unit
+kernels before which is about kind of
+removing operating systems and just
+running your application directly on a
+hypervisor and that's pretty cool the
+problem is that while that has fewer
+resources that are necessary and
+security concerns you know every year
+computers just get faster raspberry pi
+will be twice as fast in a year or two
+and so maybe it doesn't matter Linux it
+just works right hardware will catch up
+to Linux however this is the first time
+where we have a platform where there
+isn't an inherent advantage to shipping
+all of Lib C there's a chance here with
+rust and webassembly to create a new
+standard library that is safe secure and
+sensible for all of us and then being
+able to take that and possibly remove
+all of the previous abstractions and
+start with a clean slate that is
+actually secure going forward and the
+prediction I have here is that within I
+think the next five to ten years most of
+the JavaScript that we use will be
+written in rust I don't think most
+people will write rust but I don't think
+they'll know like they'll use rust but
+from JavaScript and it won't matter to
+them because again what do you get from
+rust you get really fine gang brain
+control over performance security and
+importantly correctness and this is
+really big for library authors right
+react powers millions of apps at this
+point and so they really care any any
+tweak of performance they can get out
+any tweak they can get for better
+correctness for their users affects so
+many lives it's fantastic and so library
+authors are going to be under a huge
+pressure to eke out ever-increasing
+performance and security and safety
+benefits
+so closing pitch again I think that rust
+is like banging your head against the
+wall but at a very slight angle so every
+time you hit it you actually make a
+little bit of progress and by the end
+you look back and you've written
+programs that you couldn't believe that
+you wrote all right so here are some
+resources and that's it thank you very
+much
+[Applause]
+
+2.5s · 40m 27s YouTube · 6.8k words · text via transcript/captionTracks

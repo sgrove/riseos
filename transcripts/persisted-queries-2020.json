@@ -1,0 +1,7 @@
+{
+  "title": "Persisted Queries as Legos vs Clay",
+  "event": "GraphQL in Space 2020",
+  "date": "2020-10-01",
+  "url": "https://www.youtube.com/watch?v=ngmiU3rPB14",
+  "description": "This talk explores the tension between flexible GraphQL APIs (like moldable clay) and rigid REST endpoints (like megaliths), showing how persisted queries bridge this gap. Sean demonstrates how persisting queries at build time enables smaller requests, easier caching, rate limiting, and even embedding authentication—allowing developers to create safe, scoped 'serverless functions' from powerful APIs like GitHub and Spotify."
+}

@@ -1,0 +1,7 @@
+{
+  "title": "Rust in the Browser for JavaScripters",
+  "event": "Øredev 2018",
+  "date": "2018",
+  "url": "https://www.youtube.com/watch?v=7JVucZFjOJs",
+  "description": "An introduction to Rust and WebAssembly for JavaScript developers, exploring how Rust's type system, pattern matching, and memory safety can bring performance and correctness benefits to browser applications. The talk covers practical approaches to JavaScript-Rust interop, including shared memory techniques, and demonstrates real examples like a GameBoy emulator running in WebAssembly."
+}

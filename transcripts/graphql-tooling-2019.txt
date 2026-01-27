@@ -1,0 +1,601 @@
+Transcript:
+oh this is what I'm gonna try to show
+off a very little time to show off all
+these demos so we'll see how well I do
+so first of all raise your hand if you
+have never heard of graphical before I
+think we have a pretty seasoned room
+here I think everyone has seen this
+raise your hand if you have seen the
+graphical explorer over here
+all right fewer hands all right so first
+bit of magic let's make some magic
+happen so the thing is graphical is
+really really cool the problem is once
+you learn graph QL and you like
+graphical you no longer have the ability
+to empathize with someone who doesn't
+know graph QL so what happens is you
+give this to someone you're like this is
+the most amazing tool in the world try
+this and they they type something and
+they're not like open is that what what
+what is that right like they don't know
+graph QL and so you kind of dumped in it
+dump them into this blank canvas so what
+you really want to do is a person is a
+human right
+I know that I your API has some data
+that I want I want to be able to explore
+it so what we do here is we use the
+introspection schema and rather than
+autocomplete we'll just kind of show you
+like a file system here then come in
+here and I see oh there's a Spotify and
+I can just kind of click through and I
+see search and I say maybe win win win
+that's what I'm feeling all right all
+right now I see under search there's
+some tracks so any tracks that match
+that query their ID and their name I'll
+go ahead and run that and I have some
+data coming back so I can kind of easily
+explore any graphical API and this is
+open sourcing point there's at any graph
+QL server and you'll get this experience
+and now maybe I want to say well this is
+cool right but it's kind of hard coded
+to my query I mean it's it's quite soon
+all of you want to search for win win
+win that's what you all feel like right
+now but maybe you want to variable eyes
+this and a lot of people don't know how
+do you use variables in graph QL and
+it's kind of a lot of work right like I
+only have one hand if I'm holding the
+mic so I'm gonna do here is hub
+and it notices it says hey this thing
+could be a variable if you wanted to so
+what I'm gonna do you just click on this
+turn it into a variable so now this is
+premature iced but they said I didn't
+want that was click on it again go back
+but maybe I actually want to give the
+user of this the ability just search for
+everything so I'll go ahead and
+parameterize all data so it'll
+parametrize that so I'm just kind of
+come through here and I can quickly chop
+up my query this very nice gonna call
+this one search and of course you know
+querying is great it's great to be able
+to read data from an API but you know
+the best parts of API or ones that do
+effects for us right the work the ones
+that changed the world both
+metaphorically and literally all right
+so what we're gonna do here is I want to
+keep going down this road so I want to
+pause I see there there's Spotify and I
+see here all the accents here's what
+Spotify is API can do for me can pause
+my player in play can resume it seems
+pretty cool so I'm gonna go ahead and
+pause this is gonna reach out into the
+Spotify API it's going to modify that
+players going to pause it and return to
+me the new states of that player so I
+want to say having polished you are you
+playing I certainly hope not right
+that's the whole point to this effect
+and I'll go ahead and pull out the
+progress and that seems good and I want
+to do a few more right I kind of feel
+like I'm building this player right I
+mean bill the search for songs I'm able
+to pause my player I probably won't have
+a few more operations so I'm gonna do is
+just copy this operation over here and
+I'll call this resume and now that I
+don't want to pause a player I want to
+resume my player but unfortunately I
+lost all my selections right pause I
+already went through and I filled out
+the fields that I want so do this one
+more time and what I'm gonna say is I
+actually want to turn this into a
+fragment which is what allows me to
+actually share this across different
+operations so now if I go back into my
+pause I see hey this is a fragment so we
+check the ast of this query and we say
+we saw that this fragment is actually
+applicable here so rather than you hard
+coding these fields why don't you just
+use the fragment this is looking pretty
+good I'll do one more here which is
+gonna be next
+same idea rather than pausing or
+resuming we'll go ahead and skip to the
+next track
+and then I'm gonna get my modified
+player so now just kind of clicking
+around with one hand I was able to
+explore an API add operations rename
+them and now I have like a little sort
+of janky but like a pretty cool little
+Spotify player which is nice so this is
+all open source it's really cool it's
+one of the biggest wins we've had for
+kind of teaching people graphic oh right
+because whenever you don't know the
+syntax as soon as you know this
+intentionally man that's really cool
+like JSON but like not really it's like
+the only half of it that's gonna if you
+squint it's kind of cool and like if you
+don't know that you're like what the
+hell is that that Lisp what's going on
+like you want to have something that's
+actually a little bit more explorable so
+the Explorer has that's why we called it
+the Explorer it lets you actually look
+through an API so now I have all these
+operations I'm able to go through here
+and I can actually modify my player in
+search and whatnot
+and this was a really big success for us
+right we had people who didn't know
+graph QL who are able to explore api's
+and run queries oh the problem is once
+you've gotten to here what's the next
+step right people don't come to
+graphical to get their data from
+graphical they want to actually use this
+in some sort of usable context like
+their code and so for us it was like
+well maybe go learn react and Apollo and
+come back in a few weeks hopefully which
+is not like a really good answer and the
+problem is if you are an API a provider
+and someone is trying to use your API
+they are desperate for some form of
+success right they're going to cobble
+together whatever they can get to just
+barely work and as soon as it works
+they're gonna move on no matter what
+warts or problems were there they're
+like my job is done it's good to go
+and the next time if someone comes and
+needs to do something else with your API
+the jobs already done right someone did
+that so they're gonna copy and paste all
+those warts into another file and all
+those bad ideas are gonna go everywhere
+so what you want to do as an API
+provider who knows the best way to use
+your API is kind of embed it inside of
+your tooling
+and make it so that the easy thing which
+is copy and paste is the right thing so
+we do here is we actually analyze the
+ast or in that one more time and we
+actually generates a full program full
+react app in this case that will
+generate a component for each one of
+these operations and each of them has
+the authorization everything built in
+and I know that you guys are probably
+not super into like react Apollo I know
+everyone is here to see the Bosch
+version of that right everyone wants to
+be helped the control Spotify from the
+Bosch and I can't I can't really read
+Bosch but that looks right to me and the
+cool thing is a lot of people so we see
+a lot of people who don't know graphical
+at all and so we want to teach them a
+lot of good practices but we don't want
+to do it very gently so for example a
+lot of people don't know that you can
+name your operations so if I delete that
+what we do is we actually generate a
+super-nice exception right here let me
+go ahead and do that so he generates
+very shortly this is on my local
+development and we'll do one more time
+all right let's see if that worked I
+have a backup hold on all right we'll go
+to one graph so I did it on a actual
+production one so we'll throw this in
+there copying and pasting with one hand
+give me one second here we go and there
+we go all right cool so I'm gonna go to
+this code exporter and what I'm gonna do
+is actually just generate an entire code
+sandbox that has a react component for
+each one of these operations that
+includes so you can see if I for example
+go and pause here and say you're not
+logged in so this actually detects if
+we're not logged into the a service and
+it generates a react component to handle
+authentication for us automatically
+so I'll come in here and now let me go
+ahead and open up my Spotify player and
+we'll play some French rap I think
+that's what we're all into and so what
+we do is you can see it's playing over
+here and if I come down and I run my
+paws mutation now it's paused and if I
+run my play mutation my resume
+she is playing now and if I run the next
+mutation see I've built a whole react
+Spotify player just by kind of clicking
+around exporting some graph QL code and
+actually generating react components
+that have the best practices for using
+our API kind of embedded so now someone
+can copy and paste this and they have a
+working example that they can start to
+tweak and they can modify this into what
+they actually want without having to go
+from nothing to just desperate like
+something kind of sort of works so
+that's the first kind of a step the
+other cool thing is that vs code as a
+very recently actually goes into sorry
+graphical actually goes into vs code so
+you can see here that if you're in vs
+coding if you're in a graphic you'll tag
+you can actually run install an
+extension and just run graphical and it
+will actually open up a graphical
+instance with your query inside of there
+so you can modify it and actually run it
+and get some data back and then once
+that looks good it'll actually modify
+your code right in place so you can
+actually bring this tooling all the way
+inside of the IDE so you actually have
+this as you're editing your code you
+don't have to go between your code and
+the tooling they're the same thing and I
+know that probably what all of you were
+hoping for was to get a lesson on Excel
+it's one of my favorite tools so what we
+did after we built the Explorer was the
+next logical thing which was to put it
+inside of Excel so this you can point at
+any graphical server and it will it
+renders it slightly different because we
+found that Excel users are not typically
+quite the same programmers so we render
+it a little bit nicer but what we're
+doing here is we're actually hitting
+the Salesforce API so what I want to do
+is come in here and I want to like do a
+revenue forecast so I'm going to go into
+Salesforce and I'm kind of clicking
+around I'm seeing what I want I see
+their opportunities and I want to pull
+out maybe the owner and the cool thing
+is I'm actually traversing sales forces
+API and I don't even know it I don't
+care right I just know I want an
+opportunity I want the name of it
+probability who owns it what's their
+name because once I get data inside of
+Excel magic happens
+right this is the crazy escape hatch of
+computation for people who are not
+programmers if you can get data in here
+they can do magic they're independent
+and if they can't get dead in here you
+get to get data in here right they're
+gonna email you say hey so I need that
+CSV of all the users who signed up last
+month so I can do some sort of blah blah
+blah blah blah but you can imagine if
+you have a graph QAPI you give them
+read-only access you they plug this in
+and they're good to go right they can
+manage it on their own you can enforce
+all the permissions and everything down
+here and you can see here that Excel I
+didn't even know this gives me this
+crazy UI we're now I'm able to come in
+here and actually filter by the
+different values and I can see how Shawn
+doing versus Daniel Daniel is doing
+significantly better and I can filter
+based off of you know whether the thing
+is closed or not like that's this would
+be a pain and a half to build a custom
+UI for you don't want to have to build
+this you don't have to get the data for
+this just give them access to a
+read-only graphical API you're good to
+go
+all right so you got your stuff going
+you got your API things are going well
+the thing is you're not totally sure how
+to use the API still right you can't you
+can explore it it's the tooling is
+really cool if you're a programmer but
+even so you open this up and you're like
+well I know what I want to do but I'm
+not totally sure where the hell inside
+of this API the thing that I want is all
+right I wish there was some sort of
+example and the problem is a lot of
+people have said that graph coil is self
+documenting and please it's not soft
+commenting it's readable by computers
+which is great we can build all sorts of
+great tooling but it is not self
+documenting humans document computers
+read computer things so what we want to
+do is to make it so that for example in
+this case I want to buy a domain on site
+so I can go ahead and make a little
+example of this and if I want I can
+share the query give them only so they
+can run it as well it's pretty cool but
+maybe what I want to do is actually
+contribute this as an example so what
+I'm gonna do is come in here and say all
+right I wanna contribute a set of
+example say buys a new domain and if I
+want I can include my variable it's it's
+gonna warn me and say hey you're about
+to submit this example for the rest of
+your co-workers to see you or perhaps
+the world to see are you cool with that
+and in fact if I run this and I have my
+variable down here graph QL San
+Francisco something something 23 I'm
+gonna run that and Zeitz
+and I need to expect it price so that's
+why we need examples can come in here I
+didn't thought the exact expect the
+price so I'd be like all right well I'm
+willing to pay up to 13 bucks for this
+thing so go and run that and oh it's 12
+they're giving me a deal all right so
+I'm gonna say it's 12 run that and now
+it's purchasing a domain this seems cool
+so what I'm gonna go ahead and do is
+once this finishes actually include the
+results in the example so someone can
+preview this a little bit later and now
+I'm gonna log into github and what this
+is going to do is this is going to take
+this example and all of its data and
+it's actually going to fork my example
+repository from the browser it's going
+to create a branch on it it's going to
+submit this as an example and it's gonna
+create a PR to the example repository so
+now it's created that PR all from the
+browser and now I have this thing here
+where if I come in here it says this
+example was contributed by Sean here are
+the variables here's the domain or the
+results in here's the example and as
+soon as I emerged this this is where it
+gets useful this is
+an open-source tool where you use our we
+wrote called codex you can point this at
+any graph QL schema and it will generate
+an entire static site that's super SEO
+searchable amenable to everything very
+optimized we have our schema is about 40
+something megabytes of JSON it's one of
+the largest on the Internet's publicly
+right now and we can come in here and we
+can say I want to search for example for
+Spotify it's super fast to slice through
+the entire thing if I see for example
+Spotify player it says hey here are all
+of the examples that we analyze we
+analyze every example that's been
+submitted by the community and we looked
+at every field on there and here are the
+examples that someone has submitted that
+actually reference this field so rather
+than you having trying to traverse your
+way through the graph you can just
+search for examples about how to buy a
+domain on sites or how to build a
+Spotify player and once you see it you
+come in here and you just open it
+directly in graphical and now you can
+generate your react components or your
+bash component or whatever so you can
+actually as an API provider solicit
+examples from your community and they
+can actually help each other learn how
+to use your API and I'll show one last
+one which is more about a technique than
+actually a tool but we built this tool
+called off Guardian which is meant to
+make it easier to do authentication
+right because building off or howling
+off in graph QL is right now kind of a
+pain but it's actually always a pain
+it's been a pain in every system that
+you've ever touched I'm pretty sure so
+but what we wanted to do is make it so
+that you could actually express as a
+human your needs for rules for
+authentication and authorization right
+authentication is kind of easy it's just
+who are you
+authorization is a little bit tougher
+it's what are you allowed to do and what
+you're allowed to do begin like depends
+on kind of certain facts about you right
+like are you a member of my github
+organization do you own this account on
+Salesforce right and those facts kind of
+exist out on the internet somewhere so
+what we do here is we say you can
+actually describe it say well I want to
+run some rules so whenever user logs
+into any service I want to say run this
+rule and if they're logged into github
+then I
+say if they're a member of an
+organization called one graph then on
+Apollo I want you to add a server or add
+a role of admin so now they'll have
+access to any fields that are protected
+by admin and maybe on net Liffe I I want
+to also add admin because I'll never
+file you can actually restrict access to
+different paths based off of roles and
+your cookie you can see here that the
+the JWT that's generated doesn't look
+anything like what you would think to do
+right like why would net Liffe I put
+their stuff in this structure but it
+doesn't matter because you can actually
+describe your rules very easily over
+here and then generate one token that
+will work for all sorts of different
+services now the reason I bring this up
+is we kind of didn't write this you are
+what we did is we generated this UI
+right because every time we as we add
+more and more rules we don't want to
+have to come back to this UI and add
+more widgets you don't want to have to
+add more you know input so what we do is
+that off Guardian UI is actually
+examining the graph QL schema and it's
+extracting those fields so you can see
+that just like that top-level field that
+says on github and you open that up and
+that's an input object that says is a
+member of an organization called or
+named one graph so actually what you're
+doing is just generating inputs for a
+graph you'll object and what we do is we
+just interpret that graph QL input
+object schema and we generate a nice UI
+for it so now as we modify our schema
+the UI will automatically respond to
+that and we've made it available to the
+users it's it's not always what you want
+to do but actually it's it's pretty
+extensible in particular if you're
+building internal tools this is
+incredibly useful so this is like one of
+our internal admin tools and we have a
+list of apps on one graph and I might
+want to go in here and actually filter
+lots of things and I want to for example
+say well I want to see the app where the
+you know the URI is includes insensitive
+and
+Shuai right here is also doing the same
+exact thing it literally just says what
+are the different inputs that are
+possible either given points on the
+schema and let me just generate a UI
+automatically for that and if you've
+ever tried to build some sort of boolean
+logic thing where it's like search for
+the things like this and this but not
+this or else this that's an incredibly
+painful thing to do manually do you want
+to do is embed it deep inside of your
+API and just let it just be generated
+all right and I think I'll show one last
+demo just near and dear to my heart all
+right so this is how Sora raise your
+hand if you've not heard of how Sora
+all right you're part of the lucky
+10,000 today posture is one of the
+coolest tools out there I don't
+understand their business model it's
+open source they seem like chumps but
+it's an amazing tool basically it's a
+graph cool back-end as a service but you
+point it at any Postgres api and
+Postgres is like the best api in the
+world or Postgres is the best database
+in the world
+so you pointed at any Postgres database
+you will get an instant real-time ref ql
+api with permissions and everything I
+was super skeptical of this cuz I'm a
+back-end developer I'm super special
+I am irreplaceable what I do can't be
+automated and I built an app with this
+and I was shocked I was worried about my
+job security because it is really really
+good
+the thing is they make it really easy
+also to not only what happens is they
+give you a graphical object for every
+table you have in your database but they
+also make it easy to pull in remote
+graphical schemas so what we're gonna do
+here is we have a user table so what
+I've done is I've already pulled in one
+graph which has lots of data in it but
+importantly what I have is a user table
+that has first name last name and this
+one stripe customer ID
+I hate stripe customer ID right why do
+we have stripe customer ID the only
+reason we have that is to get to the
+stripe customer that's the only thing we
+want right we don't want the ID we just
+want the shrimp customer the thing is as
+a programmer I have to reach into that
+pull out the stripe customer ID and go
+make an API call manually and
+that's how I actually join stripes data
+with my data but if you can introspect
+the schema I'll graph QL and make it
+really easy easy to merge these two
+things what we can do is actually come
+in here and add kind of a derived field
+of magic field so I'll show a custom ID
+it's stripe customer I'm saying it comes
+from one graph and now just like that
+Explorer beforehand I'm saying this is
+how you go from the user table over into
+strike so you go into stripe you plot a
+customer and the customer is
+parameterized by an ID but it turns out
+that every row has a stripe customer ID
+so that's where you're gonna get this
+from so within about 10 seconds I've
+added that up and I'm gonna come in back
+into my API I'm gonna get rid of these
+fields why don't we do is actually join
+I'm gonna query in for my user I'm gonna
+join into stripe and get some
+information on the customer and then
+join in on their charges those are their
+charges and their balances and whatnot
+and now I'm able to actually express my
+entire data dependency across all these
+different services including my own
+database that is days or weeks of work
+that we can do in minutes it is
+phenomenal integration is terrible it
+needs to go away and like this is super
+exciting and open source I don't know
+again nice people I don't totally get
+their business model but it's great we
+should all take advantage of it while it
+lasts so yeah I think that's my talk I
+have a few more demos that you want to
+see some afterward but I think this is
+good for now yes
+[Applause]

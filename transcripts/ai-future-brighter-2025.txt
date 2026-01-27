@@ -1,0 +1,1178 @@
+Transcript:
+- All of us should have dozens
+of agents in our pocket
+running, working for us.
+Right now.
+I am here to talk a bit about
+writing the Coming Token wave.
+And in particular like
+the meaning of this is, is
+how are we all going to be able
+to wield great power at scale compared to
+what we are able to do today.
+So a quick bit about me. My name is Sean.
+I previously worked at In
+Alignment Research at OpenAI.
+Before that, I started
+and sold some companies.
+And my background is very much
+in sort of developer tooling,
+compilers testing.
+The common thread is in making
+the intentions in our work
+much more visible and automating
+a lot of the drudgery.
+And this is actually a continuation
+of a previous talk I gave this.
+This is a self-contained talk,
+but if you're interested
+in sort of like the context
+and the origin of, say,
+for example the model spec
+or the impetus to actually use it,
+this is some additional context
+and I'll talk about coding.
+Coding, but this talk is
+actually not about coding.
+This is about sort of
+the universal interface
+that all humans have to use
+to understand the domain
+of the problem, to
+communicate their intent,
+and to actually solve problems at scale.
+So with that, let's start
+with the new utility.
+These numbers seem
+fanciful, but they are real.
+In the next five to 10
+years, literally trillions
+of dollars will be invested
+in generating tokens at
+great, great scale.
+And in addition to those, the
+dollars, millions of hours
+of hugely capable, very
+motivated researchers
+and engineers are gonna be
+working hard at pouring their
+lives into this for our benefit.
+And that means that per
+token, over the next couple
+of years, the intelligence, the speed,
+and the ability to represent
+the things we care about in our
+world is going to skyrocket.
+And at the same time,
+the cost, the latency
+and the waste per token is going to drop.
+And the net effect of this is
+that there will literally
+be waves of tokens washing
+through data centers
+and across the internet.
+And just like any other
+wave, if you're able to sort
+of capture and harness
+the power in that wave,
+it's a greatly empowering feature.
+Just like we've done with
+say rivers, with hydropower,
+steam power, solar power, we're
+sort of entering into an age
+where we have an abundant
+source of cognitive power.
+But the challenge there is like
+how do you actually harness
+that to make things better?
+How do you actually
+move forward with that?
+Can we turn tokens into
+a form of propulsion?
+So analogy to think of here,
+especially given the venue
+is sort of the steam engine,
+steam trains literally
+transformed society.
+But it's kind of ironic
+because a steam power
+by itself is very impotent.
+It can't do anything on its own.
+It only works
+because humanity literally
+changed the shape of the earth
+to accommodate this
+and then changed their problems
+to fit into a train shape.
+So first we covered the earth in tracks.
+We literally drilled
+holes through mountains
+and then to, to make it so that the,
+the trains could actually move quickly.
+And then as a follow up, we
+changed all of our problems,
+the problems that we work on
+to fit into a train shape,
+say a container adhering to sort
+of weight restrictions and whatnot.
+And we got, we, we iterated
+through this so much
+that at some point it got
+to the, the the point where
+if you just added more steam
+that turned into more goods
+or good peoples delivered.
+And with the token powered
+system, we actually have
+to do the same thing
+where we actually have
+to build the infrastructure
+that allows sort
+of the token power to access our world.
+So connectors that allow these
+tokens to perceive our data
+and to modify it in ways
+that we care about, we have
+to be able to monitor, to
+understand the bottlenecks,
+to identify problems.
+And then once we get there,
+we actually have to figure out
+how to shape our problems in a way
+that can be pushed forward
+on this new infrastructure.
+And the nice thing is that LLM,
+the AI labs are all
+putting a lot of money in
+and are all very, very
+motivated to understand what is
+that shared infrastructure to make it so
+that those LLMs can reach
+and perceive everything.
+So they are working hard to
+un hobble the LLMs at scale.
+And that means your leverage
+is going to be at understanding
+how do you un hobble an LLM
+in your specific domain?
+How do you make it so
+that the LLM understands
+what you're trying to do
+and can power the changes
+that you want to see happen?
+And we, we need to get to the
+point in each of our domains,
+it's all of our
+responsibilities to figure out
+how do we make it so
+that we add more tokens,
+we add more compute, and
+we get a better and better
+and better solution.
+So, and this is important
+'cause if we have to actually
+shape our problems in a way
+that can accommodate tokens,
+you know, in the same way that,
+you know, if you were to take a, a train
+and put up, you know, lots of containers
+and then run it over a rocky
+terrain over, you know,
+a mountain of terrain without rails,
+it wouldn't do much good.
+We actually have to be
+able to figure out how
+to add more tokens to a problem
+and get ever increasingly
+better solutions.
+And you know, if you're a content writer
+or a developer,
+there's a question you
+should be asking yourself,
+which is why are you
+not running an LLM all
+of the time just generating
+billions of tokens every day?
+Does anyone want to do that right now?
+That sound like a good idea.
+Well, it's not really an issue.
+I mean maybe it's cost, you could argue,
+but you know, tokens are gonna
+go basically to become free.
+So the issue is sort of more
+like, even if it were free,
+you probably wouldn't want to do this.
+This seems like a potentially
+very destructive idea
+because at some point the LLM
+agent is actually generating
+the tokens that are doing more
+harm to your, your content
+or to your source code than
+actually it's doing good.
+You know, if you, for example,
+you ask a coding agent at
+night, make me this feature
+and you describe what you
+want and you go to sleep,
+it's very unlikely that
+you wake up to a complete
+and nice feature, a nice
+surprise, maybe more likely
+that you wake up to a broken computer.
+But we should aspire to
+run agents all of the time.
+All of us should have dozens
+of agents in our pocket running,
+working for us right now.
+The challenge is we
+don't know how to direct
+that power in a way that
+we can trust at scale.
+So the way to harness this is
+to sort of think of ourselves
+as conductors in this
+world where, you know,
+everyone else is providing
+just tremendous amounts
+of virtuosos and scaled
+laborers and whatnot.
+And at some point, all of us
+are going to have hundreds
+of thousands or millions of agents working
+for us individually, personally.
+And these numbers seem, I know fanciful,
+but if you were to take the
+number of transistors we have
+or the amount of memory
+that we all, you know,
+carelessly carry in our
+carry in our pocket back
+to say 19 60, 19 80,
+they would not have believed
+you with these numbers.
+They would've said that's,
+you know, podcast bro numbers.
+But you know, if we have these
+many agents working for us,
+we are not going to be
+able to outcompete sort
+of the sheer skillset
+and the, the, the range of
+abilities that they have.
+So it becomes our job to be
+able to put together an ensemble
+of these and to figure out
+how to express our intent
+and convert that into an outcome
+that we actually care about,
+powered by these specialists.
+And the thing about a, like a
+conductor in an orchestra is
+they are actually like a
+master of dozens of skills,
+dozens of instruments.
+And in addition to that, they
+know sort of the addition,
+the way to put them together
+and make art out of that.
+And in the same way,
+domain expertise is even
+more important in this world
+where you as the expert
+who has done, you know,
+a tremendous amount of work in
+your, your career, you know,
+the purpose of this work, how is it going
+to be applied in the real world?
+What problems is it going to solve?
+You know, how to actually
+arrange your agent,
+arrange your team so that they
+make forward progress on it.
+And at the end of the day when
+the work comes in, you know
+how to review it and see is
+this is the result faithful
+to your vision and to your intent.
+So taste and judgment matter
+tremendously in this world.
+It just operates at a
+tremendously larger scale.
+So I would say that there were four things
+that are required.
+This is really general to
+sort of any human problem,
+but in this new world, the
+four things that you need to do
+as someone who is a conductor
+of this is you need to be able
+to express very clearly
+what it is that you want.
+And this is way more
+difficult than it sounds.
+You know, if you've ever
+been given sort of a,
+a product description that
+you have to go and implement,
+and by the time you actually
+write it down, you realize
+that you're missing half of
+the information that you need
+to imple to implement it correctly.
+This is incredibly important.
+Then after you know what
+you want, you actually have
+to shape the problem so that
+you can apply the tokens to it
+and you get monotonically
+increasingly good results.
+And then if you have hundreds of thousands
+or millions of agents working
+on your behalf doing all
+of this, they're going
+to generate a tremendous
+amount of artifacts.
+So you need to find some
+way in the small to be able
+to prove that the work
+that they're doing is working towards
+faithfully your vision.
+And then once you can
+prove in sort of that,
+that tight inner loop, then you,
+you can literally just turn
+up the amount of tokens
+that you pour into the system
+and you'll get a better
+and better system at scale.
+So I'm gonna show a quick demo of
+what I think it might look like
+and there's gonna be a,
+a sort of common thread
+where the first step is
+extracting out from the
+user what is it you want to do.
+And, you know, if you've
+ever prepared a talk
+or written a blog post,
+there's very often a step
+where you give this to an
+editor where you debate
+with a friend and you go back and forth.
+You have an interrogative
+partner who pulls out highly
+clear thought from you.
+And then once you've captured that,
+or once you, you know what you
+want, you capture that inside
+of a a document, a specification.
+And this spec the specification
+is a living document that
+contains the decisions,
+the implementation details and whatnot.
+And once you have that and you
+send it off to, for someone
+to implement the work needs to come back
+and needs to sort of relate
+to this document, you need
+to be under, under able to
+understand when you're looking at
+your document, what part of
+the, the report, what part
+of the result proves to me
+that this is actually
+implemented correctly.
+And then once you have that,
+the system needs to be able
+to just drive millions of agents at scale.
+So in this demo, I'm just,
+it's a very simple interface,
+but I'll explain it.
+On the left, we're gonna have a chat,
+like a chat interface we,
+we are all familiar with.
+In the middle we'll have
+a specification document,
+and on the right we'll have
+some sort of introspection tools
+that help us understand
+what we're working on.
+So in this document, so this,
+this is a tool that's meant
+to help me sort of vibe code at scale.
+So I'm gonna describe the
+application I wanna build.
+I'm gonna go back and forth in a,
+a conversation with the system.
+It's going to highlight things
+that maybe I didn't realize about it.
+And then it's going to
+start to amplify my intent.
+So this is just a demo,
+but you can see over here
+we have like a little
+chat interface like I mentioned.
+And it's just gonna ask me like in one
+or two sentences, what
+are you building today?
+And I'm gonna say I wanna
+build a collaborative coloring
+book app for my daughter and
+it should work on mobile.
+I want it to be able to generate
+coloring book images via an
+LLM and then she can
+color it in with brushes,
+fills and stickers that
+she loves stickers.
+So once we have this, you
+know, it's gonna start
+to take some notes and
+it's like, all right, well
+what are the the features
+we should target first?
+What priority?
+All right, so I'll send off this,
+and while this is working,
+you sort of, it's going
+to be trying to figure out
+these questions up here.
+The same thing that if
+you were to sit down
+and work with some
+partner, you're gonna try
+to figure out like, alright,
+what do you wanna build?
+What's the name of it? What
+are the technical decisions
+that we need to make up here?
+And so it's gonna like, work
+out these different things.
+And you can tell it's, it's
+a little bit annoyed with me.
+It's like, what are the
+image styles and constraints?
+And it's just taking these notes
+and as it's doing this,
+I'm gonna say, I know
+that there's a visual component
+to this app obviously,
+so I have like a, a sort
+of aesthetic feel in mind.
+So I'm gonna come over here
+and, and generate a style guide.
+So I want it to be fun, maybe bold,
+I'll get some new suggestions here.
+I want it to be anime inspired,
+fired manga characters.
+Definitely not neo brutalist,
+but let's say warm.
+Warm looks good. So now I'm gonna generate
+just a couple of ideas.
+So based off of this, you
+know, high level description,
+maybe I don't really
+know exactly what I want,
+but I have a general gist of it
+and I'm gonna get back some suggestions.
+So I'll skip over to pre-generated one.
+At the end of the interview,
+we're gonna summarize everything and,
+and create a highly
+structured document of sort
+of a problem statement, an overview
+of what we're actually building.
+And you can see over here,
+here are some of the sort
+of mood boards that it has generated.
+So in this case I like
+say this one the most.
+And if I like that, I can
+actually say, all right,
+let's go ahead and pin that.
+And now all future
+generations, all sort of images
+that are generated are going
+to be driven via this style.
+So I'm able to express my intent sort
+of very vaguely at first,
+but then iteratively
+narrow down what it is
+that I want and what I require.
+And then you can see
+here that, you know, I,
+I've described sort of
+the user journeys and,
+and what not should happen inside of this.
+And it's actually gone through
+and detected, you know,
+what are the screens
+that are involved in this,
+just like if you were to work
+with a designer and based off of
+that it's generated some mockups.
+So these are again, generated
+and driven via that style board that we,
+or mood board that we
+generated previously.
+And these look kind of good to me.
+I think, yeah, it, I
+would be happy if the app
+looked like that.
+That's certainly better than
+I could do. And so inside
+of this specification
+and the screen summaries, it
+sort of has put these in here.
+And so I can go through
+and describe what I want
+to have happen in this
+app, start to visualize it,
+and this becomes sort of the
+ground truth that's going
+to drive the generation of this app.
+But you know, we talked
+about it's hard to know
+what you want and part of that
+is yes, the visual design,
+but I actually think
+of a larger part is the
+rigor of thought.
+So if you have ever translated
+a product requirement into an
+actual application, it con it turns out
+that it is much denser to write code.
+You have to think about
+all of the edge cases,
+all the contradictions, the ambiguities.
+And so what we can do here is
+we can actually walk over the
+specification document
+and we can extract out the
+atomic indivisible claims.
+Like what, what are you
+saying you want the world
+to look like when this
+application is built?
+And then we can walk over
+and say, well, some of
+this is a bit ambiguous.
+So for example, if I
+look at maybe the claims,
+I look at the ambiguities,
+you can see here it said,
+well I want kid friendly,
+but I didn't mention
+anything about like age range
+or content standards, accessibility,
+whatever that might be.
+And that's a perfectly good point,
+like maybe I don't care
+about it in this case
+and I can intentionally
+say, you know what,
+this doesn't matter, this
+is a little minor app,
+but maybe it actually
+does matter at some point.
+And I can say, okay, well go ahead
+and show me where I, I've done this and
+or, you know, see easy coloring on mobile.
+And so I have lots and lots
+of different claims here.
+And then some of them
+actually worse than ambiguity
+might be contradictions.
+So in this case, you know,
+I've described an application
+which is publicly accessible,
+has no accounts,
+and sort of has like a
+little bit of interaction.
+So you can see here where
+it's like, well, you know,
+you're allowing anonymous
+users to free draw
+and publish directly to public galleries.
+This is probably a bad idea, right?
+So it's sort of extracting
+out the contradictions,
+the ambiguities, the things
+that would cause problems if I were
+to launch a thousand agents
+and go code this up right now.
+So we get to fix those problems
+immediately rather than when
+it's the fastest and the
+freshest in our mind.
+And then you can go
+further with this, right?
+So in this case, I've
+generated a mockup for this
+and for this, this screen.
+But you can say like, I
+actually don't want it
+to be quite like this.
+So I, I can use a model
+to actually extract the
+component structure, the thing
+that you would code from the screenshot.
+Maybe this is a UI screenshot,
+maybe it's a mockup.
+And I can just sort of grab it
+and say, well, this card
+component, I want this
+to be full width and I want
+this vertical list to actually
+become horizontal and go down here.
+And then just by sort of like
+physically manipulating the
+the component tree structure of this,
+you can then compile out
+something that looks like this.
+So you can actually just compile
+out in the con instructions
+for a image model to generate
+a new version of this
+and then looks something like this.
+So you can see how like all
+of the details have been kept,
+and I've sort of said these
+things need to be moved around
+and it has respected that.
+And so this is just like sort of working
+with a really good designer,
+but in person on a like really
+high fidelity whiteboard
+where you have to go back and
+forth, express your intentions
+and get this thing out,
+and then this becomes part
+of your source code specification.
+And once you have disambiguated it,
+you've figured out all
+the contradictions on how
+to fix them.
+And you've put that in. The thing is,
+this is now a closed loop
+because the, at this point,
+the agent, so I can see
+the mockups, I can see the,
+the images, the agent can
+see these image images
+as they're implementing it.
+Whenever they're done implementing
+it, they can actually see
+what the implementation looks like.
+I can see what it looks like.
+The agent can compare it
+and see like, did it mess up?
+And if it messed up, it can
+actually flag that for its own
+subagent to fix.
+And so you've turned this into the problem
+where you just keep pouring
+more tokens into it,
+you pour more compute into it,
+and it iterates more and more and more.
+And it knows that this is
+going to be judged according
+to the source specification.
+So by the time it gets to
+me is almost certainly going
+to be adhering, at least visually
+to the thing I care about.
+And depending on how well
+I have specified the rest
+of my specification, it will
+actually be doing that as well.
+So the, the thing that we,
+we care about in this
+world is not the code,
+but it's the properties
+that we, we expect the code
+to exhibit and that's what
+I want to be convinced of.
+I don't care how you formatted
+the code, I wanna make sure
+that it's safe or that it's,
+it has the functionality
+or that it's secure or
+that it's performance.
+These, there are high level
+attributes that I care about
+that I need to be convinced of
+rather than reading the code.
+And it turns out like
+English is a reasonably good
+programming language, just
+sort of missing like a compiler
+and a tool chain and linter and whatnot.
+And like I said, we wanna fix
+any problems way early in the
+process as early as possible.
+You know, if you have ambiguity
+and you launch a million agents
+and you wake up in the
+morning, you are likely
+to have a very bad time
+and evidence, you know, like
+I said, evidence beats vibes.
+The evidence is what
+is going to convince us
+to take a, a big pr.
+So in this case, I'm gonna
+skip here, what would it take
+for you to trust a 14 million line PR
+that touches something incredibly
+sensitive and business critical?
+Like right now, nothing
+is probably gonna be able
+to convince you of that, right?
+But at some point you could
+imagine that there is a system
+that is able to prove to
+you that this, the, the code
+that it has generated exhibits, properties
+that you care about, those
+properties are derived from the
+specification from the
+com, the chats that you had
+and it has, it's able to
+prove it to you in a way
+that would take you years, right?
+Maybe it does like exhaustive
+property based testing
+or you know, formalized language
+or whatever it might be.
+It's able to do these things at scale.
+And the, the, the goal
+here is like we have
+to make big changes legible, where
+as a domain expert we can sort
+of look at the high level
+properties, poke at it, try
+to break it, understand it,
+and then build up confidence, right?
+Where, where we have like
+a sort of muscle intuition
+of like, okay, I, I know
+that this tends to fail
+around here, I'm gonna go check
+that these properties tend
+to hold, okay, I feel comfortable
+allowing this 14 million
+line change so that we
+can get to the point
+where we can scale without fear.
+'cause otherwise, if you are
+sort of the human in the loop
+and you are rubber stamping
+a 14 million pr, what
+that is about, that's about
+a liability sink, right?
+The reason that we have a
+human in the loop is just
+so we have someone to blame
+if something goes wrong.
+It's not about like amplifying humans.
+So what we need to do
+is we need to be able
+to actually scale with the
+token power, with the trillions
+of dollars that are being
+invested in this, we need
+to be able to ride that wave.
+And so ultimately it's not
+about the size of the change,
+it is about the legibility of the change.
+If you don't understand a small change,
+you probably shouldn't accept it.
+And if you understand the properties
+of a large change should
+be perfectly fine.
+And this actually applies to
+almost every single domain,
+you know, whether it's product research
+or operations finance.
+And I, I, I think like
+an interesting exercise
+for like say a marketing VP
+is what would it take for you
+to approve a million dollar
+like ad spend budget based off
+of what the agents have gone out and done.
+So you, you, you release 10,000 agents,
+they go do product research,
+market research, demographics,
+user interviews, and they come
+back to you with a proposal
+that says, all right, we're
+ready to launch this thing,
+it's gonna be a million dollars.
+What do you need to feel
+comfortable to sign off on that?
+Are you gonna read all
+of the user's reviews?
+Probably not, but there's
+gonna be some evidence that you
+as the domain expert will
+know this is required in order
+to be able to sign off on
+something as big as this.
+So the takeaways here
+are, in order to scale
+with the tokens, with
+the amount of investment
+that is going in, you need to be able
+to express very clearly
+what it is that you want.
+You have to be able to
+shape the domain to fit
+or the problem to fit
+this new power source.
+You have to be able to prove
+that the result is actually
+iterating closer towards your
+vision in a faithful manner.
+And then you have to be
+comfortable letting it
+loose at scale.
+So go ahead and build the infrastructure
+that connects the LMS to your domain
+and judge the tools by the
+evidence they produce, not
+that the artifacts themselves
+is about the properties
+that the artifacts exhibit.
+So please go shape your
+problems to take advantage
+of this new amazing data source
+and be a million times more productive.
+Thank you.
+- Hi Sean. Hello. Great talk. Thank you.
+I have some questions
+about this way of working.
+What would we call this
+way of working by the way?
+Smart. I think. Is it spec based?
+Is it specification based?
+- It's, it's about like
+starting with the intentions
+and then knowing what is it?
+Like what, what is the
+impact that you wanna see in the world?
+If we talk about leadership,
+like a leader is someone whose
+intents affect the world.
+They are amplified through
+other people and systems
+and they affect the world in some way.
+So the core is like knowing
+what is your intention,
+what is the, the change
+that you want to see?
+And then being confident in like
+that the system has
+actually achieved that.
+- I'm quite excited about this
+way of working personally,
+but when I talk to other programmers,
+a common complaint I hear from them is,
+why would I labor over this
+specification when it just feels
+much quicker and immediate
+to just go make the
+- Change?
+Yeah, I think there
+are, there are a couple
+different things here, right?
+So this is a valid, valid criticism,
+but it's sort of like you have
+to ask where is the source
+of friction coming from
+in that world, right?
+So because we are so capable,
+we spent a long time in
+this craft, we know how
+to just go and do the thing.
+And that's actually maybe
+faster than describing the thing
+we want to have done and then checking
+to see if it was done correctly.
+But it's very hard to scale in that way.
+You can imagine that like
+there are times where you need
+to sort of change the
+problem to fit the power
+sources available.
+An example of this might
+be sort of GPU programming,
+like Cuda, you know, you, you have
+to change the way you
+express your problem in order
+to be able to take care of this
+massive, massive parallelism.
+But you know, if you do,
+then you basically just add more GPUs
+and it gets faster and faster and faster.
+So it depends on like how,
+like what niche you wants
+to sort of live in.
+I think in, in the future.
+- You sort of broke down a
+process here of some, some,
+some phases of this way of working.
+It was express and shape, prove and trust.
+So where do you think the
+biggest friction here is compared
+to today's way of
+working in adopting this?
+- So yeah, sort of to your,
+your previous question as well.
+There, there's something about thinking
+and writing that is very painful.
+It's very hard. I I, you know,
+whenever you write a
+talk you think, oh, I,
+I I know what I'm gonna talk about.
+And you go to sit down and
+you have a blank canvas
+and you think, oh, why
+did I agree to this?
+This is terrible. And
+it's the same way, sort
+of like if you're thinking about a product
+or a feature or whatever it might be.
+And one of the nice things
+about like code is it allows you
+to iteratively express and explore.
+So I think that right now,
+if you just sit down in front
+of a blank canvas with like,
+and write out a
+specification, that's going
+to be the highest source
+of friction is knowing
+what you want and being
+able to express it.
+And that's why I think the
+tool tooling sort of has
+to pull it out of you
+and has to make it really easy to iterate.
+So, you know, I, I want a, a
+drawing app for my daughter
+and like, I actually haven't
+thought it all the way through.
+I maybe I think I have, but then it starts
+to ask me questions about like,
+well what's the tech stack?
+And you know, what about
+safety and are there accounts?
+And I think, well these are good questions
+and maybe some of the things I think,
+you know what, I don't care.
+You do whatever you, you want.
+But sometimes I think, well,
+we'll put a pin in that
+and we'll come back or we think,
+or I think, you know, this
+is really important, I need
+to, to fix this right now.
+So I think that that right now
+is the biggest friction and
+because we haven't had
+systems that sort of allow us
+to scale to millions of
+developers of ourselves,
+I think it's very hard to
+sort of envision the benefits
+given sort of the, the current system.
+If you haven't experienced,
+then it's like, well,
+why would I go through this extra effort?
+Yeah. And, and so for dubious returns,
+- I'm curious how roles
+change in that, right?
+Because speaking as a programmer, I'm used
+to translating product
+requirements to code, right?
+That's, that's part of
+my skill And I see that
+as translating one layer
+of abstraction down
+to another layer of abstraction, right?
+And the product manager who's
+writing those requirements
+might be translating a higher
+level abstraction business
+goals and opportunities
+into products, right?
+So there's these translations
+that are happening
+by very specific roles
+like CEOs, product people,
+engineers, et cetera.
+This though seems to add another sort
+of abstraction layer at the top
+where it's all a common language, right?
+It is natural language is English
+or whatever your native language might be.
+Does that also sort of
+blend the roles together
+or are they the, the traditional
+roles all working together
+sort of in the same layer at
+that point, if you know what I mean?
+- I, I think it's, I think there,
+there's definitely a blending,
+but it's sort of like an
+amplification of each individual.
+So, you know, in this, this
+scenario I'm generating mockups
+of a screen, but you can
+imagine, and that that's
+because like I'm not good at, you know,
+making visual mockups of, of screens,
+but maybe a designer knows
+really well how to express
+what they want in say the
+Figma and they can import that,
+but they're not really
+sure about the tech stack
+or the distribution method
+or you know, the, the partnerships
+that they should come up with.
+And so it sort of enables them to,
+to some degree blend it together,
+but through the lens
+that they feel most comfortable
+expressing themselves in.
+- Hmm. It kind of reminds of
+leadership as well, right?
+'cause you're here, you're,
+you're, you're, you're,
+you're driving at some outcomes
+and you're sort of going about
+it in a structured way trying
+to, to to realize what
+the, you're trying to do.
+Not the mechanics necessarily of doing it,
+but the way that leaders
+enable teams to go out
+and build things without
+micromanaging like, oh,
+this should be a class
+or this should be a,
+a functional thing, right? In programming.
+- Yeah.
+- So how does that, how does this way
+of working sort of relate to,
+to leadership in general, do you think?
+- Well I think we all, I
+mean, if you have a hundred
+thousand agents
+or a million agents working for you are
+by definition a leader, like one
+of the most powerful leaders
+in the history of humanity.
+And so like we all become
+leaders in this, this world.
+So yeah, I I think there's
+no getting away from it,
+like you, you have to sort of
+think at a much more impact.
+Like what is the impact that
+you're going to have with,
+with the effort And like, you
+know, the, the common thread
+through all of this is
+that the biggest bottleneck
+and the most precious
+bottleneck is like human life
+and human time, human attention.
+And this, you know, if,
+if you can just sort
+of speak anything into existence, it it,
+it makes you like think
+about what do I want
+to spend my life doing?
+What is the impact that I want to have?
+And like that is the
+definition of being a leader.
+- I think that segues nicely into
+this other thought on not everyone is sort
+of either cut out to be
+or want to step into sort of leadership
+and think of themselves as a leader and,
+and figuring out all
+the difficult questions
+of why are we doing
+things and to what end.
+So what do you say to those that sort of
+don't necessarily wanna step
+out into that kind of a role
+and who are just enjoying
+like building things,
+picking tickets and just
+like laboring over code
+that they might be proud of
+and think that that's what
+gives them joy in their
+life? What would you say to them?
+- Well, I think it's, it's very important
+to do the things that give you joy.
+You know, it's like one of my,
+my favorite terms is amateur
+and we use it as like
+a pejorative right now.
+But the meaning is really beautiful.
+It's, it's someone who
+does something for the love
+of it, right?
+So if you love programming,
+if you love, you know,
+a Norwegian demo scene, you know,
+and you, you're gonna go, you
+can throw yourself into that
+and really enjoy it.
+But a professional is
+someone who gets paid
+to do something for some outcome.
+And so I think it's nice
+that those things sort
+of become separated.
+Like, if you don't want
+to do this professionally,
+then don't do it professionally.
+But it will probably be
+somewhat difficult to compete
+as say, an amateur.
+There, there are industries
+where, you know, this,
+this happens, you know, an
+artisanally made hat or,
+or belts, you know, or
+some couture or something.
+I, I don't know if the market
+will exist for artisanal code.
+It's possible. But you know, maybe there,
+there's something about
+like if you enjoy it, do it
+for the love of it and if you like want
+to have an impact then with
+it, then you can go ahead
+and do it for professionally.
+- For sure there will be
+some sort of handcrafted,
+locally produced code product.
+- Yeah. Great. Yeah,
+all of that. It probably
+- Cost more if I make you feel better.
+Yeah, I dunno. Okay, I think
+that's a good note to end on,
+Sean, grower, everyone,
+thank you very much.
+
+2.6s · 33m 11s YouTube · 6.3k words · text via transcript/captionTracks

@@ -1,0 +1,94 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog');
+const sortedPosts = posts.sort((a, b) => 
+  new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+);
+---
+
+<Layout title="Blog — Sean Grove" description="Thoughts on OCaml, unikernels, GraphQL, and building software">
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 px-6 py-4 bg-sand-50/90 backdrop-blur-lg shadow-sm">
+    <div class="max-w-4xl mx-auto flex justify-between items-center">
+      <a href="/" class="text-stone-800 font-serif text-xl tracking-wide hover:text-warmth transition-colors">
+        SG
+      </a>
+      <div class="flex items-center gap-8">
+        <a href="/talks" class="text-stone-600 hover:text-stone-900 text-sm tracking-wide transition-colors">
+          Talks
+        </a>
+        <a href="/projects" class="text-stone-600 hover:text-stone-900 text-sm tracking-wide transition-colors">
+          Projects
+        </a>
+        <a href="/ml-explorations" class="text-stone-600 hover:text-stone-900 text-sm tracking-wide transition-colors">
+          ML
+        </a>
+        <a href="/blog" class="text-warmth text-sm tracking-wide transition-colors font-medium">
+          Blog
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="pt-32 pb-20 px-6">
+    <div class="max-w-4xl mx-auto">
+      <!-- Header -->
+      <header class="mb-16 text-center">
+        <span class="text-moss-600 text-sm tracking-[0.3em] uppercase mb-4 block">
+          Writing
+        </span>
+        <h1 class="text-4xl md:text-6xl font-serif text-stone-800 mb-6">
+          Blog
+        </h1>
+        <p class="text-stone-600 text-lg max-w-2xl mx-auto">
+          Thoughts on OCaml, unikernels, GraphQL, ReasonML, and the craft of building software.
+        </p>
+      </header>
+
+      <!-- Posts -->
+      <div class="space-y-8">
+        {sortedPosts.map((post) => {
+          const formattedDate = new Intl.DateTimeFormat('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          }).format(new Date(post.data.date));
+          
+          return (
+            <article class="bg-white/60 backdrop-blur-sm rounded-2xl p-8 border border-sand-200 hover:shadow-lg hover:shadow-stone-200/50 transition-all duration-500 group">
+              <a href={`/blog/${post.id}`} class="block">
+                <time class="text-stone-500 text-sm mb-2 block">{formattedDate}</time>
+                <h2 class="text-2xl font-serif text-stone-800 mb-3 group-hover:text-warmth transition-colors">
+                  {post.data.title}
+                </h2>
+                {post.data.description && (
+                  <p class="text-stone-600 leading-relaxed mb-4">
+                    {post.data.description}
+                  </p>
+                )}
+                {post.data.tags && (
+                  <div class="flex flex-wrap gap-2">
+                    {post.data.tags.map((tag: string) => (
+                      <span class="px-3 py-1 bg-sand-200/50 text-stone-600 text-xs rounded-full">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </a>
+            </article>
+          );
+        })}
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="py-12 px-6 border-t border-sand-200">
+    <div class="max-w-4xl mx-auto text-center text-stone-500 text-sm">
+      <p>© {new Date().getFullYear()} Sean Grove. All rights reserved.</p>
+    </div>
+  </footer>
+</Layout>
